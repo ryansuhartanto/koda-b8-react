@@ -1,0 +1,32 @@
+{
+	"name": "react",
+	"private": true,
+	"license": "MIT",
+	"author": "Ryan Suhartanto <suhartanto@kekkon.nexus>",
+	"repository": "ryansuhartanto/koda-b8-react",
+	"type": "module",
+	"imports": {
+		"#/*": "./src/*"
+	},
+	"scripts": {
+		"prepare": "vp config",
+		"fmt": "vp fmt",
+		"lint": "vp lint",
+		"test": "vp test",
+		"dev": "vp dev",
+		"build": "vp build"
+	},
+	"dependencies": {
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
+		"react-router": "^7.17.0"
+	},
+	"devDependencies": {
+		"@kekkon-nexus/config": "^2.260520.0",
+		"@tailwindcss/vite": "^4.3.0",
+		"@vitejs/plugin-react": "^6.0.2",
+		"commitlint": "^21.0.2",
+		"tailwindcss": "^4.3.0",
+		"vite-plus": "latest"
+	}
+}

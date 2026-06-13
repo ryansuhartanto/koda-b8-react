@@ -1,0 +1,9 @@
+{
+	"recommendations": [
+		"editorconfig.editorconfig",
+		"bradlc.vscode-tailwindcss",
+		"html-validate.vscode-html-validate",
+		"joshbolduc.commitlint",
+		"VoidZero.vite-plus-extension-pack"
+	]
+}
