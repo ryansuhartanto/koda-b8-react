@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
 import LayoutRoot from "#/+Layout";
-import LayoutStore from "#/pages/(store)/+Layout.jsx";
+import LayoutStore from "#/pages/(store)/+Layout";
 
 const router = createBrowserRouter([
 	{
@@ -16,6 +16,14 @@ const router = createBrowserRouter([
 					{
 						index: true,
 						Component: React.lazy(() => import("#/pages/(store)/index")),
+					},
+					{
+						path: "browse",
+						Component: React.lazy(() => import("#/pages/(store)/browse")),
+					},
+					{
+						path: "details",
+						Component: React.lazy(() => import("#/pages/(store)/details")),
 					},
 				],
 			},
