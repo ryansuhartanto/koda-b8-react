@@ -1,0 +1,258 @@
+{
+	"categories": [
+		{
+			"name": "Electronic",
+			"icon": "💻",
+			"img": "/images/category/electronic.png",
+			"items": 7
+		},
+		{
+			"name": "Fashion",
+			"icon": "👗",
+			"img": "/images/category/fashion.png",
+			"items": 5
+		},
+		{
+			"name": "Rumah & Dapur",
+			"icon": "🏠",
+			"img": "/images/category/household.png",
+			"items": 4
+		},
+		{
+			"name": "Kecantikan",
+			"icon": "💄",
+			"img": "/images/category/beauty.png",
+			"items": 2
+		},
+		{
+			"name": "Olahraga",
+			"icon": "⚽",
+			"img": "/images/category/sport.png",
+			"items": 3
+		},
+		{
+			"name": "Buku & Alat Tulis",
+			"icon": "📚",
+			"img": "/images/category/stationary.png",
+			"items": 2
+		}
+	],
+	"products": [
+		{
+			"name": "Headphone Wireless Premium",
+			"brand": "SoundWave",
+			"category": "Elektronik",
+			"img": "/images/product/soundwave-headphone_wireless_premium.png",
+			"price": 450000,
+			"originalPrice": 650000,
+			"stock": 45,
+			"rating": 4.8,
+			"ratingCount": 512,
+			"tags": ["baru", "unggulan", "promo"]
+		},
+		{
+			"name": "Smartphone 5G Ultra",
+			"brand": "PhoneX",
+			"category": "Elektronik",
+			"img": "/images/product/phonex-smartphone_5g_ultra.png",
+			"price": 4200000,
+			"originalPrice": 5000000,
+			"stock": 30,
+			"rating": 4.6,
+			"ratingCount": 890,
+			"tags": ["baru", "unggulan", "promo"]
+		},
+		{
+			"name": "Smartwatch Series 5",
+			"brand": "WristTech",
+			"category": "Elektronik",
+			"img": "/images/product/wristtech-smartwatch_series_5.png",
+			"price": 2800000,
+			"originalPrice": 3500000,
+			"stock": 22,
+			"rating": 4.4,
+			"ratingCount": 324,
+			"tags": ["unggulan", "promo"]
+		},
+		{
+			"name": "Kaos Polos Premium Cotton",
+			"brand": "FashionID",
+			"category": "Fashion",
+			"img": "/images/product/fashionid-kaos_polos_premium_cotton.png",
+			"price": 125000,
+			"originalPrice": null,
+			"stock": 200,
+			"rating": 4.3,
+			"ratingCount": 678,
+			"tags": []
+		},
+		{
+			"name": "Sneakers Sport Runfast",
+			"brand": "SportPro",
+			"category": "Fashion",
+			"img": "/images/product/sportpro-sneakers_sport_runfast.png",
+			"price": 550000,
+			"originalPrice": 750000,
+			"stock": 60,
+			"rating": 4.6,
+			"ratingCount": 445,
+			"tags": ["unggulan", "promo"]
+		},
+		{
+			"name": "Tas Ransel Laptop Waterproof",
+			"brand": "UrbanBag",
+			"category": "Fashion",
+			"img": "/images/product/urbanbag-tas_ransel_laptop_waterproof.png",
+			"price": 350000,
+			"originalPrice": null,
+			"stock": 80,
+			"rating": 4.5,
+			"ratingCount": 234,
+			"tags": ["baru"]
+		},
+		{
+			"name": "Coffee Maker Otomatis",
+			"brand": "BrewMaster",
+			"category": "Rumah & Dapur",
+			"img": "/images/product/brewmaster-coffee_maker_otomatis.png",
+			"price": 875000,
+			"originalPrice": 1200000,
+			"stock": 25,
+			"rating": 4.4,
+			"ratingCount": 189,
+			"tags": ["unggulan", "promo"]
+		},
+		{
+			"name": "Blender Portable Mini",
+			"brand": "BlendPro",
+			"category": "Rumah & Dapur",
+			"img": "/images/product/blendpro-blender_portable_mini.png",
+			"price": 189000,
+			"originalPrice": null,
+			"stock": 120,
+			"rating": 4.2,
+			"ratingCount": 567,
+			"tags": ["baru"]
+		},
+		{
+			"name": "Set Peralatan Makan Keramik",
+			"brand": "HomeDeco",
+			"category": "Rumah & Dapur",
+			"img": "/images/product/homedeco-set_peralatan_makan_keramik.png",
+			"price": 450000,
+			"originalPrice": null,
+			"stock": 40,
+			"rating": 4.7,
+			"ratingCount": 123,
+			"tags": []
+		},
+		{
+			"name": "Tablet 10.5\" WiFi + 4G",
+			"brand": "TabTech",
+			"category": "Elektronik",
+			"img": "/images/product/tabtech-tablet_10_5_wifi_4g.png",
+			"price": 3200000,
+			"originalPrice": 4000000,
+			"stock": 18,
+			"rating": 4.5,
+			"ratingCount": 345,
+			"tags": ["baru", "promo"]
+		},
+		{
+			"name": "Serum Vitamin C Brightening",
+			"brand": "GlowLab",
+			"category": "Kecantikan",
+			"img": "/images/product/glowlab-serum_vitamin_c_brightening.png",
+			"price": 185000,
+			"originalPrice": 250000,
+			"stock": 150,
+			"rating": 4.6,
+			"ratingCount": 892,
+			"tags": ["promo"]
+		},
+		{
+			"name": "Sepatu Lari Trail Ultra",
+			"brand": "TrailRunner",
+			"category": "Olahraga",
+			"img": "/images/product/trailrunner-sepatu_lari_trail_ultra.png",
+			"price": 780000,
+			"originalPrice": null,
+			"stock": 35,
+			"rating": 4.7,
+			"ratingCount": 267,
+			"tags": []
+		},
+		{
+			"name": "Buku \"Atomic Habits\"",
+			"brand": "Gramedia",
+			"category": "Buku & Alat Tulis",
+			"img": "/images/product/gramedia-buku_atomic_habits.png",
+			"price": 89000,
+			"originalPrice": 110000,
+			"stock": 500,
+			"rating": 4.9,
+			"ratingCount": 1245,
+			"tags": ["promo"]
+		},
+		{
+			"name": "Speaker Bluetooth Portable",
+			"brand": "SoundWave",
+			"category": "Elektronik",
+			"img": "/images/product/soundwave-speaker_bluetooth_portable.png",
+			"price": 320000,
+			"originalPrice": 450000,
+			"stock": 75,
+			"rating": 4.4,
+			"ratingCount": 389,
+			"tags": ["promo"]
+		},
+		{
+			"name": "Dress Floral Midi",
+			"brand": "FashionID",
+			"category": "Fashion",
+			"img": "/images/product/fashionid-dress_floral_midi.png",
+			"price": 295000,
+			"originalPrice": 395000,
+			"stock": 55,
+			"rating": 4.5,
+			"ratingCount": 312,
+			"tags": ["baru", "unggulan", "promo"]
+		},
+		{
+			"name": "Minyak Esensial Lavender Set",
+			"brand": "AromaWell",
+			"category": "Kecantikan",
+			"img": "/images/product/aromawell-minyak_esensial_lavender_set.png",
+			"price": 145000,
+			"originalPrice": null,
+			"stock": 90,
+			"rating": 4.8,
+			"ratingCount": 456,
+			"tags": ["baru"]
+		},
+		{
+			"name": "Matras Yoga Premium",
+			"brand": "FitLife",
+			"category": "Olahraga",
+			"img": "/images/product/fitlife-matras_yoga_premium.png",
+			"price": 280000,
+			"originalPrice": null,
+			"stock": 65,
+			"rating": 4.5,
+			"ratingCount": 198,
+			"tags": []
+		},
+		{
+			"name": "Raket Badminton Carbon Pro",
+			"brand": "SmashKing",
+			"category": "Olahraga",
+			"img": "/images/product/smashking-raket_badminton_carbon_pro.png",
+			"price": 675000,
+			"originalPrice": 850000,
+			"stock": 30,
+			"rating": 4.6,
+			"ratingCount": 143,
+			"tags": ["promo"]
+		}
+	]
+}
