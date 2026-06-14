@@ -2,13 +2,24 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
-import { Layout } from "#/Layout";
+import LayoutRoot from "#/+Layout";
+import LayoutStore from "#/pages/(store)/+Layout.jsx";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		Component: Layout,
-		children: [],
+		Component: LayoutRoot,
+		children: [
+			{
+				Component: LayoutStore,
+				children: [
+					{
+						index: true,
+						Component: React.lazy(() => import("#/pages/(store)/index")),
+					},
+				],
+			},
+		],
 	},
 ]);
 

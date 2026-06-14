@@ -1,1 +1,96 @@
 @import "tailwindcss";
+
+@theme {
+	--font-sans: "InterVariable", "Inter", Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+	svg.lucide {
+		@apply inline size-[1em];
+	}
+
+	small {
+		font-size: unset;
+	}
+}
+
+@layer components {
+	.brand {
+		@apply flex items-center gap-2 select-none;
+
+		&::before {
+			@apply content-['B'] grid place-content-center size-8 rounded-lg text-sm bg-blue-600 text-white;
+		}
+	}
+
+	.card {
+		@apply bg-white border border-black/10 rounded-2xl overflow-hidden relative text-gray-500 transition-shadow duration-500 hover:shadow-xl;
+
+		img {
+			@apply aspect-square w-full;
+		}
+
+		h3 {
+			@apply text-gray-900;
+		}
+
+		.badge {
+			@apply absolute inset-bs-2 inset-s-2 px-2 py-1 rounded-full text-white text-xs;
+
+			&.discount {
+				@apply bg-red-600;
+			}
+			&.new {
+				@apply bg-blue-600;
+			}
+		}
+
+		&.fashion {
+			background-image:
+				linear-gradient(
+					in oklch to right,
+					color-mix(in oklch, var(--color-black) 80%, transparent),
+					color-mix(in oklch, var(--color-black) 0%, transparent)
+				),
+				url("images/marketing/fashion.png");
+			background-position: center;
+			background-size: cover;
+		}
+
+		&.electronic {
+			background-image:
+				linear-gradient(
+					in oklch to right,
+					color-mix(in oklch, var(--color-blue-800) 80%, transparent),
+					color-mix(in oklch, var(--color-blue-800) 0%, transparent)
+				),
+				url("images/marketing/electronic.png");
+			background-position: center;
+			background-size: cover;
+		}
+
+		.product {
+			@apply text-xs;
+
+			& > h3,
+			& > div {
+				@apply text-sm;
+			}
+		}
+	}
+
+	.price {
+		& > span,
+		& > ins {
+			@apply text-blue-600 text-base font-semibold no-underline;
+		}
+
+		& > del {
+			@apply text-gray-500;
+		}
+	}
+}
+
+@utility wrapper {
+	@apply max-w-7xl px-4 mx-auto;
+}
