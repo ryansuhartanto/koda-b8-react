@@ -12,6 +12,48 @@ import SiInstagram from "~icons/simple-icons/instagram";
 import SiX from "~icons/simple-icons/x";
 import SiYoutube from "~icons/simple-icons/youtube";
 
+const promotions = [
+	{
+		Icon: Truck,
+		title: "Gratis Ongkir",
+		sub: "Pembelian diatas Rp 100.000",
+	},
+	{
+		Icon: Shield,
+		title: "Pembayaran Aman",
+		sub: "SSL terenkripsi 256-bit",
+	},
+	{
+		Icon: RefreshCcw,
+		title: "Pengembalian Mudah",
+		sub: "30 hari pengembalian gratis",
+	},
+	{
+		Icon: Headset,
+		title: "Dukungan 24/7",
+		sub: "Bantuan kapan saja",
+	},
+];
+
+const socialLinks = [
+	{
+		Icon: SiFacebook,
+		label: "Facebook",
+		href: "https://facebook.com/belimudah",
+	},
+	{
+		Icon: SiInstagram,
+		label: "Instagram",
+		href: "https://instagram.com/belimudah",
+	},
+	{ Icon: SiX, label: "X", href: "https://x.com/belimudah" },
+	{
+		Icon: SiYoutube,
+		label: "YouTube",
+		href: "https://youtube.com/@belimudah",
+	},
+];
+
 export function FloatingContact() {
 	return (
 		<Link
@@ -31,44 +73,20 @@ export function FooterPromotions() {
 			className="py-8"
 		>
 			<div className="wrapper grid grid-cols-4 gap-8">
-				<div className="flex gap-4">
-					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<Truck className="text-lg" />
+				{promotions.map(({ Icon, title, sub }) => (
+					<div
+						key={title}
+						className="flex gap-4"
+					>
+						<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
+							<Icon className="text-lg" />
+						</div>
+						<div className="flex flex-col justify-center">
+							<h6 className="text-white text-sm font-medium">{title}</h6>
+							<span className="text-xs">{sub}</span>
+						</div>
 					</div>
-					<div className="flex flex-col justify-center">
-						<h6 className="text-white text-sm font-medium">Gratis Ongkir</h6>
-						<span className="text-xs">Pembelian diatas Rp 100.000</span>
-					</div>
-				</div>
-				<div className="flex gap-4">
-					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<Shield className="text-lg" />
-					</div>
-					<div className="flex flex-col justify-center">
-						<h6 className="text-white text-sm font-medium">Pembayaran Aman</h6>
-						<span className="text-xs">SSL terenkripsi 256-bit</span>
-					</div>
-				</div>
-				<div className="flex gap-4">
-					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<RefreshCcw className="text-lg" />
-					</div>
-					<div className="flex flex-col justify-center">
-						<h6 className="text-white text-sm font-medium">
-							Pengembalian Mudah
-						</h6>
-						<span className="text-xs">30 hari pengembalian gratis</span>
-					</div>
-				</div>
-				<div className="flex gap-4">
-					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<Headset className="text-lg" />
-					</div>
-					<div className="flex flex-col justify-center">
-						<h6 className="text-white text-sm font-medium">Dukungan 24/7</h6>
-						<span className="text-xs">Bantuan kapan saja</span>
-					</div>
-				</div>
+				))}
 			</div>
 		</section>
 	);
@@ -93,38 +111,17 @@ export function FooterNav() {
 						Belanja mudah, aman, dan menyenangkan.
 					</p>
 					<div className="flex gap-2 *:grid *:place-content-center *:size-8 *:rounded-full *:overflow-hidden *:bg-gray-700">
-						<a
-							aria-label="Facebook"
-							href="https://facebook.com/belimudah"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<SiFacebook className="size-[1em]" />
-						</a>
-						<a
-							aria-label="Instagram"
-							href="https://instagram.com/belimudah"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<SiInstagram className="size-[1em]" />
-						</a>
-						<a
-							aria-label="X"
-							href="https://x.com/belimudah"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<SiX className="size-[1em]" />
-						</a>
-						<a
-							aria-label="YouTube"
-							href="https://youtube.com/@belimudah"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<SiYoutube className="size-[1em]" />
-						</a>
+						{socialLinks.map(({ Icon, label, href }) => (
+							<a
+								key={label}
+								aria-label={label}
+								href={href}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Icon className="size-[1em]" />
+							</a>
+						))}
 					</div>
 				</div>
 

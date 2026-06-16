@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import Truck from "~icons/lucide/truck";
 
 import { Stepper, Summary } from "#/components/Checkout";
+import FormField from "#/components/FormField";
 import data from "#/data.json";
 
 const cartItem = { ...data.products[0], quantity: 1 };
@@ -31,89 +32,54 @@ export default function Page() {
 						<form className="flex flex-col gap-6">
 							<div className="flex flex-col gap-4">
 								<div className="grid grid-cols-2 gap-4">
-									{[
-										["Nama Penerima", "text", "Budi Santoso"],
-										["Nomor Telepon", "tel", "0812-3456-7890"],
-									].map(([label, type, val]) => (
-										<label
-											key={label}
-											className="flex flex-col gap-2 text-sm text-gray-600"
-										>
-											<span className="after:content-['*'] after:ml-1 after:text-red-500">
-												{label}
-											</span>
-											<input
-												type={type}
-												defaultValue={val}
-												required
-												className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900"
-											/>
-										</label>
-									))}
+									<FormField
+										label="Nama Penerima"
+										defaultValue="Budi Santoso"
+										required
+									/>
+									<FormField
+										label="Nomor Telepon"
+										type="tel"
+										defaultValue="0812-3456-7890"
+										required
+									/>
 								</div>
 
-								{[
-									["Email", "email", "budi@email.com"],
-									["Alamat Lengkap", "text", "Jl. Kebon Jeruk No. 15"],
-								].map(([label, type, val]) => (
-									<label
-										key={label}
-										className="flex flex-col gap-2 text-sm text-gray-600"
-									>
-										<span className="after:content-['*'] after:ml-1 after:text-red-500">
-											{label}
-										</span>
-										<input
-											type={type}
-											defaultValue={val}
-											required
-											className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900"
-										/>
-									</label>
-								))}
+								<FormField
+									label="Email"
+									type="email"
+									defaultValue="budi@email.com"
+									required
+								/>
+								<FormField
+									label="Alamat Lengkap"
+									defaultValue="Jl. Kebon Jeruk No. 15"
+									required
+								/>
 
 								<div className="grid grid-cols-2 gap-4">
-									{[
-										["Kota", "text", "Jakarta Barat"],
-										["Provinsi", "text", "DKI Jakarta"],
-									].map(([label, type, val]) => (
-										<label
-											key={label}
-											className="flex flex-col gap-2 text-sm text-gray-600"
-										>
-											<span className="after:content-['*'] after:ml-1 after:text-red-500">
-												{label}
-											</span>
-											<input
-												type={type}
-												defaultValue={val}
-												required
-												className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900"
-											/>
-										</label>
-									))}
+									<FormField
+										label="Kota"
+										defaultValue="Jakarta Barat"
+										required
+									/>
+									<FormField
+										label="Provinsi"
+										defaultValue="DKI Jakarta"
+										required
+									/>
 								</div>
 
 								<div className="grid grid-cols-2 gap-4">
-									<label className="flex flex-col gap-2 text-sm text-gray-600">
-										<span className="after:content-['*'] after:ml-1 after:text-red-500">
-											Kode Pos
-										</span>
-										<input
-											type="text"
-											defaultValue="11530"
-											required
-											className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900"
-										/>
-									</label>
-									<label className="flex flex-col gap-2 text-sm text-gray-600">
-										<span>Catatan (opsional)</span>
-										<input
-											type="text"
-											placeholder="Warna pagar, dll."
-											className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900"
-										/>
-									</label>
+									<FormField
+										label="Kode Pos"
+										defaultValue="11530"
+										required
+									/>
+									<FormField
+										label="Catatan (opsional)"
+										placeholder="Warna pagar, dll."
+									/>
 								</div>
 							</div>
 

@@ -5,6 +5,7 @@ import Tag from "~icons/lucide/tag";
 import Trash2 from "~icons/lucide/trash-2";
 
 import { ProductCard } from "#/components/ProductCard";
+import QuantityStepper from "#/components/QuantityStepper";
 import data from "#/data.json";
 
 const suggestionNames = [
@@ -56,26 +57,7 @@ export default function Page() {
 								</div>
 								<div className="flex justify-between items-end">
 									<div className="flex flex-col gap-2 items-start">
-										<div className="flex items-center border border-gray-200 rounded-lg overflow-hidden h-8 w-24 bg-white">
-											<button
-												type="button"
-												className="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 cursor-pointer"
-											>
-												&minus;
-											</button>
-											<input
-												type="number"
-												defaultValue={1}
-												min={1}
-												className="flex-1 w-full text-center text-sm font-medium outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-											/>
-											<button
-												type="button"
-												className="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 cursor-pointer"
-											>
-												&plus;
-											</button>
-										</div>
+										<QuantityStepper size="sm" />
 										<button
 											type="button"
 											className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-900 cursor-pointer transition-colors"

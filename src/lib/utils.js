@@ -19,3 +19,10 @@ export function slugify(text) {
 		.replaceAll(/[^a-z0-9]+/g, "-")
 		.replaceAll(/(^-|-$)/g, "");
 }
+
+/**
+ * @param {number} n
+ */
+export function rupiah(n) {
+	return `Rp ${n.toLocaleString("id-ID")}`;
+}

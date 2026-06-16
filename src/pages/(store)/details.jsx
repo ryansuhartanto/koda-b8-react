@@ -4,15 +4,14 @@ import Heart from "~icons/lucide/heart";
 import RefreshCcw from "~icons/lucide/refresh-ccw";
 import ShieldCheck from "~icons/lucide/shield-check";
 import ShoppingCart from "~icons/lucide/shopping-cart";
-import Star from "~icons/lucide/star";
 import Truck from "~icons/lucide/truck";
 
 import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
+import QuantityStepper from "#/components/QuantityStepper";
+import Star5 from "#/components/Star5";
 import data from "#/data.json";
-import { slugify } from "#/lib/utils";
-
-const rupiah = (n) => `Rp ${n.toLocaleString("id-ID")}`;
+import { rupiah, slugify } from "#/lib/utils";
 
 export default function Page() {
 	const { slug } = useParams();
@@ -111,14 +110,7 @@ export default function Page() {
 							<h1 className="text-3xl font-bold text-gray-900">{name}</h1>
 							<div className="flex items-center gap-4 text-sm">
 								<div className="flex items-center gap-1 tabular-nums text-amber-400">
-									{Array.from({ length: 5 }, (_, i) => (
-										<Star
-											key={i}
-											fill="currentColor"
-											strokeWidth={0}
-											className="size-4"
-										/>
-									))}
+									<Star5 count={Math.round(rating)} />
 									<span className="ml-1 text-gray-900">{rating}</span>
 									<span className="text-gray-500">({ratingCount})</span>
 								</div>
@@ -171,27 +163,7 @@ export default function Page() {
 						<div className="flex flex-col gap-2">
 							<span className="text-sm text-gray-900">Jumlah</span>
 							<div className="flex items-center gap-4">
-								<div className="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 w-32 bg-white">
-									<button
-										type="button"
-										className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 cursor-pointer"
-									>
-										{"-"}
-									</button>
-									<input
-										type="number"
-										defaultValue={1}
-										min={1}
-										max={stock}
-										className="flex-1 w-full text-center text-sm font-medium outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-									/>
-									<button
-										type="button"
-										className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 cursor-pointer"
-									>
-										{"+"}
-									</button>
-								</div>
+								<QuantityStepper max={stock} />
 								<span className="text-sm text-gray-500">Stok: {stock} pcs</span>
 							</div>
 						</div>

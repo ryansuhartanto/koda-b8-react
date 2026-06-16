@@ -1,9 +1,7 @@
 import { Link } from "react-router";
 
 import Star5 from "#/components/Star5";
-import { slugify } from "#/lib/utils";
-
-const rupiah = (n) => `Rp ${n.toLocaleString("id-ID")}`;
+import { rupiah, slugify } from "#/lib/utils";
 
 export function ProductCard({
 	name,

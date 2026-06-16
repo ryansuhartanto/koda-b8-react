@@ -8,6 +8,13 @@ import Search from "~icons/lucide/search";
 import ShoppingCart from "~icons/lucide/shopping-cart";
 import User from "~icons/lucide/user";
 
+const iconLinks = [
+	{ Icon: Bell, label: "Notifications", to: "/notifications" },
+	{ Icon: User, label: "User", to: "/profile", text: "Budi" },
+	{ Icon: Heart, label: "Favorite", to: "/wishlist" },
+	{ Icon: ShoppingCart, label: "Cart", to: "/cart" },
+];
+
 export function HeaderUtility() {
 	return (
 		<section
@@ -64,35 +71,17 @@ export function HeaderMain() {
 				</form>
 
 				<div className="flex items-center mx-2 gap-6 text-xl **:transition-colors **:duration-200 *:flex *:items-center *:gap-2">
-					<Link
-						className="group"
-						aria-label="Notifications"
-						to="/notifications"
-					>
-						<Bell className="text-gray-500 group-hover:text-black" />
-					</Link>
-					<Link
-						className="group"
-						aria-label="User"
-						to="/profile"
-					>
-						<User className="text-gray-500 group-hover:text-black" />
-						<span className="text-sm">Budi</span>
-					</Link>
-					<Link
-						className="group"
-						aria-label="Favorite"
-						to="/wishlist"
-					>
-						<Heart className="text-gray-500 group-hover:text-black" />
-					</Link>
-					<Link
-						className="group"
-						aria-label="Cart"
-						to="/cart"
-					>
-						<ShoppingCart className="text-gray-500 group-hover:text-black" />
-					</Link>
+					{iconLinks.map(({ Icon, label, to, text }) => (
+						<Link
+							key={label}
+							className="group"
+							aria-label={label}
+							to={to}
+						>
+							<Icon className="text-gray-500 group-hover:text-black" />
+							{text && <span className="text-sm">{text}</span>}
+						</Link>
+					))}
 				</div>
 			</div>
 		</section>
