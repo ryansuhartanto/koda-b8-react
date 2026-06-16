@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Bell from "~icons/lucide/bell";
 import ChevronDown from "~icons/lucide/chevron-down";
 import Heart from "~icons/lucide/heart";
@@ -38,12 +39,12 @@ export function HeaderMain() {
 			className="py-2 shadow-sm"
 		>
 			<div className="wrapper flex gap-4 items-center">
-				<a
+				<Link
 					className="brand"
-					href="index.html"
+					to="index.html"
 				>
 					BeliMudah
-				</a>
+				</Link>
 
 				<form className="flex items-center gap-2 h-10 border border-black/10 rounded-xl bg-gray-100 overflow-hidden focus-within:border-black/50 transition-colors duration-200 *:px-4 *:h-full *:transition-colors *:duration-200">
 					<input
@@ -63,35 +64,35 @@ export function HeaderMain() {
 				</form>
 
 				<div className="flex items-center mx-2 gap-6 text-xl **:transition-colors **:duration-200 *:flex *:items-center *:gap-2">
-					<a
+					<Link
 						className="group"
 						aria-label="Notifications"
-						href=""
+						to=""
 					>
 						<Bell className="text-gray-500 group-hover:text-black" />
-					</a>
-					<a
+					</Link>
+					<Link
 						className="group"
 						aria-label="User"
-						href=""
+						to=""
 					>
 						<User className="text-gray-500 group-hover:text-black" />
 						<span className="text-sm">Budi</span>
-					</a>
-					<a
+					</Link>
+					<Link
 						className="group"
 						aria-label="Favorite"
-						href=""
+						to=""
 					>
 						<Heart className="text-gray-500 group-hover:text-black" />
-					</a>
-					<a
+					</Link>
+					<Link
 						className="group"
 						aria-label="Cart"
-						href=""
+						to=""
 					>
 						<ShoppingCart className="text-gray-500 group-hover:text-black" />
-					</a>
+					</Link>
 				</div>
 			</div>
 		</section>
@@ -105,14 +106,14 @@ export function HeaderNav({ navigations = [] }) {
 			className="py-2.5 text-sm shadow-sm"
 		>
 			<div className="wrapper flex *:px-4 *:whitespace-nowrap *:transition-colors *:duration-200">
-				<a
+				<Link
 					className="flex items-center gap-1 text-black"
-					href=""
+					to=""
 				>
 					<Menu />
 					Semua Kategori
 					<ChevronDown />
-				</a>
+				</Link>
 				{navigations.map(({ href, text }) => (
 					<a
 						href={href}
@@ -121,12 +122,12 @@ export function HeaderNav({ navigations = [] }) {
 						{text}
 					</a>
 				))}
-				<a
-					href=""
+				<Link
+					to=""
 					className="text-red-600 hover:text-red-900"
 				>
 					🔥 Promo
-				</a>
+				</Link>
 			</div>
 		</nav>
 	);

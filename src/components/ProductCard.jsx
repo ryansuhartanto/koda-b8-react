@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import Star5 from "#/components/Star5";
 
 const rupiah = (n) => `Rp ${n.toLocaleString("id-ID")}`;
@@ -21,7 +23,7 @@ export function ProductCard({
 		(tags?.includes("baru") && <span className="badge new">Baru</span>);
 
 	return (
-		<a href="">
+		<Link to="">
 			<article className="card">
 				<img
 					src={img}
@@ -67,7 +69,7 @@ export function ProductCard({
 					</p>
 				</div>
 			</article>
-		</a>
+		</Link>
 	);
 }
 

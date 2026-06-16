@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import ArrowRight from "~icons/lucide/arrow-right";
 import ChevronLeft from "~icons/lucide/chevron-left";
 import ChevronRight from "~icons/lucide/chevron-right";
@@ -75,12 +76,12 @@ export default function Page() {
 							Laptop, smartphone, headphone, dan masih banyak lagi dengan diskon
 							hingga 40%
 						</p>
-						<a
+						<Link
 							className="flex gap-2 items-center w-fit bg-white text-blue-600 py-3 px-6 rounded-xl"
-							href=""
+							to=""
 						>
 							Lihat Promo <ArrowRight />
-						</a>
+						</Link>
 					</div>
 				</div>
 			</section>
@@ -92,18 +93,18 @@ export default function Page() {
 				<div className="wrapper flex flex-col gap-6">
 					<header className="flex justify-between items-center text-sm">
 						<h2 className="text-xl font-medium">Belanja Bedasarkan Kategori</h2>
-						<a
+						<Link
 							className="text-blue-600 *:align-middle"
-							href=""
+							to=""
 						>
 							Lihat Semua <ArrowRight />
-						</a>
+						</Link>
 					</header>
 					<div className="grid grid-cols-6 gap-3">
 						{data.categories.map(({ name, img, items }) => (
-							<a
+							<Link
 								key={name}
-								href=""
+								to=""
 							>
 								<article className="card rounded-xl">
 									<div className="m-4 flex flex-col gap-2 items-center">
@@ -116,7 +117,7 @@ export default function Page() {
 										<p>{items} produk</p>
 									</div>
 								</article>
-							</a>
+							</Link>
 						))}
 					</div>
 				</div>
@@ -136,12 +137,12 @@ export default function Page() {
 								<span className="tabular-nums">05 : 21 : 38</span>
 							</span>
 						</div>
-						<a
+						<Link
 							className="text-blue-600 *:align-middle"
-							href=""
+							to=""
 						>
 							Lihat Semua <ArrowRight />
-						</a>
+						</Link>
 					</header>
 					<div className="grid grid-cols-4 gap-4">
 						{flashDeals.map((p) => (
@@ -156,7 +157,7 @@ export default function Page() {
 
 			<section aria-label="Marketing">
 				<div className="wrapper grid grid-cols-2 gap-4">
-					<a href="">
+					<Link to="">
 						<article className="card fashion flex flex-col justify-center h-44 text-white text-sm leading-normal">
 							<div className="m-6 flex flex-col gap-2">
 								<div>
@@ -169,8 +170,8 @@ export default function Page() {
 								</div>
 							</div>
 						</article>
-					</a>
-					<a href="">
+					</Link>
+					<Link to="">
 						<article className="card electronic flex flex-col justify-center h-44 text-white text-sm leading-normal">
 							<div className="m-6 flex flex-col gap-2">
 								<div>
@@ -183,7 +184,7 @@ export default function Page() {
 								</div>
 							</div>
 						</article>
-					</a>
+					</Link>
 				</div>
 			</section>
 
@@ -193,12 +194,12 @@ export default function Page() {
 						<h2 className="text-xl font-medium *:align-middle">
 							<TrendingUp className="text-blue-600" /> Produk Terbaru
 						</h2>
-						<a
+						<Link
 							className="text-blue-600 *:align-middle"
-							href=""
+							to=""
 						>
 							Lihat Semua <ArrowRight />
-						</a>
+						</Link>
 					</header>
 					<div className="grid grid-cols-4 gap-4">
 						{newest.map((p) => (
@@ -215,12 +216,12 @@ export default function Page() {
 				<div className="wrapper flex flex-col gap-6">
 					<header className="flex justify-between items-center text-sm">
 						<h2 className="text-xl font-medium">Produk Unggulan</h2>
-						<a
+						<Link
 							className="text-blue-600 *:align-middle"
-							href=""
+							to=""
 						>
 							Lihat Semua <ArrowRight />
-						</a>
+						</Link>
 					</header>
 					<div className="grid grid-cols-4 gap-4">
 						{featured.map((p) => (

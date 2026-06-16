@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Headset from "~icons/lucide/headset";
 import Mail from "~icons/lucide/mail";
 import MapPin from "~icons/lucide/map-pin";
@@ -13,13 +14,13 @@ import SiYoutube from "~icons/simple-icons/youtube";
 
 export function FloatingContact() {
 	return (
-		<a
+		<Link
 			className="fixed inset-be-4 inset-e-4 grid place-content-center w-14 h-14 text-2xl rounded-full bg-blue-600 text-white shadow-md"
 			aria-label="Contact us"
-			href=""
+			to=""
 		>
 			<MessageCircle />
-		</a>
+		</Link>
 	);
 }
 
@@ -81,41 +82,41 @@ export function FooterNav() {
 		>
 			<div className="wrapper grid grid-cols-4 gap-8">
 				<div className="flex flex-col gap-4">
-					<a
+					<Link
 						className="brand text-white text-lg"
-						href=""
+						to=""
 					>
 						BeliMudah
-					</a>
+					</Link>
 					<p className="text-gray-400 leading-relaxed">
 						Platform belanja online terpercaya dengan ribuan produk pilihan.
 						Belanja mudah, aman, dan menyenangkan.
 					</p>
 					<div className="flex gap-2 *:grid *:place-content-center *:size-8 *:rounded-full *:overflow-hidden *:bg-gray-700">
-						<a
+						<Link
 							aria-label="Facebook"
-							href=""
+							to=""
 						>
 							<SiFacebook className="size-[1em]" />
-						</a>
-						<a
+						</Link>
+						<Link
 							aria-label="Instagram"
-							href=""
+							to=""
 						>
 							<SiInstagram className="size-[1em]" />
-						</a>
-						<a
+						</Link>
+						<Link
 							aria-label="X"
-							href=""
+							to=""
 						>
 							<SiX className="size-[1em]" />
-						</a>
-						<a
+						</Link>
+						<Link
 							aria-label="YouTube"
-							href=""
+							to=""
 						>
 							<SiYoutube className="size-[1em]" />
-						</a>
+						</Link>
 					</div>
 				</div>
 
@@ -123,19 +124,19 @@ export function FooterNav() {
 					<h5 className="text-white text-base font-medium">Layanan</h5>
 					<ul className="flex flex-col gap-4 list-none">
 						<li>
-							<a href="">Tentang Kami</a>
+							<Link to="">Tentang Kami</Link>
 						</li>
 						<li>
-							<a href="">Karir</a>
+							<Link to="">Karir</Link>
 						</li>
 						<li>
-							<a href="">Blog</a>
+							<Link to="">Blog</Link>
 						</li>
 						<li>
-							<a href="">Program Afiliasi</a>
+							<Link to="">Program Afiliasi</Link>
 						</li>
 						<li>
-							<a href="">Jual di BeliMudah</a>
+							<Link to="">Jual di BeliMudah</Link>
 						</li>
 					</ul>
 				</div>
@@ -144,19 +145,19 @@ export function FooterNav() {
 					<h5 className="text-white text-base font-medium">Bantuan</h5>
 					<ul className="flex flex-col gap-4 list-none">
 						<li>
-							<a href="">Cara Belanja</a>
+							<Link to="">Cara Belanja</Link>
 						</li>
 						<li>
-							<a href="">Kebijakan Pengembalian</a>
+							<Link to="">Kebijakan Pengembalian</Link>
 						</li>
 						<li>
-							<a href="">Lacak Pesanan</a>
+							<Link to="">Lacak Pesanan</Link>
 						</li>
 						<li>
-							<a href="">FAQ</a>
+							<Link to="">FAQ</Link>
 						</li>
 						<li>
-							<a href="">Hubungi Kami</a>
+							<Link to="">Hubungi Kami</Link>
 						</li>
 					</ul>
 				</div>
@@ -165,10 +166,10 @@ export function FooterNav() {
 					<h5 className="text-white text-base font-medium">Kontak</h5>
 					<ul className="flex flex-col gap-4 list-none *:ps-6 *:relative [&_svg]:absolute [&_svg]:left-0 [&_svg]:text-base">
 						<li>
-							<a href="">
+							<Link to="">
 								<MapPin />
 								Jl. Sudirman No. 1, Jakarta Selatan, DKI Jakarta 12190
-							</a>
+							</Link>
 						</li>
 						<li>
 							<a href="tel:0800-1234-5678">
@@ -223,9 +224,9 @@ export function FooterCopyright() {
 			<div className="wrapper flex justify-between">
 				<small>&copy; 2026 BeliMudah. Seluruh hak cipta dilindungi.</small>
 				<small className="flex gap-4">
-					<a href="">Kebijakan Privasi</a>
-					<a href="">Syarat &amp; Ketentuan</a>
-					<a href="">Admin</a>
+					<Link to="">Kebijakan Privasi</Link>
+					<Link to="">Syarat &amp; Ketentuan</Link>
+					<Link to="">Admin</Link>
 				</small>
 			</div>
 		</section>
