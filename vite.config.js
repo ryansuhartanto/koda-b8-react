@@ -13,6 +13,7 @@ export default defineConfig({
 			compiler: "jsx",
 			jsx: "react",
 			scale: 1,
+			defaultClass: "inline-block",
 		}),
 	],
 

@@ -1,7 +1,6 @@
-import Star from "~icons/lucide/star";
-
 import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
+import Star5 from "#/components/Star5";
 import data from "#/data.json";
 
 const displayed = [...data.products]
@@ -63,13 +62,10 @@ export default function Page() {
 												className="flex gap-0.5"
 												aria-label={`${rating} bintang ke atas`}
 											>
-												{Array.from({ length: 5 }, (_, i) => (
-													<Star
-														key={i}
-														fill={i < rating ? "currentColor" : "none"}
-														className="size-4"
-													/>
-												))}
+												<Star5
+													count={rating}
+													variant="monochrome"
+												/>
 											</span>{" "}
 											ke atas
 										</label>

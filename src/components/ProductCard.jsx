@@ -1,4 +1,4 @@
-import Star from "~icons/lucide/star";
+import Star5 from "#/components/Star5";
 
 const rupiah = (n) => `Rp ${n.toLocaleString("id-ID")}`;
 
@@ -38,7 +38,7 @@ export function ProductCard({
 						className="tabular-nums flex gap-2 items-center"
 					>
 						<output className="flex">
-							{Array.from({ length: 5 }, (_, i) => (
+							{/* {Array.from({ length: 5 }, (_, i) => (
 								<Star
 									key={i}
 									fill="currentColor"
@@ -47,7 +47,8 @@ export function ProductCard({
 										i < Math.round(rating) ? "text-amber-400" : "text-gray-300"
 									}
 								/>
-							))}
+							))} */}
+							<Star5 count={Math.round(rating)} />
 						</output>
 						<span>
 							<span itemProp="ratingValue">{rating}</span> (

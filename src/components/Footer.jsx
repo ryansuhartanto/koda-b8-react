@@ -163,7 +163,7 @@ export function FooterNav() {
 
 				<div className="flex flex-col gap-4">
 					<h5 className="text-white text-base font-medium">Kontak</h5>
-					<ul className="flex flex-col gap-4 list-none *:ps-6 *:relative [&_svg.lucide]:absolute [&_svg.lucide]:left-0 [&_svg.lucide]:text-base">
+					<ul className="flex flex-col gap-4 list-none *:ps-6 *:relative [&_svg]:absolute [&_svg]:left-0 [&_svg]:text-base">
 						<li>
 							<a href="">
 								<MapPin />
