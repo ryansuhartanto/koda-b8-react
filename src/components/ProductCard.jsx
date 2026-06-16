@@ -1,4 +1,4 @@
-import * as Lucide from "lucide-react";
+import Star from "~icons/lucide/star";
 
 const rupiah = (n) => `Rp ${n.toLocaleString("id-ID")}`;
 
@@ -39,7 +39,7 @@ export function ProductCard({
 					>
 						<output className="flex">
 							{Array.from({ length: 5 }, (_, i) => (
-								<Lucide.Star
+								<Star
 									key={i}
 									fill="currentColor"
 									strokeWidth={0}

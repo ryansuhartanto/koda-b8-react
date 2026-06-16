@@ -1,4 +1,10 @@
-import * as Lucide from "lucide-react";
+import Check from "~icons/lucide/check";
+import Heart from "~icons/lucide/heart";
+import RefreshCcw from "~icons/lucide/refresh-ccw";
+import ShieldCheck from "~icons/lucide/shield-check";
+import ShoppingCart from "~icons/lucide/shopping-cart";
+import Star from "~icons/lucide/star";
+import Truck from "~icons/lucide/truck";
 
 import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
@@ -74,7 +80,7 @@ export default function Page() {
 							<div className="flex items-center gap-4 text-sm">
 								<div className="flex items-center gap-1 tabular-nums text-amber-400">
 									{Array.from({ length: 5 }, (_, i) => (
-										<Lucide.Star
+										<Star
 											key={i}
 											fill="currentColor"
 											strokeWidth={0}
@@ -85,7 +91,7 @@ export default function Page() {
 									<span className="text-gray-500">(512)</span>
 								</div>
 								<div className="flex items-center gap-1 p-0.5 px-2 rounded-full text-xs text-green-600 bg-green-50">
-									<Lucide.Check /> Stok tersedia (45)
+									<Check /> Stok tersedia (45)
 								</div>
 							</div>
 						</div>
@@ -156,7 +162,7 @@ export default function Page() {
 								type="button"
 								className="flex-1 flex items-center justify-center gap-2 border-2 border-orange-500 text-orange-500 font-medium bg-orange-50/50 py-3 rounded-xl hover:bg-orange-50 transition-colors"
 							>
-								<Lucide.ShoppingCart className="size-5" /> Tambah ke Keranjang
+								<ShoppingCart className="size-5" /> Tambah ke Keranjang
 							</button>
 							<button
 								type="button"
@@ -168,15 +174,15 @@ export default function Page() {
 								type="button"
 								className="w-14 flex items-center justify-center border border-gray-300 text-gray-500 bg-white rounded-xl hover:bg-gray-50 transition-colors"
 							>
-								<Lucide.Heart className="size-5" />
+								<Heart className="size-5" />
 							</button>
 						</div>
 
 						<div className="grid grid-cols-3 gap-4 *:p-2">
 							{[
-								[Lucide.Truck, "Gratis Ongkir", "Min. Rp 100.000"],
-								[Lucide.ShieldCheck, "Pembayaran Aman", "SSL Terenkripsi"],
-								[Lucide.RefreshCcw, "Retur 30 Hari", "Gratis retur"],
+								[Truck, "Gratis Ongkir", "Min. Rp 100.000"],
+								[ShieldCheck, "Pembayaran Aman", "SSL Terenkripsi"],
+								[RefreshCcw, "Retur 30 Hari", "Gratis retur"],
 							].map(([Icon, title, sub]) => (
 								<div
 									key={title}

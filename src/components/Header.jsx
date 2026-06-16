@@ -1,4 +1,11 @@
-import * as Lucide from "lucide-react";
+import Bell from "~icons/lucide/bell";
+import ChevronDown from "~icons/lucide/chevron-down";
+import Heart from "~icons/lucide/heart";
+import MapPin from "~icons/lucide/map-pin";
+import Menu from "~icons/lucide/menu";
+import Search from "~icons/lucide/search";
+import ShoppingCart from "~icons/lucide/shopping-cart";
+import User from "~icons/lucide/user";
 
 export function HeaderUtility() {
 	return (
@@ -9,7 +16,7 @@ export function HeaderUtility() {
 			<div className="wrapper flex justify-between items-center py-1.5">
 				<div className="flex gap-4">
 					<span className="*:align-middle">
-						<Lucide.MapPin /> <span>Kirim ke: Jakarta Selatan</span>
+						<MapPin /> <span>Kirim ke: Jakarta Selatan</span>
 					</span>
 				</div>
 				<div className="flex gap-4">
@@ -51,7 +58,7 @@ export function HeaderMain() {
 						type="submit"
 						aria-label="Search"
 					>
-						<Lucide.Search className="text-base" />
+						<Search className="text-base" />
 					</button>
 				</form>
 
@@ -61,14 +68,14 @@ export function HeaderMain() {
 						aria-label="Notifications"
 						href=""
 					>
-						<Lucide.Bell className="text-gray-500 group-hover:text-black" />
+						<Bell className="text-gray-500 group-hover:text-black" />
 					</a>
 					<a
 						className="group"
 						aria-label="User"
 						href=""
 					>
-						<Lucide.User className="text-gray-500 group-hover:text-black" />
+						<User className="text-gray-500 group-hover:text-black" />
 						<span className="text-sm">Budi</span>
 					</a>
 					<a
@@ -76,14 +83,14 @@ export function HeaderMain() {
 						aria-label="Favorite"
 						href=""
 					>
-						<Lucide.Heart className="text-gray-500 group-hover:text-black" />
+						<Heart className="text-gray-500 group-hover:text-black" />
 					</a>
 					<a
 						className="group"
 						aria-label="Cart"
 						href=""
 					>
-						<Lucide.ShoppingCart className="text-gray-500 group-hover:text-black" />
+						<ShoppingCart className="text-gray-500 group-hover:text-black" />
 					</a>
 				</div>
 			</div>
@@ -102,9 +109,9 @@ export function HeaderNav({ navigations = [] }) {
 					className="flex items-center gap-1 text-black"
 					href=""
 				>
-					<Lucide.Menu />
+					<Menu />
 					Semua Kategori
-					<Lucide.ChevronDown />
+					<ChevronDown />
 				</a>
 				{navigations.map(({ href, text }) => (
 					<a

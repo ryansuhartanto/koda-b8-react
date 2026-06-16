@@ -1,4 +1,9 @@
-import * as Lucide from "lucide-react";
+import ArrowRight from "~icons/lucide/arrow-right";
+import ChevronLeft from "~icons/lucide/chevron-left";
+import ChevronRight from "~icons/lucide/chevron-right";
+import Clock from "~icons/lucide/clock";
+import TrendingUp from "~icons/lucide/trending-up";
+import Zap from "~icons/lucide/zap";
 
 import { ProductCard } from "#/components/ProductCard";
 import data from "#/data.json";
@@ -25,7 +30,7 @@ export default function Page() {
 							aria-label="Previous"
 							type="button"
 						>
-							<Lucide.ChevronLeft />
+							<ChevronLeft />
 						</button>
 					</div>
 					<div className="flex flex-col justify-center gap-2 col-3 row-[1/4] *:size-10 *:grid *:place-content-center *:rounded-full *:bg-white/20">
@@ -33,7 +38,7 @@ export default function Page() {
 							aria-label="Next"
 							type="button"
 						>
-							<Lucide.ChevronRight />
+							<ChevronRight />
 						</button>
 					</div>
 					<div className="flex justify-center gap-2 col-2 row-3 *:size-2 *:rounded-full *:bg-white/50 *:pointer-events-auto *:transition-all *:duration-200 *:ease-out *:aria-selected:w-6 *:aria-selected:bg-white">
@@ -74,7 +79,7 @@ export default function Page() {
 							className="flex gap-2 items-center w-fit bg-white text-blue-600 py-3 px-6 rounded-xl"
 							href=""
 						>
-							Lihat Promo <Lucide.ArrowRight />
+							Lihat Promo <ArrowRight />
 						</a>
 					</div>
 				</div>
@@ -91,7 +96,7 @@ export default function Page() {
 							className="text-blue-600 *:align-middle"
 							href=""
 						>
-							Lihat Semua <Lucide.ArrowRight />
+							Lihat Semua <ArrowRight />
 						</a>
 					</header>
 					<div className="grid grid-cols-6 gap-3">
@@ -122,11 +127,11 @@ export default function Page() {
 					<header className="flex justify-between items-center text-sm">
 						<div className="flex gap-4 items-center">
 							<h2 className="flex gap-1 items-center bg-red-600 text-white px-3 py-2 rounded-lg font-medium">
-								<Lucide.Zap />
+								<Zap />
 								<span>Flash Deal</span>
 							</h2>
 							<span className="flex gap-2 items-center text-gray-500">
-								<Lucide.Clock />
+								<Clock />
 								<span>Berakhir dalam:</span>
 								<span className="tabular-nums">05 : 21 : 38</span>
 							</span>
@@ -135,7 +140,7 @@ export default function Page() {
 							className="text-blue-600 *:align-middle"
 							href=""
 						>
-							Lihat Semua <Lucide.ArrowRight />
+							Lihat Semua <ArrowRight />
 						</a>
 					</header>
 					<div className="grid grid-cols-4 gap-4">
@@ -186,13 +191,13 @@ export default function Page() {
 				<div className="wrapper flex flex-col gap-6">
 					<header className="flex justify-between items-center text-sm">
 						<h2 className="text-xl font-medium *:align-middle">
-							<Lucide.TrendingUp className="text-blue-600" /> Produk Terbaru
+							<TrendingUp className="text-blue-600" /> Produk Terbaru
 						</h2>
 						<a
 							className="text-blue-600 *:align-middle"
 							href=""
 						>
-							Lihat Semua <Lucide.ArrowRight />
+							Lihat Semua <ArrowRight />
 						</a>
 					</header>
 					<div className="grid grid-cols-4 gap-4">
@@ -214,7 +219,7 @@ export default function Page() {
 							className="text-blue-600 *:align-middle"
 							href=""
 						>
-							Lihat Semua <Lucide.ArrowRight />
+							Lihat Semua <ArrowRight />
 						</a>
 					</header>
 					<div className="grid grid-cols-4 gap-4">

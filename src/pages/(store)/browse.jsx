@@ -1,4 +1,4 @@
-import * as Lucide from "lucide-react";
+import Star from "~icons/lucide/star";
 
 import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
@@ -64,7 +64,7 @@ export default function Page() {
 												aria-label={`${rating} bintang ke atas`}
 											>
 												{Array.from({ length: 5 }, (_, i) => (
-													<Lucide.Star
+													<Star
 														key={i}
 														fill={i < rating ? "currentColor" : "none"}
 														className="size-4"

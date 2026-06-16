@@ -1,5 +1,15 @@
-import * as Si from "@icons-pack/react-simple-icons";
-import * as Lucide from "lucide-react";
+import Headset from "~icons/lucide/headset";
+import Mail from "~icons/lucide/mail";
+import MapPin from "~icons/lucide/map-pin";
+import MessageCircle from "~icons/lucide/message-circle";
+import Phone from "~icons/lucide/phone";
+import RefreshCcw from "~icons/lucide/refresh-ccw";
+import Shield from "~icons/lucide/shield";
+import Truck from "~icons/lucide/truck";
+import SiFacebook from "~icons/simple-icons/facebook";
+import SiInstagram from "~icons/simple-icons/instagram";
+import SiX from "~icons/simple-icons/x";
+import SiYoutube from "~icons/simple-icons/youtube";
 
 export function FloatingContact() {
 	return (
@@ -8,7 +18,7 @@ export function FloatingContact() {
 			aria-label="Contact us"
 			href=""
 		>
-			<Lucide.MessageCircle />
+			<MessageCircle />
 		</a>
 	);
 }
@@ -22,7 +32,7 @@ export function FooterPromotions() {
 			<div className="wrapper grid grid-cols-4 gap-8">
 				<div className="flex gap-4">
 					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<Lucide.Truck className="text-lg" />
+						<Truck className="text-lg" />
 					</div>
 					<div className="flex flex-col justify-center">
 						<h6 className="text-white text-sm font-medium">Gratis Ongkir</h6>
@@ -31,7 +41,7 @@ export function FooterPromotions() {
 				</div>
 				<div className="flex gap-4">
 					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<Lucide.Shield className="text-lg" />
+						<Shield className="text-lg" />
 					</div>
 					<div className="flex flex-col justify-center">
 						<h6 className="text-white text-sm font-medium">Pembayaran Aman</h6>
@@ -40,7 +50,7 @@ export function FooterPromotions() {
 				</div>
 				<div className="flex gap-4">
 					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<Lucide.RefreshCcw className="text-lg" />
+						<RefreshCcw className="text-lg" />
 					</div>
 					<div className="flex flex-col justify-center">
 						<h6 className="text-white text-sm font-medium">
@@ -51,7 +61,7 @@ export function FooterPromotions() {
 				</div>
 				<div className="flex gap-4">
 					<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
-						<Lucide.Headset className="text-lg" />
+						<Headset className="text-lg" />
 					</div>
 					<div className="flex flex-col justify-center">
 						<h6 className="text-white text-sm font-medium">Dukungan 24/7</h6>
@@ -86,25 +96,25 @@ export function FooterNav() {
 							aria-label="Facebook"
 							href=""
 						>
-							<Si.SiFacebook className="size-[1em]" />
+							<SiFacebook className="size-[1em]" />
 						</a>
 						<a
 							aria-label="Instagram"
 							href=""
 						>
-							<Si.SiInstagram className="size-[1em]" />
+							<SiInstagram className="size-[1em]" />
 						</a>
 						<a
 							aria-label="X"
 							href=""
 						>
-							<Si.SiX className="size-[1em]" />
+							<SiX className="size-[1em]" />
 						</a>
 						<a
 							aria-label="YouTube"
 							href=""
 						>
-							<Si.SiYoutube className="size-[1em]" />
+							<SiYoutube className="size-[1em]" />
 						</a>
 					</div>
 				</div>
@@ -156,19 +166,19 @@ export function FooterNav() {
 					<ul className="flex flex-col gap-4 list-none *:ps-6 *:relative [&_svg.lucide]:absolute [&_svg.lucide]:left-0 [&_svg.lucide]:text-base">
 						<li>
 							<a href="">
-								<Lucide.MapPin />
+								<MapPin />
 								Jl. Sudirman No. 1, Jakarta Selatan, DKI Jakarta 12190
 							</a>
 						</li>
 						<li>
 							<a href="tel:0800-1234-5678">
-								<Lucide.Phone />
+								<Phone />
 								0800&#8209;1234&#8209;5678&nbsp;(Gratis)
 							</a>
 						</li>
 						<li>
 							<a href="mailto:bantuan@belimudah.id">
-								<Lucide.Mail />
+								<Mail />
 								bantuan@belimudah.id
 							</a>
 						</li>

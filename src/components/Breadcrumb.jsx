@@ -1,4 +1,5 @@
-import * as Lucide from "lucide-react";
+import React from "react";
+import ChevronRight from "~icons/lucide/chevron-right";
 
 export default function Breadcrumb({ items }) {
 	return (
@@ -8,22 +9,14 @@ export default function Breadcrumb({ items }) {
 		>
 			{items.map((item, i) =>
 				i < items.length - 1 ? (
-					<>
-						<a
-							key={`l-${i}`}
-							href={item.url}
-						>
-							{item.label}
-						</a>
+					<React.Fragment key={`${item.href}-l`}>
+						<a href={item.url}>{item.label}</a>
 
-						<Lucide.ChevronRight
-							key={`s-${i}`}
-							className="size-4"
-						/>
-					</>
+						<ChevronRight className="size-4" />
+					</React.Fragment>
 				) : (
 					<span
-						key={`c-${i}`}
+						key={`${item.href}-c`}
 						aria-current="page"
 					>
 						{item.label}
