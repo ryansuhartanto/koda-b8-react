@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import Star5 from "#/components/Star5";
+import { slugify } from "#/lib/utils";
 
 const rupiah = (n) => `Rp ${n.toLocaleString("id-ID")}`;
 
@@ -23,7 +24,7 @@ export function ProductCard({
 		(tags?.includes("baru") && <span className="badge new">Baru</span>);
 
 	return (
-		<Link to="">
+		<Link to={`/details/${slugify(name)}`}>
 			<article className="card">
 				<img
 					src={img}

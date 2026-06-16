@@ -12,7 +12,7 @@ export default function Page() {
 		<main className="pt-6 pb-16 bg-gray-50">
 			<div className="wrapper flex flex-col gap-6">
 				<Breadcrumb
-					items={[{ label: "Beranda", url: "#" }, { label: "Toko" }]}
+					items={[{ label: "Beranda", url: "/" }, { label: "Toko" }]}
 				/>
 
 				<h1 className="text-2xl font-medium">Semua Produk</h1>

@@ -41,7 +41,7 @@ export function HeaderMain() {
 			<div className="wrapper flex gap-4 items-center">
 				<Link
 					className="brand"
-					to="index.html"
+					to="/"
 				>
 					BeliMudah
 				</Link>
@@ -67,14 +67,14 @@ export function HeaderMain() {
 					<Link
 						className="group"
 						aria-label="Notifications"
-						to=""
+						to="/notifications"
 					>
 						<Bell className="text-gray-500 group-hover:text-black" />
 					</Link>
 					<Link
 						className="group"
 						aria-label="User"
-						to=""
+						to="/profile"
 					>
 						<User className="text-gray-500 group-hover:text-black" />
 						<span className="text-sm">Budi</span>
@@ -82,14 +82,14 @@ export function HeaderMain() {
 					<Link
 						className="group"
 						aria-label="Favorite"
-						to=""
+						to="/wishlist"
 					>
 						<Heart className="text-gray-500 group-hover:text-black" />
 					</Link>
 					<Link
 						className="group"
 						aria-label="Cart"
-						to=""
+						to="/cart"
 					>
 						<ShoppingCart className="text-gray-500 group-hover:text-black" />
 					</Link>
@@ -108,22 +108,23 @@ export function HeaderNav({ navigations = [] }) {
 			<div className="wrapper flex *:px-4 *:whitespace-nowrap *:transition-colors *:duration-200">
 				<Link
 					className="flex items-center gap-1 text-black"
-					to=""
+					to="/browse"
 				>
 					<Menu />
 					Semua Kategori
 					<ChevronDown />
 				</Link>
 				{navigations.map(({ href, text }) => (
-					<a
-						href={href}
+					<Link
+						key={href}
+						to={href}
 						className="text-gray-500 hover:text-black"
 					>
 						{text}
-					</a>
+					</Link>
 				))}
 				<Link
-					to=""
+					to="/browse?tag=promo"
 					className="text-red-600 hover:text-red-900"
 				>
 					🔥 Promo

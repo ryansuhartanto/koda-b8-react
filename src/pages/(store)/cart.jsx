@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Heart from "~icons/lucide/heart";
 import ShieldCheck from "~icons/lucide/shield-check";
 import Tag from "~icons/lucide/tag";
@@ -131,12 +132,12 @@ export default function Page() {
 								<span className="font-bold text-blue-600">Rp 450.000</span>
 							</div>
 						</div>
-						<button
-							type="button"
+						<Link
+							to="/checkout/1"
 							className="w-full bg-orange-500 text-white py-3 rounded-xl hover:bg-orange-600 font-medium flex justify-center items-center gap-2 cursor-pointer shadow-sm shadow-orange-500/20 transition-colors"
 						>
 							<ShieldCheck className="size-5" /> Checkout Aman
-						</button>
+						</Link>
 						<div className="flex flex-col items-center gap-2 text-center text-xs text-gray-500">
 							<div className="flex items-center gap-1 text-yellow-600 font-medium">
 								🔒 Pembayaran 100% Aman

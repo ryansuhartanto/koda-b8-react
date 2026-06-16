@@ -78,7 +78,7 @@ export default function Page() {
 						</p>
 						<Link
 							className="flex gap-2 items-center w-fit bg-white text-blue-600 py-3 px-6 rounded-xl"
-							to=""
+							to="/browse?tag=promo"
 						>
 							Lihat Promo <ArrowRight />
 						</Link>
@@ -95,7 +95,7 @@ export default function Page() {
 						<h2 className="text-xl font-medium">Belanja Bedasarkan Kategori</h2>
 						<Link
 							className="text-blue-600 *:align-middle"
-							to=""
+							to="/browse"
 						>
 							Lihat Semua <ArrowRight />
 						</Link>
@@ -104,7 +104,7 @@ export default function Page() {
 						{data.categories.map(({ name, img, items }) => (
 							<Link
 								key={name}
-								to=""
+								to={`/browse?category=${encodeURIComponent(name)}`}
 							>
 								<article className="card rounded-xl">
 									<div className="m-4 flex flex-col gap-2 items-center">
@@ -139,7 +139,7 @@ export default function Page() {
 						</div>
 						<Link
 							className="text-blue-600 *:align-middle"
-							to=""
+							to="/browse?tag=promo"
 						>
 							Lihat Semua <ArrowRight />
 						</Link>
@@ -157,7 +157,7 @@ export default function Page() {
 
 			<section aria-label="Marketing">
 				<div className="wrapper grid grid-cols-2 gap-4">
-					<Link to="">
+					<Link to="/browse?category=Fashion">
 						<article className="card fashion flex flex-col justify-center h-44 text-white text-sm leading-normal">
 							<div className="m-6 flex flex-col gap-2">
 								<div>
@@ -171,7 +171,7 @@ export default function Page() {
 							</div>
 						</article>
 					</Link>
-					<Link to="">
+					<Link to="/browse?category=Electronic">
 						<article className="card electronic flex flex-col justify-center h-44 text-white text-sm leading-normal">
 							<div className="m-6 flex flex-col gap-2">
 								<div>
@@ -196,7 +196,7 @@ export default function Page() {
 						</h2>
 						<Link
 							className="text-blue-600 *:align-middle"
-							to=""
+							to="/browse?tag=baru"
 						>
 							Lihat Semua <ArrowRight />
 						</Link>
@@ -218,7 +218,7 @@ export default function Page() {
 						<h2 className="text-xl font-medium">Produk Unggulan</h2>
 						<Link
 							className="text-blue-600 *:align-middle"
-							to=""
+							to="/browse?tag=unggulan"
 						>
 							Lihat Semua <ArrowRight />
 						</Link>

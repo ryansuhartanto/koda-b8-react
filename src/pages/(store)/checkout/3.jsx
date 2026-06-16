@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import ShieldCheck from "~icons/lucide/shield-check";
 
 import { Stepper, Summary } from "#/components/Checkout";
@@ -63,18 +64,18 @@ export default function Page() {
 							</div>
 
 							<div className="flex gap-4">
-								<button
-									type="button"
+								<Link
+									to="/checkout/2"
 									className="px-6 py-3 border border-black/10 rounded-xl text-gray-600 font-medium hover:bg-gray-50 transition-colors cursor-pointer shrink-0"
 								>
 									Kembali
-								</button>
-								<button
-									type="button"
+								</Link>
+								<Link
+									to="/checkout/4"
 									className="flex-1 flex items-center justify-center gap-2 bg-orange-500 text-white py-3 rounded-xl hover:bg-orange-600 font-medium cursor-pointer shadow-sm shadow-orange-500/20 transition-colors"
 								>
 									🔒 Bayar {formattedTotal} Sekarang
-								</button>
+								</Link>
 							</div>
 						</div>
 					</section>

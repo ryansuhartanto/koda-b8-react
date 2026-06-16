@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import ChevronRight from "~icons/lucide/chevron-right";
 
 export default function Breadcrumb({ items }) {
@@ -10,7 +11,7 @@ export default function Breadcrumb({ items }) {
 			{items.map((item, i) =>
 				i < items.length - 1 ? (
 					<React.Fragment key={`${item.href}-l`}>
-						<a href={item.url}>{item.label}</a>
+						<Link to={item.url}>{item.label}</Link>
 
 						<ChevronRight className="size-4" />
 					</React.Fragment>

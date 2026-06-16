@@ -17,7 +17,7 @@ export function FloatingContact() {
 		<Link
 			className="fixed inset-be-4 inset-e-4 grid place-content-center w-14 h-14 text-2xl rounded-full bg-blue-600 text-white shadow-md"
 			aria-label="Contact us"
-			to=""
+			to="/contact"
 		>
 			<MessageCircle />
 		</Link>
@@ -84,7 +84,7 @@ export function FooterNav() {
 				<div className="flex flex-col gap-4">
 					<Link
 						className="brand text-white text-lg"
-						to=""
+						to="/"
 					>
 						BeliMudah
 					</Link>
@@ -93,30 +93,38 @@ export function FooterNav() {
 						Belanja mudah, aman, dan menyenangkan.
 					</p>
 					<div className="flex gap-2 *:grid *:place-content-center *:size-8 *:rounded-full *:overflow-hidden *:bg-gray-700">
-						<Link
+						<a
 							aria-label="Facebook"
-							to=""
+							href="https://facebook.com/belimudah"
+							target="_blank"
+							rel="noopener noreferrer"
 						>
 							<SiFacebook className="size-[1em]" />
-						</Link>
-						<Link
+						</a>
+						<a
 							aria-label="Instagram"
-							to=""
+							href="https://instagram.com/belimudah"
+							target="_blank"
+							rel="noopener noreferrer"
 						>
 							<SiInstagram className="size-[1em]" />
-						</Link>
-						<Link
+						</a>
+						<a
 							aria-label="X"
-							to=""
+							href="https://x.com/belimudah"
+							target="_blank"
+							rel="noopener noreferrer"
 						>
 							<SiX className="size-[1em]" />
-						</Link>
-						<Link
+						</a>
+						<a
 							aria-label="YouTube"
-							to=""
+							href="https://youtube.com/@belimudah"
+							target="_blank"
+							rel="noopener noreferrer"
 						>
 							<SiYoutube className="size-[1em]" />
-						</Link>
+						</a>
 					</div>
 				</div>
 
@@ -124,19 +132,19 @@ export function FooterNav() {
 					<h5 className="text-white text-base font-medium">Layanan</h5>
 					<ul className="flex flex-col gap-4 list-none">
 						<li>
-							<Link to="">Tentang Kami</Link>
+							<Link to="/about">Tentang Kami</Link>
 						</li>
 						<li>
-							<Link to="">Karir</Link>
+							<Link to="/careers">Karir</Link>
 						</li>
 						<li>
-							<Link to="">Blog</Link>
+							<Link to="/blog">Blog</Link>
 						</li>
 						<li>
-							<Link to="">Program Afiliasi</Link>
+							<Link to="/affiliate">Program Afiliasi</Link>
 						</li>
 						<li>
-							<Link to="">Jual di BeliMudah</Link>
+							<Link to="/sell">Jual di BeliMudah</Link>
 						</li>
 					</ul>
 				</div>
@@ -145,19 +153,19 @@ export function FooterNav() {
 					<h5 className="text-white text-base font-medium">Bantuan</h5>
 					<ul className="flex flex-col gap-4 list-none">
 						<li>
-							<Link to="">Cara Belanja</Link>
+							<Link to="/how-to-shop">Cara Belanja</Link>
 						</li>
 						<li>
-							<Link to="">Kebijakan Pengembalian</Link>
+							<Link to="/return-policy">Kebijakan Pengembalian</Link>
 						</li>
 						<li>
-							<Link to="">Lacak Pesanan</Link>
+							<Link to="/track-order">Lacak Pesanan</Link>
 						</li>
 						<li>
-							<Link to="">FAQ</Link>
+							<Link to="/faq">FAQ</Link>
 						</li>
 						<li>
-							<Link to="">Hubungi Kami</Link>
+							<Link to="/contact">Hubungi Kami</Link>
 						</li>
 					</ul>
 				</div>
@@ -166,10 +174,14 @@ export function FooterNav() {
 					<h5 className="text-white text-base font-medium">Kontak</h5>
 					<ul className="flex flex-col gap-4 list-none *:ps-6 *:relative [&_svg]:absolute [&_svg]:left-0 [&_svg]:text-base">
 						<li>
-							<Link to="">
+							<a
+								href="https://maps.google.com/?q=Jl.+Sudirman+No.+1+Jakarta+Selatan"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<MapPin />
 								Jl. Sudirman No. 1, Jakarta Selatan, DKI Jakarta 12190
-							</Link>
+							</a>
 						</li>
 						<li>
 							<a href="tel:0800-1234-5678">
@@ -224,9 +236,9 @@ export function FooterCopyright() {
 			<div className="wrapper flex justify-between">
 				<small>&copy; 2026 BeliMudah. Seluruh hak cipta dilindungi.</small>
 				<small className="flex gap-4">
-					<Link to="">Kebijakan Privasi</Link>
-					<Link to="">Syarat &amp; Ketentuan</Link>
-					<Link to="">Admin</Link>
+					<Link to="/privacy">Kebijakan Privasi</Link>
+					<Link to="/terms">Syarat &amp; Ketentuan</Link>
+					<Link to="/admin">Admin</Link>
 				</small>
 			</div>
 		</section>

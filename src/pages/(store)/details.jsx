@@ -1,3 +1,4 @@
+import { useParams } from "react-router";
 import Check from "~icons/lucide/check";
 import Heart from "~icons/lucide/heart";
 import RefreshCcw from "~icons/lucide/refresh-ccw";
@@ -9,39 +10,72 @@ import Truck from "~icons/lucide/truck";
 import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
 import data from "#/data.json";
+import { slugify } from "#/lib/utils";
 
-const relatedNames = [
-	"Smartphone 5G Ultra",
-	"Smartwatch Series 5",
-	'Tablet 10.5" WiFi + 4G',
-	"Speaker Bluetooth Portable",
-];
-const related = relatedNames
-	.map((name) => data.products.find((p) => p.name === name))
-	.filter(Boolean);
+const rupiah = (n) => `Rp ${n.toLocaleString("id-ID")}`;
 
 export default function Page() {
+	const { slug } = useParams();
+	const product = data.products.find((p) => slugify(p.name) === slug);
+
+	if (!product) {
+		return (
+			<main className="pt-6 pb-16 bg-gray-50">
+				<div className="wrapper flex flex-col gap-4 items-center text-center py-24">
+					<h1 className="text-2xl font-medium text-gray-900">
+						Produk Tidak Ditemukan
+					</h1>
+					<p className="text-sm text-gray-500">
+						Produk yang kamu cari mungkin sudah tidak tersedia.
+					</p>
+				</div>
+			</main>
+		);
+	}
+
+	const {
+		name,
+		brand,
+		category,
+		img,
+		price,
+		originalPrice,
+		stock,
+		rating,
+		ratingCount,
+	} = product;
+
+	const discount = originalPrice
+		? Math.round((1 - price / originalPrice) * 100)
+		: null;
+
+	const related = data.products
+		.filter((p) => p.category === category && p.name !== name)
+		.slice(0, 4);
+
 	return (
 		<main className="pt-6 pb-16 bg-gray-50">
 			<div className="wrapper flex flex-col gap-8">
 				<Breadcrumb
 					items={[
-						{ label: "Beranda", url: "#" },
-						{ label: "Toko", url: "#" },
-						{ label: "Elektronik", url: "#" },
-						{ label: "Headphone Wireless Premium" },
+						{ label: "Beranda", url: "/" },
+						{ label: "Toko", url: "/browse" },
+						{ label: category, url: `/browse?category=${category}` },
+						{ label: name },
 					]}
 				/>
 
 				<section className="grid grid-cols-2 gap-12 items-start">
 					<div className="flex flex-col gap-4">
 						<div className="relative bg-white border border-black/10 rounded-2xl overflow-hidden aspect-square">
-							<span className="absolute top-4 left-4 bg-red-600 text-white text-xs px-2.5 py-1 rounded-full font-medium">
-								-31%
-							</span>
+							{discount && (
+								<span className="absolute top-4 left-4 bg-red-600 text-white text-xs px-2.5 py-1 rounded-full font-medium">
+									-{discount}%
+								</span>
+							)}
 							<img
-								src="images/product/soundwave-headphone_wireless_premium.png"
-								alt="Headphone Wireless Premium"
+								src={img}
+								alt={name}
 								className="w-full h-full object-cover"
 							/>
 						</div>
@@ -51,7 +85,7 @@ export default function Page() {
 								className="size-20 border-2 border-blue-600 rounded-xl overflow-hidden cursor-pointer shrink-0"
 							>
 								<img
-									src="images/product/soundwave-headphone_wireless_premium.png"
+									src={img}
 									alt="Thumbnail 1"
 									className="w-full h-full object-cover"
 								/>
@@ -61,7 +95,7 @@ export default function Page() {
 								className="size-20 border border-black/10 rounded-xl overflow-hidden cursor-pointer opacity-70 hover:opacity-100 transition-opacity shrink-0"
 							>
 								<img
-									src="images/product/soundwave-headphone_wireless_premium_2.png"
+									src={img}
 									alt="Thumbnail 2"
 									className="w-full h-full object-cover"
 								/>
@@ -72,11 +106,9 @@ export default function Page() {
 					<div className="flex flex-col gap-5">
 						<div className="flex flex-col gap-1">
 							<div className="text-sm text-gray-500">
-								SoundWave &bull; Audio
+								{brand} &bull; {category}
 							</div>
-							<h1 className="text-3xl font-bold text-gray-900">
-								Headphone Wireless Premium
-							</h1>
+							<h1 className="text-3xl font-bold text-gray-900">{name}</h1>
 							<div className="flex items-center gap-4 text-sm">
 								<div className="flex items-center gap-1 tabular-nums text-amber-400">
 									{Array.from({ length: 5 }, (_, i) => (
@@ -87,26 +119,32 @@ export default function Page() {
 											className="size-4"
 										/>
 									))}
-									<span className="ml-1 text-gray-900">4.8</span>
-									<span className="text-gray-500">(512)</span>
+									<span className="ml-1 text-gray-900">{rating}</span>
+									<span className="text-gray-500">({ratingCount})</span>
 								</div>
 								<div className="flex items-center gap-1 p-0.5 px-2 rounded-full text-xs text-green-600 bg-green-50">
-									<Check /> Stok tersedia (45)
+									<Check /> Stok tersedia ({stock})
 								</div>
 							</div>
 						</div>
 
 						<div className="flex flex-col gap-1 p-4 rounded-xl bg-blue-50">
 							<div className="flex items-center gap-3 price">
-								<ins className="text-3xl font-bold">Rp 450.000</ins>
-								<del className="text-lg">Rp 650.000</del>
-								<span className="bg-red-600 text-white text-xs font-medium p-0.5 px-2 rounded-full">
-									Hemat 31%
-								</span>
+								<ins className="text-3xl font-bold">{rupiah(price)}</ins>
+								{originalPrice && (
+									<>
+										<del className="text-lg">{rupiah(originalPrice)}</del>
+										<span className="bg-red-600 text-white text-xs font-medium p-0.5 px-2 rounded-full">
+											Hemat {discount}%
+										</span>
+									</>
+								)}
 							</div>
-							<span className="text-green-600 text-sm font-medium">
-								Kamu hemat Rp 200.000
-							</span>
+							{originalPrice && (
+								<span className="text-green-600 text-sm font-medium">
+									Kamu hemat {rupiah(originalPrice - price)}
+								</span>
+							)}
 						</div>
 
 						<div className="flex flex-col gap-2">
@@ -144,6 +182,7 @@ export default function Page() {
 										type="number"
 										defaultValue={1}
 										min={1}
+										max={stock}
 										className="flex-1 w-full text-center text-sm font-medium outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 									/>
 									<button
@@ -153,7 +192,7 @@ export default function Page() {
 										{"+"}
 									</button>
 								</div>
-								<span className="text-sm text-gray-500">Stok: 45 pcs</span>
+								<span className="text-sm text-gray-500">Stok: {stock} pcs</span>
 							</div>
 						</div>
 
@@ -221,27 +260,28 @@ export default function Page() {
 							type="button"
 							className="p-4 text-sm text-gray-500 hover:text-gray-900 cursor-pointer"
 						>
-							Ulasan (2)
+							Ulasan ({ratingCount})
 						</button>
 					</div>
 					<div className="p-6 bg-white text-gray-600 leading-relaxed">
-						Headphone wireless dengan teknologi noise-cancelling terdepan.
-						Nikmati musik favoritmu tanpa gangguan dengan kualitas suara yang
-						memukau.
+						{name} dari {brand}. Nikmati produk berkualitas dengan harga
+						terbaik, gratis ongkir, dan garansi pengembalian 30 hari.
 					</div>
 				</section>
 
-				<section className="flex flex-col gap-6">
-					<h2 className="text-xl font-medium">Produk Terkait</h2>
-					<div className="grid grid-cols-4 gap-4">
-						{related.map((p) => (
-							<ProductCard
-								key={p.name}
-								{...p}
-							/>
-						))}
-					</div>
-				</section>
+				{related.length > 0 && (
+					<section className="flex flex-col gap-6">
+						<h2 className="text-xl font-medium">Produk Terkait</h2>
+						<div className="grid grid-cols-4 gap-4">
+							{related.map((p) => (
+								<ProductCard
+									key={p.name}
+									{...p}
+								/>
+							))}
+						</div>
+					</section>
+				)}
 			</div>
 		</main>
 	);

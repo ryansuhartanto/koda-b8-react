@@ -5,7 +5,7 @@ import Header from "#/components/Header";
 import data from "#/data.json" with { type: "json" };
 
 const navigations = data.categories.map(({ name, icon }) => ({
-	href: "",
+	href: `/browse?category=${encodeURIComponent(name)}`,
 	text: `${icon} ${name}`,
 }));
 

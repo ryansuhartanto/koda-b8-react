@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Check from "~icons/lucide/check";
 import CheckCircle2 from "~icons/lucide/check-circle-2";
 import MapPin from "~icons/lucide/map-pin";
@@ -106,24 +107,24 @@ export default function Page() {
 					</section>
 
 					<div className="flex justify-center items-center gap-4">
-						<button
-							type="button"
+						<Link
+							to="/track-order"
 							className="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium cursor-pointer hover:bg-blue-700 transition-colors flex items-center gap-2"
 						>
 							Lacak Pesanan
-						</button>
-						<button
-							type="button"
+						</Link>
+						<Link
+							to="/orders"
 							className="px-6 py-3 border border-black/10 rounded-xl text-gray-600 font-medium hover:bg-gray-50 cursor-pointer transition-colors"
 						>
 							Lihat Riwayat Pesanan
-						</button>
-						<a
-							href="#"
+						</Link>
+						<Link
+							to="/"
 							className="text-blue-600 font-medium hover:text-blue-800 transition-colors ml-4 text-sm"
 						>
 							Lanjut Belanja &rarr;
-						</a>
+						</Link>
 					</div>
 				</div>
 			</div>

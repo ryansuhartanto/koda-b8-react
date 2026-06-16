@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Truck from "~icons/lucide/truck";
 
 import { Stepper, Summary } from "#/components/Checkout";
@@ -150,12 +151,12 @@ export default function Page() {
 								</div>
 							</div>
 
-							<button
-								type="button"
-								className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 font-medium cursor-pointer transition-colors"
+							<Link
+								to="/checkout/2"
+								className="w-full block text-center bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 font-medium cursor-pointer transition-colors"
 							>
 								Lanjut ke Pembayaran &gt;
-							</button>
+							</Link>
 						</form>
 					</section>
 

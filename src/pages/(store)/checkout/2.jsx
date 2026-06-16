@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import CreditCard from "~icons/lucide/credit-card";
 import Lock from "~icons/lucide/lock";
 
@@ -102,18 +103,18 @@ export default function Page() {
 							</div>
 
 							<div className="flex gap-4">
-								<button
-									type="button"
+								<Link
+									to="/checkout/1"
 									className="px-6 py-3 border border-black/10 rounded-xl text-gray-600 font-medium hover:bg-gray-50 transition-colors cursor-pointer shrink-0"
 								>
 									Kembali
-								</button>
-								<button
-									type="button"
-									className="flex-1 bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 font-medium cursor-pointer transition-colors"
+								</Link>
+								<Link
+									to="/checkout/3"
+									className="flex-1 block text-center bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 font-medium cursor-pointer transition-colors"
 								>
 									Lanjut ke Konfirmasi &gt;
-								</button>
+								</Link>
 							</div>
 						</div>
 					</section>
