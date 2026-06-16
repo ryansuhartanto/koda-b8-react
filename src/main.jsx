@@ -22,8 +22,28 @@ const router = createBrowserRouter([
 						Component: React.lazy(() => import("#/pages/(store)/browse")),
 					},
 					{
-						path: "details",
+						path: "details/:slug",
 						Component: React.lazy(() => import("#/pages/(store)/details")),
+					},
+					{
+						path: "cart",
+						Component: React.lazy(() => import("#/pages/(store)/cart")),
+					},
+					{
+						path: "checkout/1",
+						Component: React.lazy(() => import("#/pages/(store)/checkout/1")),
+					},
+					{
+						path: "checkout/2",
+						Component: React.lazy(() => import("#/pages/(store)/checkout/2")),
+					},
+					{
+						path: "checkout/3",
+						Component: React.lazy(() => import("#/pages/(store)/checkout/3")),
+					},
+					{
+						path: "checkout/4",
+						Component: React.lazy(() => import("#/pages/(store)/checkout/4")),
 					},
 				],
 			},
