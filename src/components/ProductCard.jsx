@@ -3,6 +3,21 @@ import { Link } from "react-router";
 import Star5 from "#/components/Star5";
 import { rupiah, slugify } from "#/lib/utils";
 
+/**
+ * @typedef ProductCardProps
+ * @prop {string} name
+ * @prop {string} brand
+ * @prop {string} img
+ * @prop {number} price
+ * @prop {number} [originalPrice]
+ * @prop {number} rating
+ * @prop {number} ratingCount
+ * @prop {string[]} [tags]
+ */
+
+/**
+ * @param {ProductCardProps}
+ */
 export function ProductCard({
 	name,
 	brand,
@@ -72,6 +87,16 @@ export function ProductCard({
 	);
 }
 
+/**
+ * @typedef SummaryItemProps
+ * @prop {string} name
+ * @prop {string} img
+ * @prop {number} [quantity]
+ */
+
+/**
+ * @param {SummaryItemProps}
+ */
 export function SummaryItem({ name, img, quantity = 1 }) {
 	return (
 		<div className="flex gap-4 items-center">
@@ -88,6 +113,17 @@ export function SummaryItem({ name, img, quantity = 1 }) {
 	);
 }
 
+/**
+ * @typedef OrderReviewItemProps
+ * @prop {string} name
+ * @prop {string} img
+ * @prop {number} price
+ * @prop {number} [quantity]
+ */
+
+/**
+ * @param {OrderReviewItemProps}
+ */
 export function OrderReviewItem({ name, img, price, quantity = 1 }) {
 	return (
 		<div className="flex gap-4 items-center">

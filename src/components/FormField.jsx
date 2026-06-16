@@ -1,3 +1,15 @@
+/**
+ * @typedef FormFieldProps
+ * @prop {string} label
+ * @prop {string} [type]
+ * @prop {string} [defaultValue]
+ * @prop {string} [placeholder]
+ * @prop {boolean} [required]
+ */
+
+/**
+ * @param {FormFieldProps}
+ */
 export default function FormField({
 	label,
 	type = "text",

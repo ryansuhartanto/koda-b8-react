@@ -2,6 +2,20 @@ import React from "react";
 import { Link } from "react-router";
 import ChevronRight from "~icons/lucide/chevron-right";
 
+/**
+ * @typedef BreadcrumbItem
+ * @prop {string} label
+ * @prop {string} [url]
+ */
+
+/**
+ * @typedef BreadcrumbProps
+ * @prop {BreadcrumbItem[]} items
+ */
+
+/**
+ * @param {BreadcrumbProps}
+ */
 export default function Breadcrumb({ items }) {
 	return (
 		<nav

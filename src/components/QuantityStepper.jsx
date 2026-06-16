@@ -5,6 +5,17 @@ const sizes = {
 	md: { wrapper: "h-10 w-32 border-gray-300", button: "w-10" },
 };
 
+/**
+ * @typedef QuantityStepperProps
+ * @prop {number} [defaultValue]
+ * @prop {number} [min]
+ * @prop {number} [max]
+ * @prop {"sm" | "md"} [size]
+ */
+
+/**
+ * @param {QuantityStepperProps}
+ */
 export default function QuantityStepper({
 	defaultValue = 1,
 	min = 1,

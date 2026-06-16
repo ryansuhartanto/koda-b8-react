@@ -3,6 +3,14 @@ import Check from "~icons/lucide/check";
 import { SummaryItem } from "#/components/ProductCard";
 import { cn } from "#/lib/utils";
 
+/**
+ * @typedef StepperProps
+ * @prop {number} activeStep
+ */
+
+/**
+ * @param {StepperProps}
+ */
 export function Stepper({ activeStep }) {
 	return (
 		<nav
@@ -52,6 +60,15 @@ export function Stepper({ activeStep }) {
 	);
 }
 
+/**
+ * @typedef SummaryProps
+ * @prop {import("#/components/ProductCard").SummaryItemProps[]} [items]
+ * @prop {string} [subtotal]
+ */
+
+/**
+ * @param {SummaryProps}
+ */
 export function Summary({ items = [], subtotal = "Rp 0" }) {
 	return (
 		<aside className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-5 sticky top-36">

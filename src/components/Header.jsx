@@ -88,6 +88,20 @@ export function HeaderMain() {
 	);
 }
 
+/**
+ * @typedef HeaderNavItem
+ * @prop {string} href
+ * @prop {string} text
+ */
+
+/**
+ * @typedef HeaderNavProps
+ * @prop {HeaderNavItem[]} [navigations]
+ */
+
+/**
+ * @param {HeaderNavProps}
+ */
 export function HeaderNav({ navigations = [] }) {
 	return (
 		<nav
@@ -123,6 +137,14 @@ export function HeaderNav({ navigations = [] }) {
 	);
 }
 
+/**
+ * @typedef HeaderProps
+ * @prop {HeaderNavItem[]} navigations
+ */
+
+/**
+ * @param {HeaderProps}
+ */
 export default function Header({ navigations }) {
 	return (
 		<header className="sticky top-0 z-50 bg-white">
