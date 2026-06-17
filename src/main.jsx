@@ -45,6 +45,43 @@ const router = createBrowserRouter([
 						path: "checkout/4",
 						Component: React.lazy(() => import("#/pages/(store)/checkout/4")),
 					},
+					{
+						Component: React.lazy(
+							() => import("#/pages/(store)/(account)/+Layout"),
+						),
+						children: [
+							{
+								path: "profile",
+								Component: React.lazy(
+									() => import("#/pages/(store)/(account)/profile"),
+								),
+							},
+							{
+								path: "orders",
+								Component: React.lazy(
+									() => import("#/pages/(store)/(account)/orders"),
+								),
+							},
+							{
+								path: "wishlist",
+								Component: React.lazy(
+									() => import("#/pages/(store)/(account)/wishlist"),
+								),
+							},
+							{
+								path: "addresses",
+								Component: React.lazy(
+									() => import("#/pages/(store)/(account)/addresses"),
+								),
+							},
+							{
+								path: "payment-methods",
+								Component: React.lazy(
+									() => import("#/pages/(store)/(account)/payment-methods"),
+								),
+							},
+						],
+					},
 				],
 			},
 			{

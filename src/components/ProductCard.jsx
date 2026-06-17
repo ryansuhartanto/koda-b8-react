@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router";
+import Heart from "~icons/lucide/heart";
+import ShoppingCart from "~icons/lucide/shopping-cart";
 
 import Star5 from "#/components/Star5";
-import { rupiah, slugify } from "#/lib/utils";
+import { cn, rupiah, slugify } from "#/lib/utils";
 
 /**
  * @typedef ProductCardProps
@@ -13,6 +16,7 @@ import { rupiah, slugify } from "#/lib/utils";
  * @prop {number} rating
  * @prop {number} ratingCount
  * @prop {string[]} [tags]
+ * @prop {boolean} [initialWishlisted]
  */
 
 /**
@@ -27,7 +31,10 @@ export function ProductCard({
 	rating,
 	ratingCount,
 	tags,
+	initialWishlisted = false,
 }) {
+	const [isWishlisted, setIsWishlisted] = useState(initialWishlisted);
+
 	const discount = originalPrice
 		? Math.round((1 - price / originalPrice) * 100)
 		: null;
@@ -37,53 +44,74 @@ export function ProductCard({
 		(tags?.includes("baru") && <span className="badge new">Baru</span>);
 
 	return (
-		<Link to={`/details/${slugify(name)}`}>
-			<article className="card">
-				<img
-					src={img}
-					alt={name}
-				/>
+		<article className="card group">
+			<div className="relative overflow-hidden">
+				<Link to={`/details/${slugify(name)}`}>
+					<img
+						src={img}
+						alt={name}
+					/>
+				</Link>
+
 				{badge}
-				<div className="m-4 flex flex-col gap-1 product">
-					<p>{brand}</p>
+
+				<button
+					type="button"
+					aria-label={
+						isWishlisted ? "Hapus dari wishlist" : "Tambah ke wishlist"
+					}
+					onClick={() => setIsWishlisted((w) => !w)}
+					className={cn(
+						"absolute inset-bs-2 inset-e-2 grid place-content-center size-8 rounded-full bg-white shadow-sm cursor-pointer transition-opacity",
+						isWishlisted
+							? "text-red-500 opacity-100"
+							: "text-gray-400 opacity-0 group-hover:opacity-100",
+					)}
+				>
+					<Heart
+						className={cn("size-4", isWishlisted && "[&_path]:fill-current")}
+					/>
+				</button>
+
+				<button
+					type="button"
+					className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 py-3 bg-orange-500 text-white text-sm font-medium translate-y-full group-hover:translate-y-0 transition-transform duration-200 cursor-pointer"
+				>
+					<ShoppingCart className="size-4" /> Tambah ke Keranjang
+				</button>
+			</div>
+
+			<div className="m-4 flex flex-col gap-1 product">
+				<p>{brand}</p>
+				<Link to={`/details/${slugify(name)}`}>
 					<h3>{name}</h3>
-					<div
-						itemProp="aggregateRating"
-						itemScope
-						itemType="https://schema.org/AggregateRating"
-						className="tabular-nums flex gap-2 items-center"
-					>
-						<output className="flex">
-							{/* {Array.from({ length: 5 }, (_, i) => (
-								<Star
-									key={i}
-									fill="currentColor"
-									strokeWidth={0}
-									className={
-										i < Math.round(rating) ? "text-amber-400" : "text-gray-300"
-									}
-								/>
-							))} */}
-							<Star5 count={Math.round(rating)} />
-						</output>
-						<span>
-							<span itemProp="ratingValue">{rating}</span> (
-							<span itemProp="reviewCount">{ratingCount}</span>)
-						</span>
-					</div>
-					<p className="tabular-nums flex gap-2 items-center pt-1 price">
-						{originalPrice ? (
-							<>
-								<ins>{rupiah(price)}</ins>
-								<del>{rupiah(originalPrice)}</del>
-							</>
-						) : (
-							<span>{rupiah(price)}</span>
-						)}
-					</p>
+				</Link>
+				<div
+					itemProp="aggregateRating"
+					itemScope
+					itemType="https://schema.org/AggregateRating"
+					className="tabular-nums flex gap-2 items-center"
+				>
+					<output className="flex">
+						<Star5 count={Math.round(rating)} />
+					</output>
+					<span>
+						<span itemProp="ratingValue">{rating}</span> (
+						<span itemProp="reviewCount">{ratingCount}</span>)
+					</span>
 				</div>
-			</article>
-		</Link>
+				<p className="tabular-nums flex gap-2 items-center pt-1 price">
+					{originalPrice ? (
+						<>
+							<ins>{rupiah(price)}</ins>
+							<del>{rupiah(originalPrice)}</del>
+						</>
+					) : (
+						<span>{rupiah(price)}</span>
+					)}
+				</p>
+			</div>
+		</article>
 	);
 }
 
