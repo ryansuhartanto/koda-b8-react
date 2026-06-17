@@ -21,6 +21,57 @@
 		&::before {
 			@apply content-['B'] grid place-content-center size-8 rounded-lg text-sm bg-blue-600 text-white;
 		}
+
+		&.brand-invert {
+			@apply text-white;
+
+			&::before {
+				@apply bg-white/20 text-white backdrop-blur-sm;
+			}
+		}
+	}
+
+	.auth-banner {
+		@apply relative flex flex-col justify-between p-12 text-white/70 text-sm overflow-hidden;
+
+		/* base gradient fallback */
+		@apply bg-linear-to-br from-blue-600 to-blue-800;
+
+		&.login {
+			background-image:
+				linear-gradient(
+					in oklch to bottom right,
+					color-mix(in oklch, var(--color-blue-600) 90%, transparent),
+					color-mix(in oklch, var(--color-blue-800) 90%, transparent)
+				),
+				url("/images/auth/login.jpg");
+			background-position: center;
+			background-size: cover;
+		}
+
+		&.register {
+			background-image:
+				linear-gradient(
+					in oklch to bottom right,
+					color-mix(in oklch, var(--color-blue-600) 90%, transparent),
+					color-mix(in oklch, var(--color-indigo-800) 90%, transparent)
+				),
+				url("/images/auth/login.jpg");
+			background-position: center;
+			background-size: cover;
+		}
+
+		&.forgot-password {
+			background-image:
+				linear-gradient(
+					in oklch to bottom right,
+					color-mix(in oklch, var(--color-indigo-600) 90%, transparent),
+					color-mix(in oklch, var(--color-purple-800) 90%, transparent)
+				),
+				url("/images/auth/login.jpg");
+			background-position: center;
+			background-size: cover;
+		}
 	}
 
 	.card {

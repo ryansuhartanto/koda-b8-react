@@ -47,6 +47,18 @@ const router = createBrowserRouter([
 					},
 				],
 			},
+			{
+				path: "login",
+				Component: React.lazy(() => import("#/pages/(auth)/login")),
+			},
+			{
+				path: "register",
+				Component: React.lazy(() => import("#/pages/(auth)/register")),
+			},
+			{
+				path: "forgot-password",
+				Component: React.lazy(() => import("#/pages/(auth)/forgot-password")),
+			},
 		],
 	},
 ]);
