@@ -85,6 +85,32 @@ const router = createBrowserRouter([
 				],
 			},
 			{
+				path: "admin",
+				Component: React.lazy(() => import("#/pages/admin/+Layout")),
+				children: [
+					{
+						index: true,
+						Component: React.lazy(() => import("#/pages/admin/dashboard")),
+					},
+					{
+						path: "products",
+						Component: React.lazy(() => import("#/pages/admin/products")),
+					},
+					{
+						path: "orders",
+						Component: React.lazy(() => import("#/pages/admin/orders")),
+					},
+					{
+						path: "customers",
+						Component: React.lazy(() => import("#/pages/admin/customers")),
+					},
+					{
+						path: "settings",
+						Component: React.lazy(() => import("#/pages/admin/settings")),
+					},
+				],
+			},
+			{
 				path: "login",
 				Component: React.lazy(() => import("#/pages/(auth)/login")),
 			},

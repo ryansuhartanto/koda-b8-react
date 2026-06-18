@@ -254,5 +254,279 @@
 			"ratingCount": 143,
 			"tags": ["promo"]
 		}
-	]
+	],
+	"admin": {
+		"dashboard": {
+			"date": "2026-05-28",
+			"stats": [
+				{
+					"label": "Total Pendapatan (Bulan Ini)",
+					"value": "Rp 125.000.000",
+					"delta": "18.2%",
+					"dir": "up",
+					"icon": "trending-up",
+					"color": "blue"
+				},
+				{
+					"label": "Pesanan Baru",
+					"value": "890",
+					"delta": "12.5%",
+					"dir": "up",
+					"icon": "shopping-cart",
+					"color": "orange"
+				},
+				{
+					"label": "Pelanggan Aktif",
+					"value": "3.284",
+					"delta": "8.1%",
+					"dir": "up",
+					"icon": "users",
+					"color": "green"
+				},
+				{
+					"label": "Produk Aktif",
+					"value": "247",
+					"delta": "2.3%",
+					"dir": "down",
+					"icon": "package",
+					"color": "violet"
+				}
+			],
+			"revenue": [
+				{ "month": "Jan", "revenue": 42 },
+				{ "month": "Feb", "revenue": 44 },
+				{ "month": "Mar", "revenue": 43 },
+				{ "month": "Apr", "revenue": 52 },
+				{ "month": "Mei", "revenue": 50 },
+				{ "month": "Jun", "revenue": 60 },
+				{ "month": "Jul", "revenue": 58 },
+				{ "month": "Agu", "revenue": 72 },
+				{ "month": "Sep", "revenue": 75 },
+				{ "month": "Okt", "revenue": 88 },
+				{ "month": "Nov", "revenue": 104 },
+				{ "month": "Des", "revenue": 125 }
+			],
+			"categorySales": [
+				{ "name": "Elektronik", "value": 45 },
+				{ "name": "Fashion", "value": 28 },
+				{ "name": "Rumah & Dapur", "value": 15 },
+				{ "name": "Kecantikan", "value": 8 },
+				{ "name": "Lainnya", "value": 4 }
+			],
+			"topProducts": [
+				{
+					"name": "Headphone Wireless Premium",
+					"sold": 156,
+					"stock": 45,
+					"revenue": 70200000
+				},
+				{
+					"name": "Laptop Ultrabook Pro 15\"",
+					"sold": 87,
+					"stock": 15,
+					"revenue": 739500000
+				},
+				{
+					"name": "Kaos Polos Premium Cotton",
+					"sold": 312,
+					"stock": 200,
+					"revenue": 39000000
+				},
+				{
+					"name": "Sneakers Sport Runfast",
+					"sold": 203,
+					"stock": 60,
+					"revenue": 111650000
+				},
+				{
+					"name": "Smartphone 5G Ultra",
+					"sold": 124,
+					"stock": 30,
+					"revenue": 520800000
+				}
+			]
+		},
+		"orders": [
+			{
+				"no": "BM98765432",
+				"customer": { "name": "Budi Santoso", "email": "budi@email.com" },
+				"date": "2026-05-28",
+				"items": 2,
+				"total": 900000,
+				"payment": "GoPay",
+				"status": "delivered"
+			},
+			{
+				"no": "BM87654321",
+				"customer": { "name": "Siti Rahayu", "email": "siti@email.com" },
+				"date": "2026-05-28",
+				"items": 1,
+				"total": 450000,
+				"payment": "VA BCA",
+				"status": "shipped"
+			},
+			{
+				"no": "BM76543210",
+				"customer": { "name": "Ahmad Maulana", "email": "ahmad@email.com" },
+				"date": "2026-05-27",
+				"items": 3,
+				"total": 1250000,
+				"payment": "Kartu Kredit",
+				"status": "packed"
+			},
+			{
+				"no": "BM65432109",
+				"customer": { "name": "Rina Kusuma", "email": "rina@email.com" },
+				"date": "2026-05-27",
+				"items": 1,
+				"total": 8500000,
+				"payment": "VA BNI",
+				"status": "pending"
+			},
+			{
+				"no": "BM54321098",
+				"customer": { "name": "Denny Pratama", "email": "denny@email.com" },
+				"date": "2026-05-26",
+				"items": 2,
+				"total": 725000,
+				"payment": "OVO",
+				"status": "delivered"
+			},
+			{
+				"no": "BM43210987",
+				"customer": { "name": "Maya Indah", "email": "maya@email.com" },
+				"date": "2026-05-26",
+				"items": 4,
+				"total": 2340000,
+				"payment": "DANA",
+				"status": "shipped"
+			},
+			{
+				"no": "BM32109876",
+				"customer": { "name": "Rudi Hartono", "email": "rudi@email.com" },
+				"date": "2026-05-25",
+				"items": 1,
+				"total": 189000,
+				"payment": "GoPay",
+				"status": "delivered"
+			},
+			{
+				"no": "BM21098765",
+				"customer": { "name": "Lisa Permata", "email": "lisa@email.com" },
+				"date": "2026-05-25",
+				"items": 2,
+				"total": 560000,
+				"payment": "VA BCA",
+				"status": "cancelled"
+			}
+		],
+		"customers": [
+			{
+				"name": "Budi Santoso",
+				"email": "budi@email.com",
+				"city": "Jakarta Barat",
+				"joined": "2025-01-01",
+				"orders": 12,
+				"spend": 4250000,
+				"tier": "Gold"
+			},
+			{
+				"name": "Siti Rahayu",
+				"email": "siti@email.com",
+				"city": "Bandung",
+				"joined": "2025-03-01",
+				"orders": 8,
+				"spend": 2100000,
+				"tier": "Silver"
+			},
+			{
+				"name": "Ahmad Maulana",
+				"email": "ahmad@email.com",
+				"city": "Surabaya",
+				"joined": "2024-09-01",
+				"orders": 25,
+				"spend": 18500000,
+				"tier": "Platinum"
+			},
+			{
+				"name": "Rina Kusuma",
+				"email": "rina@email.com",
+				"city": "Jakarta Selatan",
+				"joined": "2026-04-01",
+				"orders": 5,
+				"spend": 980000,
+				"tier": "Bronze"
+			},
+			{
+				"name": "Denny Pratama",
+				"email": "denny@email.com",
+				"city": "Medan",
+				"joined": "2024-06-01",
+				"orders": 17,
+				"spend": 7800000,
+				"tier": "Gold"
+			},
+			{
+				"name": "Maya Indah",
+				"email": "maya@email.com",
+				"city": "Yogyakarta",
+				"joined": "2025-02-01",
+				"orders": 9,
+				"spend": 3200000,
+				"tier": "Silver"
+			},
+			{
+				"name": "Rudi Hartono",
+				"email": "rudi@email.com",
+				"city": "Semarang",
+				"joined": "2026-05-01",
+				"orders": 3,
+				"spend": 450000,
+				"tier": "Bronze"
+			},
+			{
+				"name": "Lisa Permata",
+				"email": "lisa@email.com",
+				"city": "Makassar",
+				"joined": "2024-11-01",
+				"orders": 6,
+				"spend": 1750000,
+				"tier": "Silver"
+			}
+		],
+		"customerStats": [
+			{
+				"label": "Total Pelanggan",
+				"value": "3.284",
+				"icon": "users",
+				"color": "blue"
+			},
+			{
+				"label": "Pelanggan Baru (Bulan Ini)",
+				"value": "89",
+				"icon": "trending-up",
+				"color": "green"
+			},
+			{
+				"label": "Rata-rata Pesanan",
+				"value": "4.2",
+				"icon": "shopping-bag",
+				"color": "orange"
+			},
+			{
+				"label": "Kepuasan Pelanggan",
+				"value": "4.7/5",
+				"icon": "star",
+				"color": "amber"
+			}
+		],
+		"customerGrowth": [
+			{ "month": "Jan", "value": 42 },
+			{ "month": "Feb", "value": 58 },
+			{ "month": "Mar", "value": 51 },
+			{ "month": "Apr", "value": 63 },
+			{ "month": "Mei", "value": 79 },
+			{ "month": "Jun", "value": 86 }
+		]
+	}
 }
