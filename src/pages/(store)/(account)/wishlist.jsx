@@ -5,9 +5,11 @@ import { ProductCard } from "#/components/ProductCard";
 import data from "#/data.json";
 
 const wishlistNames = ["Headphone Wireless Premium", "Sneakers Sport Runfast"];
-const items = wishlistNames
-	.map((name) => data.products.find((p) => p.name === name))
-	.filter(Boolean);
+const items = /** @type {(typeof data.products)[number][]} */ (
+	wishlistNames
+		.map((name) => data.products.find((p) => p.name === name))
+		.filter(Boolean)
+);
 
 export default function Page() {
 	return (

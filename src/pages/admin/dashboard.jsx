@@ -47,6 +47,7 @@ const dateLabel = new Intl.DateTimeFormat("id-ID", {
 	year: "numeric",
 }).format(new Date(data.admin.dashboard.date));
 
+/** @param {{ title: string; action?: import("react").ReactNode; children: import("react").ReactNode }} props */
 function Card({ title, action, children }) {
 	return (
 		<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-6">
@@ -151,7 +152,11 @@ function CategoryDonut() {
 							{categorySales.map((c) => (
 								<Cell
 									key={c.name}
-									fill={categoryColors[c.name]}
+									fill={
+										categoryColors[
+											/** @type {keyof typeof categoryColors} */ (c.name)
+										]
+									}
 								/>
 							))}
 						</Pie>
@@ -167,7 +172,12 @@ function CategoryDonut() {
 					>
 						<span
 							className="size-2.5 rounded-full shrink-0"
-							style={{ backgroundColor: categoryColors[c.name] }}
+							style={{
+								backgroundColor:
+									categoryColors[
+										/** @type {keyof typeof categoryColors} */ (c.name)
+									],
+							}}
 						/>
 						<span className="flex-1 text-gray-600">{c.name}</span>
 						<span className="font-medium text-gray-900 tabular-nums">
@@ -199,10 +209,14 @@ export default function Page() {
 						key={s.label}
 						label={s.label}
 						value={s.value}
-						icon={icons[s.icon]}
-						color={s.color}
+						icon={icons[/** @type {keyof typeof icons} */ (s.icon)]}
+						color={
+							/** @type {"blue" | "green" | "orange" | "violet" | "amber"} */ (
+								s.color
+							)
+						}
 						delta={s.delta}
-						dir={s.dir}
+						dir={/** @type {"up" | "down"} */ (s.dir)}
 					/>
 				))}
 			</div>
@@ -248,8 +262,22 @@ export default function Page() {
 										<span className="text-sm font-medium text-gray-900">
 											#{o.no}
 										</span>
-										<Badge color={orderStatus[o.status].color}>
-											{orderStatus[o.status].label}
+										<Badge
+											color={
+												orderStatus[
+													/** @type {import("#/lib/status").OrderStatus} */ (
+														o.status
+													)
+												].color
+											}
+										>
+											{
+												orderStatus[
+													/** @type {import("#/lib/status").OrderStatus} */ (
+														o.status
+													)
+												].label
+											}
 										</Badge>
 									</div>
 									<span className="text-xs text-gray-500">

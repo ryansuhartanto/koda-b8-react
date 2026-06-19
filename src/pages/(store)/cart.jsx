@@ -14,9 +14,11 @@ const suggestionNames = [
 	"Smartwatch Series 5",
 	"Sneakers Sport Runfast",
 ];
-const suggestions = suggestionNames
-	.map((name) => data.products.find((p) => p.name === name))
-	.filter(Boolean);
+const suggestions = /** @type {(typeof data.products)[number][]} */ (
+	suggestionNames
+		.map((name) => data.products.find((p) => p.name === name))
+		.filter(Boolean)
+);
 
 export default function Page() {
 	return (

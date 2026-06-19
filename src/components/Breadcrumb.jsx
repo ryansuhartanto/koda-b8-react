@@ -5,7 +5,7 @@ import ChevronRight from "~icons/lucide/chevron-right";
 /**
  * @typedef BreadcrumbItem
  * @prop {string} label
- * @prop {string} url
+ * @prop {string} [url]
  */
 
 /**
@@ -24,14 +24,14 @@ export default function Breadcrumb({ items }) {
 		>
 			{items.map((item, i) =>
 				i < items.length - 1 ? (
-					<React.Fragment key={`${item.url}-l`}>
-						<Link to={item.url}>{item.label}</Link>
+					<React.Fragment key={`${item.url ?? item.label}-l`}>
+						<Link to={item.url ?? ""}>{item.label}</Link>
 
 						<ChevronRight className="size-4" />
 					</React.Fragment>
 				) : (
 					<span
-						key={`${item.url}-c`}
+						key={`${item.url ?? item.label}-c`}
 						aria-current="page"
 					>
 						{item.label}

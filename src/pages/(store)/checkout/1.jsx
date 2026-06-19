@@ -5,7 +5,10 @@ import { Stepper, Summary } from "#/components/Checkout";
 import FormField from "#/components/FormField";
 import data from "#/data.json";
 
-const cartItem = { ...data.products[0], quantity: 1 };
+/**
+ * @typedef {{ name: string; brand: string; category: string; img: string; price: number; originalPrice: number | null; stock: number; rating: number; ratingCount: number; tags: string[] }} Product
+ */
+const cartItem = { .../** @type {Product} */ (data.products[0]), quantity: 1 };
 const formattedTotal = `Rp ${(cartItem.price * cartItem.quantity).toLocaleString("id-ID")}`;
 
 const shippingMethods = [

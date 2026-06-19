@@ -20,12 +20,16 @@ import { cn } from "#/lib/utils";
  *
  * @param {object} config
  * @param {unknown[]} config.data
- * @param {unknown[]} config.columns
+ * @param {import("@tanstack/react-table").ColumnDef<any, any>[]} config.columns
  */
 export function useDataTable({ data, columns, ...options }) {
-	const [sorting, setSorting] = useState([]);
+	const [sorting, setSorting] = useState(
+		/** @type {import("@tanstack/react-table").SortingState} */ ([]),
+	);
 	const [globalFilter, setGlobalFilter] = useState("");
-	const [columnFilters, setColumnFilters] = useState([]);
+	const [columnFilters, setColumnFilters] = useState(
+		/** @type {import("@tanstack/react-table").ColumnFiltersState} */ ([]),
+	);
 
 	return useReactTable({
 		data,
@@ -61,7 +65,7 @@ function SortIcon({ state }) {
  * Controlled search input bound to the table's global filter.
  *
  * @param {object} props
- * @param {import("@tanstack/react-table").Table<never>} props.table
+ * @param {import("@tanstack/react-table").Table<any>} props.table
  * @param {string} [props.placeholder]
  * @param {string} [props.className]
  */
@@ -90,7 +94,7 @@ export function TableSearch({ table, placeholder = "Cari...", className }) {
  * markup lives in the column `cell`/`header` definitions, so this stays generic.
  *
  * @param {object} props
- * @param {import("@tanstack/react-table").Table<never>} props.table
+ * @param {import("@tanstack/react-table").Table<any>} props.table
  * @param {string} [props.emptyLabel]
  */
 export function DataTable({ table, emptyLabel = "Tidak ada data." }) {

@@ -18,6 +18,7 @@ import { cn, rupiah } from "#/lib/utils";
 
 const orders = data.admin.orders;
 
+/** @param {string} iso */
 const fmtDate = (iso) =>
 	new Intl.DateTimeFormat("id-ID", {
 		day: "numeric",
@@ -25,7 +26,14 @@ const fmtDate = (iso) =>
 		year: "numeric",
 	}).format(new Date(iso));
 
-const column = createColumnHelper();
+/**
+ * @typedef {{ no: string; customer: { name: string; email: string }; date: string; items: number; total: number; payment: string; status: string }} Order
+ */
+
+const column =
+	/** @type {import("@tanstack/react-table").ColumnHelper<Order>} */ (
+		createColumnHelper()
+	);
 
 const columns = [
 	column.accessor("no", {
@@ -81,8 +89,18 @@ const columns = [
 		enableSorting: false,
 		filterFn: "equalsString",
 		cell: (info) => (
-			<Badge color={orderStatus[info.getValue()].color}>
-				{orderStatus[info.getValue()].label}
+			<Badge
+				color={
+					orderStatus[
+						/** @type {import("#/lib/status").OrderStatus} */ (info.getValue())
+					].color
+				}
+			>
+				{
+					orderStatus[
+						/** @type {import("#/lib/status").OrderStatus} */ (info.getValue())
+					].label
+				}
 			</Badge>
 		),
 	}),
@@ -125,14 +143,18 @@ const columns = [
 ];
 
 export default function Page() {
-	const [tab, setTab] = useState(null);
+	const [tab, setTab] = useState(
+		/** @type {import("#/lib/status").OrderStatus | null} */ (null),
+	);
 	const table = useDataTable({ data: orders, columns });
 
+	/** @param {import("#/lib/status").OrderStatus | null} key */
 	const selectTab = (key) => {
 		setTab(key);
-		table.getColumn("status").setFilterValue(key ?? undefined);
+		table.getColumn("status")?.setFilterValue(key ?? undefined);
 	};
 
+	/** @param {import("#/lib/status").OrderStatus | null} key */
 	const countFor = (key) =>
 		key === null
 			? orders.length
@@ -153,7 +175,12 @@ export default function Page() {
 			<div className="flex gap-2">
 				{orderStatusTabs.map((key) => {
 					const active = tab === key;
-					const label = key === null ? "Semua" : orderStatus[key].label;
+					const label =
+						key === null
+							? "Semua"
+							: orderStatus[
+									/** @type {import("#/lib/status").OrderStatus} */ (key)
+								].label;
 					return (
 						<button
 							key={key ?? "all"}

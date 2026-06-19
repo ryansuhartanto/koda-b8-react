@@ -36,6 +36,7 @@ const icons = {
 	"star": Star,
 };
 
+/** @param {string} name */
 const initials = (name) =>
 	name
 		.split(" ")
@@ -44,12 +45,20 @@ const initials = (name) =>
 		.join("")
 		.toUpperCase();
 
+/** @param {string} iso */
 const fmtJoined = (iso) =>
 	new Intl.DateTimeFormat("id-ID", { month: "short", year: "numeric" }).format(
 		new Date(iso),
 	);
 
-const column = createColumnHelper();
+/**
+ * @typedef {{ name: string; email: string; city: string; joined: string; orders: number; spend: number; tier: string }} Customer
+ */
+
+const column =
+	/** @type {import("@tanstack/react-table").ColumnHelper<Customer>} */ (
+		createColumnHelper()
+	);
 
 const columns = [
 	column.accessor((c) => `${c.name} ${c.email}`, {
@@ -138,8 +147,12 @@ export default function Page() {
 						key={s.label}
 						label={s.label}
 						value={s.value}
-						icon={icons[s.icon]}
-						color={s.color}
+						icon={icons[/** @type {keyof typeof icons} */ (s.icon)]}
+						color={
+							/** @type {"blue" | "green" | "orange" | "violet" | "amber"} */ (
+								s.color
+							)
+						}
 					/>
 				))}
 			</div>

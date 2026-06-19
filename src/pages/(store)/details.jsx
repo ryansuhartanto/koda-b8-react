@@ -144,19 +144,21 @@ export default function Page() {
 								Warna: <span className="text-blue-600">Hitam</span>
 							</div>
 							<div className="flex gap-2">
-								{[
-									["Hitam", true],
-									["Putih", false],
-									["Biru", false],
-								].map(([color, active]) => (
-									<button
-										key={color}
-										type="button"
-										className={`p-1.5 px-3 text-sm border rounded-lg cursor-pointer font-medium ${active ? "border-blue-600 bg-blue-50 text-blue-600" : "border-gray-200 text-gray-600 hover:border-gray-300 bg-white"}`}
-									>
-										{color}
-									</button>
-								))}
+								{
+									/** @type {[string, boolean][]} */ ([
+										["Hitam", true],
+										["Putih", false],
+										["Biru", false],
+									]).map(([color, active]) => (
+										<button
+											key={color}
+											type="button"
+											className={`p-1.5 px-3 text-sm border rounded-lg cursor-pointer font-medium ${active ? "border-blue-600 bg-blue-50 text-blue-600" : "border-gray-200 text-gray-600 hover:border-gray-300 bg-white"}`}
+										>
+											{color}
+										</button>
+									))
+								}
 							</div>
 						</div>
 

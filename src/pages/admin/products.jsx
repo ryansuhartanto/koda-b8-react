@@ -35,7 +35,14 @@ const productStats = [
 	},
 ];
 
-const column = createColumnHelper();
+/**
+ * @typedef {{ name: string; brand: string; category: string; img: string; price: number; originalPrice: number | null; stock: number; rating: number; ratingCount: number; tags: string[] }} Product
+ */
+
+const column =
+	/** @type {import("@tanstack/react-table").ColumnHelper<Product>} */ (
+		createColumnHelper()
+	);
 
 const columns = [
 	column.accessor((p) => `${p.name} ${p.brand}`, {
@@ -155,6 +162,7 @@ const columns = [
 	}),
 ];
 
+/** @param {{ onClose: () => void }} props */
 function AddProductModal({ onClose }) {
 	return (
 		<div className="fixed inset-0 z-50 flex items-start justify-center p-6 overflow-y-auto bg-black/40">
@@ -265,7 +273,9 @@ function AddProductModal({ onClose }) {
 export default function Page() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const table = useDataTable({ data: products, columns });
-	const categoryFilter = table.getColumn("category").getFilterValue() ?? "";
+	const categoryFilter = /** @type {string} */ (
+		table.getColumn("category")?.getFilterValue() ?? ""
+	);
 
 	return (
 		<div className="flex flex-col gap-6">
@@ -291,7 +301,7 @@ export default function Page() {
 						onChange={(e) =>
 							table
 								.getColumn("category")
-								.setFilterValue(e.target.value || undefined)
+								?.setFilterValue(e.target.value || undefined)
 						}
 						className="outline-none bg-transparent cursor-pointer py-2.5"
 					>

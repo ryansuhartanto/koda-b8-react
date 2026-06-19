@@ -12,7 +12,7 @@ import { cn, rupiah, slugify } from "#/lib/utils";
  * @prop {string} brand
  * @prop {string} img
  * @prop {number} price
- * @prop {number} [originalPrice]
+ * @prop {number | null} [originalPrice]
  * @prop {number} rating
  * @prop {number} ratingCount
  * @prop {string[]} [tags]
