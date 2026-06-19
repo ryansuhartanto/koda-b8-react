@@ -21,14 +21,14 @@
 		"clsx": "^2.1.1",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
-		"react-router": "^7.17.0",
+		"react-router": "^8.0.1",
 		"recharts": "^3.8.1",
 		"tailwind-merge": "^3.6.0"
 	},
 	"devDependencies": {
 		"@iconify-json/lucide": "^1.2.113",
 		"@iconify-json/simple-icons": "^1.2.86",
-		"@kekkon-nexus/config": "^2.260520.0",
+		"@kekkon-nexus/config": "^2.260619.0",
 		"@svgr/core": "^8.1.0",
 		"@svgr/plugin-jsx": "^8.1.0",
 		"@tailwindcss/vite": "^4.3.0",
