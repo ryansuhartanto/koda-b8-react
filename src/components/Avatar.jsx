@@ -9,7 +9,7 @@ import { cn } from "#/lib/utils";
  */
 
 /**
- * @param {AvatarProps}
+ * @param {AvatarProps} props
  */
 export default function Avatar({ initial = "B", src, alt = "", className }) {
 	return (

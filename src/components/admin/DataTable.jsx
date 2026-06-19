@@ -18,10 +18,9 @@ import { cn } from "#/lib/utils";
  * pre-wires the core/sorted/filtered row models. Pass any extra useReactTable
  * options through; they override the defaults.
  *
- * @param {{
- *   data: unknown[],
- *   columns: unknown[],
- * } & Record<string, unknown>} config
+ * @param {object} config
+ * @param {unknown[]} config.data
+ * @param {unknown[]} config.columns
  */
 export function useDataTable({ data, columns, ...options }) {
 	const [sorting, setSorting] = useState([]);
@@ -43,7 +42,8 @@ export function useDataTable({ data, columns, ...options }) {
 }
 
 /**
- * @param {{ state: false | "asc" | "desc" }}
+ * @param {object} props
+ * @param {false | "asc" | "desc"} props.state
  */
 function SortIcon({ state }) {
 	if (state === "asc") {
@@ -60,7 +60,10 @@ function SortIcon({ state }) {
 /**
  * Controlled search input bound to the table's global filter.
  *
- * @param {{ table: import("@tanstack/react-table").Table<never>, placeholder?: string, className?: string }}
+ * @param {object} props
+ * @param {import("@tanstack/react-table").Table<never>} props.table
+ * @param {string} [props.placeholder]
+ * @param {string} [props.className]
  */
 export function TableSearch({ table, placeholder = "Cari...", className }) {
 	return (
@@ -86,7 +89,9 @@ export function TableSearch({ table, placeholder = "Cari...", className }) {
  * Presentational renderer for a fully-built table instance. All per-column
  * markup lives in the column `cell`/`header` definitions, so this stays generic.
  *
- * @param {{ table: import("@tanstack/react-table").Table<never>, emptyLabel?: string }}
+ * @param {object} props
+ * @param {import("@tanstack/react-table").Table<never>} props.table
+ * @param {string} [props.emptyLabel]
  */
 export function DataTable({ table, emptyLabel = "Tidak ada data." }) {
 	const rows = table.getRowModel().rows;

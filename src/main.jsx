@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
-import LayoutRoot from "#/+Layout";
+import LayoutRoot from "#/+Layout.jsx";
 import LayoutStore from "#/pages/(store)/+Layout";
 
 const router = createBrowserRouter([
@@ -126,7 +126,7 @@ const router = createBrowserRouter([
 	},
 ]);
 
-const root = createRoot(document.querySelector("body"));
+const root = createRoot(document.body);
 root.render(
 	<React.StrictMode>
 		<RouterProvider router={router} />

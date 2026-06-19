@@ -20,7 +20,7 @@ import { cn, rupiah, slugify } from "#/lib/utils";
  */
 
 /**
- * @param {ProductCardProps}
+ * @param {ProductCardProps} props
  */
 export function ProductCard({
 	name,
@@ -123,7 +123,7 @@ export function ProductCard({
  */
 
 /**
- * @param {SummaryItemProps}
+ * @param {SummaryItemProps} props
  */
 export function SummaryItem({ name, img, quantity = 1 }) {
 	return (
@@ -150,7 +150,7 @@ export function SummaryItem({ name, img, quantity = 1 }) {
  */
 
 /**
- * @param {OrderReviewItemProps}
+ * @param {OrderReviewItemProps} props
  */
 export function OrderReviewItem({ name, img, price, quantity = 1 }) {
 	return (

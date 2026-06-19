@@ -23,7 +23,7 @@ const iconColors = {
  */
 
 /**
- * @param {StatCardProps}
+ * @param {StatCardProps} props
  */
 export default function StatCard({
 	label,

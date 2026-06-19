@@ -19,7 +19,7 @@ const colors = {
  */
 
 /**
- * @param {BadgeProps}
+ * @param {BadgeProps} props
  */
 export default function Badge({ color = "gray", className, children }) {
 	return (

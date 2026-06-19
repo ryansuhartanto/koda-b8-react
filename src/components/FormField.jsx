@@ -13,7 +13,7 @@
  */
 
 /**
- * @param {FormFieldProps}
+ * @param {FormFieldProps} props
  */
 export default function FormField({
 	label,

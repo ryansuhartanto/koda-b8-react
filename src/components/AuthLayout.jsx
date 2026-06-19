@@ -17,7 +17,7 @@ import { cn } from "#/lib/utils";
  */
 
 /**
- * @param {AuthLayoutProps}
+ * @param {AuthLayoutProps} props
  */
 export default function AuthLayout({
 	variant,

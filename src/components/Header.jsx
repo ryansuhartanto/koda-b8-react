@@ -100,7 +100,7 @@ export function HeaderMain() {
  */
 
 /**
- * @param {HeaderNavProps}
+ * @param {HeaderNavProps} props
  */
 export function HeaderNav({ navigations = [] }) {
 	return (
@@ -143,7 +143,7 @@ export function HeaderNav({ navigations = [] }) {
  */
 
 /**
- * @param {HeaderProps}
+ * @param {HeaderProps} props
  */
 export default function Header({ navigations }) {
 	return (

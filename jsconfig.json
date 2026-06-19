@@ -1,0 +1,14 @@
+{
+	"$schma": "https://www.schemastore.org/jsconfig.json",
+	"extends": ["@kekkon-nexus/config/ts", "@kekkon-nexus/config/ts/strict"],
+	"compilerOptions": {
+		"checkJs": true,
+		"jsx": "react-jsx",
+		"paths": {
+			"#/*": ["./src/*"]
+		},
+
+		"types": ["*", "vite-plus/client", "unplugin-icons/types/vue"],
+		"skipLibCheck": true
+	}
+}

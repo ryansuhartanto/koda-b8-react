@@ -9,7 +9,7 @@ import { cn } from "#/lib/utils";
  */
 
 /**
- * @param {StepperProps}
+ * @param {StepperProps} props
  */
 export function Stepper({ activeStep }) {
 	return (
@@ -67,7 +67,7 @@ export function Stepper({ activeStep }) {
  */
 
 /**
- * @param {SummaryProps}
+ * @param {SummaryProps} props
  */
 export function Summary({ items = [], subtotal = "Rp 0" }) {
 	return (

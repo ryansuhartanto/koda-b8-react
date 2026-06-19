@@ -9,7 +9,7 @@ import { cn } from "#/lib/utils";
  */
 
 /**
- * @param {Star5Props}
+ * @param {Star5Props} props
  */
 export default function Star5({ count = 5, variant = "default" }) {
 	return (

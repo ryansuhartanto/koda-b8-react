@@ -14,7 +14,7 @@ const sizes = {
  */
 
 /**
- * @param {QuantityStepperProps}
+ * @param {QuantityStepperProps} props
  */
 export default function QuantityStepper({
 	defaultValue = 1,
