@@ -136,11 +136,11 @@ function useAuthValue() {
 		[state.user],
 	);
 
-	/** @type {(orderData: Omit<Order, "id" | "createdAt" | "status">) => Order | null} */
+	/** @type {(orderData: Omit<Order, "id" | "createdAt" | "status">) => Order | undefined} */
 	const placeOrder = useCallback(
 		(orderData) => {
 			if (!state.user) {
-				return null;
+				return;
 			}
 			const { user, order } = db.placeOrder(state.user.id, orderData);
 			setUser(user);
@@ -227,8 +227,8 @@ function useAuthValue() {
 }
 
 const AuthContext =
-	/** @type {React.Context<ReturnType<typeof useAuthValue> | null>} */ (
-		createContext(useAuthValue())
+	/** @type {React.Context<ReturnType<typeof useAuthValue> | undefined>} */ (
+		createContext(undefined)
 	);
 
 /** @param {React.PropsWithChildren} props */
