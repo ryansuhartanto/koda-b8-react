@@ -11,11 +11,11 @@ import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
 import Star5 from "#/components/Star5";
 import data from "#/data.json";
-import { rupiah, slugify } from "#/lib/utils";
+import { rupiah } from "#/lib/utils";
 
 export default function Page() {
 	const { slug } = useParams();
-	const product = data.products.find((p) => slugify(p.name) === slug);
+	const product = data.products.find((p) => p.slug === slug);
 
 	if (!product) {
 		return (
@@ -42,6 +42,7 @@ export default function Page() {
 		stock,
 		rating,
 		ratingCount,
+		summary,
 	} = product;
 
 	const discount = originalPrice
@@ -238,8 +239,7 @@ export default function Page() {
 						</button>
 					</div>
 					<div className="p-6 bg-white text-gray-600 leading-relaxed">
-						{name} dari {brand}. Nikmati produk berkualitas dengan harga
-						terbaik, gratis ongkir, dan garansi pengembalian 30 hari.
+						{summary}
 					</div>
 				</section>
 

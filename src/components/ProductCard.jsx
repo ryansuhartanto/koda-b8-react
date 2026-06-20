@@ -4,10 +4,11 @@ import Heart from "~icons/lucide/heart";
 import ShoppingCart from "~icons/lucide/shopping-cart";
 
 import Star5 from "#/components/Star5";
-import { cn, rupiah, slugify } from "#/lib/utils";
+import { cn, rupiah } from "#/lib/utils";
 
 /**
  * @typedef ProductCardProps
+ * @prop {string} slug
  * @prop {string} name
  * @prop {string} brand
  * @prop {string} img
@@ -23,6 +24,7 @@ import { cn, rupiah, slugify } from "#/lib/utils";
  * @param {ProductCardProps} props
  */
 export function ProductCard({
+	slug,
 	name,
 	brand,
 	img,
@@ -46,7 +48,7 @@ export function ProductCard({
 	return (
 		<article className="card group">
 			<div className="relative overflow-hidden">
-				<Link to={`/details/${slugify(name)}`}>
+				<Link to={`/details/${slug}`}>
 					<img
 						src={img}
 						alt={name}
@@ -83,7 +85,7 @@ export function ProductCard({
 
 			<div className="m-4 flex flex-col gap-1 product">
 				<p>{brand}</p>
-				<Link to={`/details/${slugify(name)}`}>
+				<Link to={`/details/${slug}`}>
 					<h3>{name}</h3>
 				</Link>
 				<div
