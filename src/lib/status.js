@@ -7,7 +7,17 @@
  * @typedef {"pending" | "packed" | "shipped" | "delivered" | "cancelled"} OrderStatus
  */
 
-/** @type {Record<OrderStatus, { label: string; color: "blue" | "orange" | "green" | "violet" | "amber" | "red" | "indigo" | "gray" }>} */
+/**
+ * @typedef {"blue" | "orange" | "green" | "violet" | "amber" | "red" | "indigo" | "gray"} OrderColor
+ */
+
+/**
+ * @typedef OrderLabel
+ * @prop {string} label
+ * @prop {OrderColor} color
+ */
+
+/** @type {Record<OrderStatus, OrderLabel>} */
 export const orderStatus = {
 	pending: { label: "Pending", color: "amber" },
 	packed: { label: "Dikemas", color: "indigo" },
@@ -16,7 +26,7 @@ export const orderStatus = {
 	cancelled: { label: "Dibatalkan", color: "red" },
 };
 
-/** @type {(OrderStatus | null)[]} Order of tabs shown on the order management page. `null` = "Semua". */
+/** @type {Array<OrderStatus | null>} Order of tabs shown on the order management page. `null` = "Semua". */
 export const orderStatusTabs = [
 	null,
 	"pending",
@@ -25,14 +35,14 @@ export const orderStatusTabs = [
 	"delivered",
 ];
 
-/** @type {Record<string, { label: string; color: "blue" | "orange" | "green" | "violet" | "amber" | "red" | "indigo" | "gray" }>} */
+/** @type {Record<string, OrderLabel>} */
 export const productTag = {
 	baru: { label: "Baru", color: "blue" },
 	unggulan: { label: "Unggulan", color: "amber" },
 	promo: { label: "Promo", color: "red" },
 };
 
-/** @type {Record<string, "blue" | "orange" | "green" | "violet" | "amber" | "red" | "indigo" | "gray">} */
+/** @type {Record<string, OrderColor>} */
 export const tierColor = {
 	Platinum: "indigo",
 	Gold: "amber",

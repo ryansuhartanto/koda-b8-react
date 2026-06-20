@@ -175,12 +175,7 @@ export default function Page() {
 			<div className="flex gap-2">
 				{orderStatusTabs.map((key) => {
 					const active = tab === key;
-					const label =
-						key === null
-							? "Semua"
-							: orderStatus[
-									/** @type {import("#/lib/status").OrderStatus} */ (key)
-								].label;
+					const label = key === null ? "Semua" : orderStatus[key].label;
 					return (
 						<button
 							key={key ?? "all"}
