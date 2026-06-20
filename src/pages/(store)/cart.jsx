@@ -117,7 +117,7 @@ export default function Page() {
 							</div>
 						</div>
 						<Link
-							to="/checkout/1"
+							to="/checkout"
 							className="w-full bg-orange-500 text-white py-3 rounded-xl hover:bg-orange-600 font-medium flex justify-center items-center gap-2 cursor-pointer shadow-sm shadow-orange-500/20 transition-colors"
 						>
 							<ShieldCheck className="size-5" /> Checkout Aman
