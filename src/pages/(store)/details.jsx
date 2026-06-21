@@ -1,4 +1,5 @@
-import { useParams } from "react-router";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import Check from "~icons/lucide/check";
 import Heart from "~icons/lucide/heart";
 import RefreshCcw from "~icons/lucide/refresh-ccw";
@@ -10,12 +11,17 @@ import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
 import Star5 from "#/components/Star5";
+import { useAuth } from "#/context/auth";
 import data from "#/data.json";
-import { rupiah, slugify } from "#/lib/utils";
+import { cn, rupiah } from "#/lib/utils";
 
 export default function Page() {
 	const { slug } = useParams();
-	const product = data.products.find((p) => slugify(p.name) === slug);
+	const { user, addToCart, toggleWishlist } = useAuth();
+	const navigate = useNavigate();
+	const [qty, setQty] = useState(1);
+
+	const product = data.products.find((p) => p.slug === slug);
 
 	if (!product) {
 		return (
@@ -42,8 +48,9 @@ export default function Page() {
 		stock,
 		rating,
 		ratingCount,
+		summary,
 	} = product;
-
+	const isWishlisted = user?.wishlist.includes(name) ?? false;
 	const discount = originalPrice
 		? Math.round((1 - price / originalPrice) * 100)
 		: null;
@@ -51,6 +58,32 @@ export default function Page() {
 	const related = data.products
 		.filter((p) => p.category === category && p.name !== name)
 		.slice(0, 4);
+
+	function handleAddToCart() {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
+		addToCart(name, qty);
+		navigate("/cart");
+	}
+
+	function handleBuyNow() {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
+		addToCart(name, qty);
+		navigate("/checkout");
+	}
+
+	function handleWishlist() {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
+		toggleWishlist(name);
+	}
 
 	return (
 		<main className="pt-6 pb-16 bg-gray-50">
@@ -165,7 +198,11 @@ export default function Page() {
 						<div className="flex flex-col gap-2">
 							<span className="text-sm text-gray-900">Jumlah</span>
 							<div className="flex items-center gap-4">
-								<QuantityStepper max={stock} />
+								<QuantityStepper
+									value={qty}
+									onChange={setQty}
+									max={stock}
+								/>
 								<span className="text-sm text-gray-500">Stok: {stock} pcs</span>
 							</div>
 						</div>
@@ -173,21 +210,34 @@ export default function Page() {
 						<div className="flex gap-4 mb-8 [&_button]:cursor-pointer">
 							<button
 								type="button"
+								onClick={handleAddToCart}
 								className="flex-1 flex items-center justify-center gap-2 border-2 border-orange-500 text-orange-500 font-medium bg-orange-50/50 py-3 rounded-xl hover:bg-orange-50 transition-colors"
 							>
 								<ShoppingCart className="size-5" /> Tambah ke Keranjang
 							</button>
 							<button
 								type="button"
+								onClick={handleBuyNow}
 								className="flex-1 bg-orange-500 text-white font-medium py-3 rounded-xl hover:bg-orange-600 transition-colors shadow-sm shadow-orange-500/20"
 							>
 								Beli Sekarang
 							</button>
 							<button
 								type="button"
-								className="w-14 flex items-center justify-center border border-gray-300 text-gray-500 bg-white rounded-xl hover:bg-gray-50 transition-colors"
+								onClick={handleWishlist}
+								className={cn(
+									"w-14 flex items-center justify-center border rounded-xl transition-colors",
+									isWishlisted
+										? "border-red-400 text-red-500 bg-red-50 hover:bg-red-100"
+										: "border-gray-300 text-gray-500 bg-white hover:bg-gray-50",
+								)}
 							>
-								<Heart className="size-5" />
+								<Heart
+									className={cn(
+										"size-5",
+										isWishlisted && "[&_path]:fill-current",
+									)}
+								/>
 							</button>
 						</div>
 
@@ -226,26 +276,19 @@ export default function Page() {
 						</button>
 						<button
 							type="button"
-							className="p-4 text-sm text-gray-500 hover:text-gray-900 cursor-pointer"
+							className="p-4 text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
 						>
-							Spesifikasi
-						</button>
-						<button
-							type="button"
-							className="p-4 text-sm text-gray-500 hover:text-gray-900 cursor-pointer"
-						>
-							Ulasan ({ratingCount})
+							Ulasan
 						</button>
 					</div>
-					<div className="p-6 bg-white text-gray-600 leading-relaxed">
-						{name} dari {brand}. Nikmati produk berkualitas dengan harga
-						terbaik, gratis ongkir, dan garansi pengembalian 30 hari.
+					<div className="bg-white p-6 text-sm text-gray-600 leading-relaxed">
+						{summary}
 					</div>
 				</section>
 
 				{related.length > 0 && (
 					<section className="flex flex-col gap-6">
-						<h2 className="text-xl font-medium">Produk Terkait</h2>
+						<h2 className="text-xl font-medium">Produk Serupa</h2>
 						<div className="grid grid-cols-4 gap-4">
 							{related.map((p) => (
 								<ProductCard

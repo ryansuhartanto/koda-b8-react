@@ -1,5 +1,8 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
+import * as yup from "yup";
 import Eye from "~icons/lucide/eye";
 import EyeOff from "~icons/lucide/eye-off";
 import Lock from "~icons/lucide/lock";
@@ -10,6 +13,13 @@ import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
+import { useAuth } from "#/context/auth";
+
+const schema = yup.object({
+	email: yup.string().email("Email tidak valid").required("Email wajib diisi"),
+	password: yup.string().required("Kata sandi wajib diisi"),
+	remember: yup.boolean().default(false),
+});
 
 function Stats() {
 	return (
@@ -32,7 +42,33 @@ function Stats() {
 }
 
 export default function Page() {
+	const { login } = useAuth();
+	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
+
+	const {
+		register,
+		handleSubmit,
+		setError,
+		formState: { errors, isSubmitting },
+	} = useForm({ resolver: yupResolver(schema) });
+
+	/** @param {yup.InferType<typeof schema>} data */
+	async function onSubmit(data) {
+		try {
+			login(data.email, data.password, data.remember ?? false);
+			navigate("/");
+		} catch (error) {
+			const code = error instanceof Error ? error.message : "";
+			if (code === "EMAIL_NOT_FOUND") {
+				setError("email", { message: "Email tidak terdaftar" });
+			} else if (code === "WRONG_PASSWORD") {
+				setError("password", { message: "Kata sandi salah" });
+			} else {
+				setError("root", { message: "Login gagal" });
+			}
+		}
+	}
 
 	return (
 		<AuthLayout
@@ -75,22 +111,31 @@ export default function Page() {
 				<hr className="flex-1 border-black/10" />
 			</div>
 
-			<form className="flex flex-col gap-4">
+			<form
+				className="flex flex-col gap-4"
+				onSubmit={handleSubmit(onSubmit)}
+			>
+				{errors.root && (
+					<p className="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded-xl">
+						{errors.root.message}
+					</p>
+				)}
 				<FormField
 					label="Email"
 					type="email"
-					name="email"
 					autoComplete="email"
 					placeholder="email@contoh.com"
 					icon={Mail}
+					error={errors.email?.message}
+					{...register("email")}
 				/>
 				<FormField
 					label="Kata Sandi"
 					type={showPassword ? "text" : "password"}
-					name="password"
 					autoComplete="current-password"
 					placeholder="Masukkan kata sandi"
 					icon={Lock}
+					error={errors.password?.message}
 					aside={
 						<Link
 							className="text-blue-600 hover:underline text-xs font-normal"
@@ -111,20 +156,22 @@ export default function Page() {
 							{showPassword ? <EyeOff /> : <Eye />}
 						</button>
 					}
+					{...register("password")}
 				/>
 
 				<label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
 					<input
 						type="checkbox"
-						name="remember"
 						className="accent-blue-600 size-4"
+						{...register("remember")}
 					/>
 					Ingat saya selama 30 hari
 				</label>
 
 				<button
 					type="submit"
-					className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors cursor-pointer"
+					disabled={isSubmitting}
+					className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-60"
 				>
 					<LogIn /> Masuk
 				</button>

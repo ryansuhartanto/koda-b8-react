@@ -2,38 +2,32 @@ import Plus from "~icons/lucide/plus";
 import SquarePen from "~icons/lucide/square-pen";
 import Trash2 from "~icons/lucide/trash-2";
 
-const addresses = [
-	{
-		id: 1,
-		label: "Rumah (Utama)",
-		primary: true,
-		recipient: "Budi Santoso",
-		phone: "0812-3456-7890",
-		lines: [
-			"Jl. Kebon Jeruk No. 15, RT.003/RW.002",
-			"Jakarta Barat, DKI Jakarta 11530",
-		],
-	},
-	{
-		id: 2,
-		label: "Kantor",
-		primary: false,
-		recipient: "Budi Santoso",
-		phone: "0812-3456-7890",
-		lines: ["Jl. Sudirman Kav. 52-53", "Jakarta Selatan, DKI Jakarta 12190"],
-	},
-];
+import { useAuth } from "#/context/auth";
 
 /**
- * @param {(typeof addresses)[number]} address
+ * @param {import("#/lib/db").Address & { onDelete: () => void; onSetDefault: () => void }} props
  */
-function AddressCard({ label, primary, recipient, phone, lines }) {
+function AddressCard({
+	label,
+	isDefault,
+	name,
+	phone,
+	address,
+	city,
+	province,
+	postalCode,
+	onDelete,
+	onSetDefault,
+}) {
 	return (
 		<article className="bg-white border border-black/10 rounded-2xl p-5 flex flex-col gap-3">
 			<div className="flex justify-between items-start">
 				<div className="flex items-center gap-2">
-					<h2 className="font-medium text-gray-900">{label}</h2>
-					{primary && (
+					<h2 className="font-medium text-gray-900">
+						{label}
+						{isDefault ? " (Utama)" : ""}
+					</h2>
+					{isDefault && (
 						<span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white">
 							Utama
 						</span>
@@ -50,6 +44,7 @@ function AddressCard({ label, primary, recipient, phone, lines }) {
 					<button
 						type="button"
 						aria-label={`Hapus alamat ${label}`}
+						onClick={onDelete}
 						className="hover:text-red-500 transition-colors cursor-pointer"
 					>
 						<Trash2 className="size-5" />
@@ -59,16 +54,18 @@ function AddressCard({ label, primary, recipient, phone, lines }) {
 
 			<div className="flex flex-col gap-1 text-sm text-gray-600">
 				<p className="text-gray-900">
-					{recipient} &middot; {phone}
+					{name} &middot; {phone}
 				</p>
-				{lines.map((line) => (
-					<p key={line}>{line}</p>
-				))}
+				<p>{address}</p>
+				<p>
+					{city}, {province} {postalCode}
+				</p>
 			</div>
 
-			{!primary && (
+			{!isDefault && (
 				<button
 					type="button"
+					onClick={onSetDefault}
 					className="text-sm font-medium text-blue-600 hover:underline w-fit cursor-pointer"
 				>
 					Jadikan Alamat Utama
@@ -79,6 +76,9 @@ function AddressCard({ label, primary, recipient, phone, lines }) {
 }
 
 export default function Page() {
+	const { user, removeAddress, updateAddress } = useAuth();
+	const addresses = user?.addresses ?? [];
+
 	return (
 		<>
 			<div className="flex justify-between items-center">
@@ -91,14 +91,22 @@ export default function Page() {
 				</button>
 			</div>
 
-			<div className="flex flex-col gap-4">
-				{addresses.map((address) => (
-					<AddressCard
-						key={address.id}
-						{...address}
-					/>
-				))}
-			</div>
+			{addresses.length > 0 ? (
+				<div className="flex flex-col gap-4">
+					{addresses.map((addr) => (
+						<AddressCard
+							key={addr.id}
+							{...addr}
+							onDelete={() => removeAddress(addr.id)}
+							onSetDefault={() => updateAddress(addr.id, { isDefault: true })}
+						/>
+					))}
+				</div>
+			) : (
+				<div className="bg-white border border-black/10 rounded-2xl p-12 flex flex-col items-center gap-3 text-center text-gray-500 text-sm">
+					Belum ada alamat tersimpan.
+				</div>
+			)}
 		</>
 	);
 }

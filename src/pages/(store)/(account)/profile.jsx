@@ -1,9 +1,30 @@
+import { useState } from "react";
 import SquarePen from "~icons/lucide/square-pen";
 
 import Avatar from "#/components/Avatar";
 import FormField from "#/components/FormField";
+import { useAuth } from "#/context/auth";
 
 export default function Page() {
+	const { user, updateProfile } = useAuth();
+	const [saved, setSaved] = useState(false);
+
+	/** @param {React.FormEvent<HTMLFormElement>} e */
+	function handleSubmit(e) {
+		e.preventDefault();
+		const form = new FormData(e.currentTarget);
+		updateProfile({
+			name: form.get("name")?.toString() ?? undefined,
+			phone: form.get("phone")?.toString() ?? undefined,
+			birthdate: form.get("birthdate")?.toString() ?? undefined,
+			gender: /** @type {"M" | "F" | "X" | undefined} */ (
+				form.get("gender")?.toString() ?? undefined
+			),
+		});
+		setSaved(true);
+		setTimeout(() => setSaved(false), 2000);
+	}
+
 	return (
 		<>
 			<div className="flex justify-between items-center">
@@ -15,7 +36,8 @@ export default function Page() {
 					form="profile-form"
 					className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-colors cursor-pointer bg-white"
 				>
-					<SquarePen className="size-4" /> Simpan
+					<SquarePen className="size-4" />
+					{saved ? "Tersimpan!" : "Simpan"}
 				</button>
 			</div>
 
@@ -33,32 +55,34 @@ export default function Page() {
 				<form
 					id="profile-form"
 					className="flex flex-col gap-5"
+					onSubmit={handleSubmit}
 				>
 					<FormField
 						label="Nama Lengkap"
 						name="name"
 						autoComplete="name"
-						defaultValue="Budi Santoso"
+						defaultValue={user?.name ?? ""}
 					/>
 					<FormField
 						label="Email"
 						type="email"
 						name="email"
 						autoComplete="email"
-						defaultValue="budi@email.com"
+						defaultValue={user?.email ?? ""}
+						readOnly
 					/>
 					<FormField
 						label="Nomor Telepon"
 						type="tel"
 						name="phone"
 						autoComplete="tel"
-						defaultValue="0812-3456-7890"
+						defaultValue={user?.phone ?? ""}
 					/>
 					<FormField
 						label="Tanggal Lahir"
 						type="date"
 						name="birthdate"
-						defaultValue="1990-03-15"
+						defaultValue={user?.birthdate ?? ""}
 					/>
 
 					<label className="flex flex-col gap-2 text-sm text-gray-600">
@@ -66,11 +90,12 @@ export default function Page() {
 						<div className="flex items-center gap-2 border border-black/10 rounded-xl px-4 py-2.5 focus-within:border-blue-600 transition-colors bg-gray-50 focus-within:bg-white text-gray-900">
 							<select
 								name="gender"
-								defaultValue="L"
+								defaultValue={user?.gender ?? ""}
 								className="flex-1 w-full outline-none bg-transparent text-sm cursor-pointer"
 							>
-								<option value="L">Laki-laki</option>
-								<option value="P">Perempuan</option>
+								<option value="">Pilih jenis kelamin</option>
+								<option value="M">Laki-laki</option>
+								<option value="F">Perempuan</option>
 								<option value="X">Lainnya</option>
 							</select>
 						</div>

@@ -8,12 +8,7 @@ import Search from "~icons/lucide/search";
 import ShoppingCart from "~icons/lucide/shopping-cart";
 import User from "~icons/lucide/user";
 
-const iconLinks = [
-	{ Icon: Bell, label: "Notifications", to: "/notifications" },
-	{ Icon: User, label: "User", to: "/profile", text: "Budi" },
-	{ Icon: Heart, label: "Favorite", to: "/wishlist" },
-	{ Icon: ShoppingCart, label: "Cart", to: "/cart" },
-];
+import { useAuth } from "#/context/auth";
 
 export function HeaderUtility() {
 	return (
@@ -40,6 +35,10 @@ export function HeaderUtility() {
 }
 
 export function HeaderMain() {
+	const { user } = useAuth();
+	const cartCount = user?.cart.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
+	const firstName = user?.name.split(" ")[0];
+
 	return (
 		<section
 			aria-label="Main header"
@@ -71,17 +70,43 @@ export function HeaderMain() {
 				</form>
 
 				<div className="flex items-center mx-2 gap-6 text-xl **:transition-colors **:duration-200 *:flex *:items-center *:gap-2">
-					{iconLinks.map(({ Icon, label, to, text }) => (
-						<Link
-							key={label}
-							className="group"
-							aria-label={label}
-							to={to}
-						>
-							<Icon className="text-gray-500 group-hover:text-black" />
-							{text && <span className="text-sm">{text}</span>}
-						</Link>
-					))}
+					<Link
+						className="group"
+						aria-label="Notifications"
+						to="/notifications"
+					>
+						<Bell className="text-gray-500 group-hover:text-black" />
+					</Link>
+
+					<Link
+						className="group"
+						aria-label="User"
+						to={user ? "/profile" : "/login"}
+					>
+						<User className="text-gray-500 group-hover:text-black" />
+						<span className="text-sm">{firstName ?? "Masuk"}</span>
+					</Link>
+
+					<Link
+						className="group"
+						aria-label="Favorite"
+						to="/wishlist"
+					>
+						<Heart className="text-gray-500 group-hover:text-black" />
+					</Link>
+
+					<Link
+						className="group relative"
+						aria-label="Cart"
+						to="/cart"
+					>
+						<ShoppingCart className="text-gray-500 group-hover:text-black" />
+						{cartCount > 0 && (
+							<span className="absolute -top-2 -right-2 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
+								{cartCount > 99 ? "99+" : cartCount}
+							</span>
+						)}
+					</Link>
 				</div>
 			</div>
 		</section>
@@ -149,9 +174,7 @@ export default function Header({ navigations }) {
 	return (
 		<header className="sticky top-0 z-50 bg-white">
 			<HeaderUtility />
-
 			<HeaderMain />
-
 			<HeaderNav navigations={navigations} />
 		</header>
 	);

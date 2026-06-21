@@ -1,3 +1,4 @@
+import React from "react";
 import Check from "~icons/lucide/check";
 
 import { SummaryItem } from "#/components/ProductCard";
@@ -21,40 +22,39 @@ export function Stepper({ activeStep }) {
 				{ step: 1, label: "Pengiriman" },
 				{ step: 2, label: "Pembayaran" },
 				{ step: 3, label: "Konfirmasi" },
-			].flatMap(({ step, label }, i, arr) => [
-				<div
-					key={step}
-					className="flex flex-col items-center gap-2 relative"
-				>
-					<div
-						className={cn(
-							"size-12 rounded-full flex items-center justify-center text-lg font-medium z-10 transition-colors",
-							{
-								"bg-green-500 text-white": activeStep > step,
-								"bg-blue-600 text-white": activeStep === step,
-								"bg-gray-200 text-gray-500": activeStep < step,
-							},
-						)}
-					>
-						{activeStep > step ? <Check className="size-6" /> : step}
+			].map(({ step, label }, i, arr) => [
+				<React.Fragment key={label}>
+					<div className="flex flex-col items-center gap-2 relative">
+						<div
+							className={cn(
+								"size-12 rounded-full flex items-center justify-center text-lg font-medium z-10 transition-colors",
+								{
+									"bg-green-500 text-white": activeStep > step,
+									"bg-blue-600 text-white": activeStep === step,
+									"bg-gray-200 text-gray-500": activeStep < step,
+								},
+							)}
+						>
+							{activeStep > step ? <Check className="size-6" /> : step}
+						</div>
+						<span
+							className={cn("text-sm absolute top-14 whitespace-nowrap", {
+								"text-blue-600 font-medium": activeStep === step,
+								"text-gray-500": activeStep !== step,
+							})}
+						>
+							{label}
+						</span>
 					</div>
-					<span
-						className={cn("text-sm absolute top-14 whitespace-nowrap", {
-							"text-blue-600 font-medium": activeStep === step,
-							"text-gray-500": activeStep !== step,
-						})}
-					>
-						{label}
-					</span>
-				</div>,
-				i < arr.length - 1 && (
-					<div
-						className={cn("flex-1 h-0.5 mx-4 transition-colors", {
-							"bg-green-500": activeStep > step,
-							"bg-gray-200": activeStep <= step,
-						})}
-					/>
-				),
+					{i < arr.length - 1 && (
+						<div
+							className={cn("flex-1 h-0.5 mx-4 transition-colors", {
+								"bg-green-500": activeStep > step,
+								"bg-gray-200": activeStep <= step,
+							})}
+						/>
+					)}
+				</React.Fragment>,
 			])}
 		</nav>
 	);

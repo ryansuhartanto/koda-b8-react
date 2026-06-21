@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Heart from "~icons/lucide/heart";
 import ShoppingCart from "~icons/lucide/shopping-cart";
 
 import Star5 from "#/components/Star5";
-import { cn, rupiah, slugify } from "#/lib/utils";
+import { useAuth } from "#/context/auth";
+import { cn, rupiah } from "#/lib/utils";
 
 /**
  * @typedef ProductCardProps
+ * @prop {string} slug
  * @prop {string} name
  * @prop {string} brand
  * @prop {string} img
@@ -16,13 +17,13 @@ import { cn, rupiah, slugify } from "#/lib/utils";
  * @prop {number} rating
  * @prop {number} ratingCount
  * @prop {string[]} [tags]
- * @prop {boolean} [initialWishlisted]
  */
 
 /**
  * @param {ProductCardProps} props
  */
 export function ProductCard({
+	slug,
 	name,
 	brand,
 	img,
@@ -31,9 +32,10 @@ export function ProductCard({
 	rating,
 	ratingCount,
 	tags,
-	initialWishlisted = false,
 }) {
-	const [isWishlisted, setIsWishlisted] = useState(initialWishlisted);
+	const { user, toggleWishlist, addToCart } = useAuth();
+	const navigate = useNavigate();
+	const isWishlisted = user?.wishlist.includes(name) ?? false;
 
 	const discount = originalPrice
 		? Math.round((1 - price / originalPrice) * 100)
@@ -43,10 +45,26 @@ export function ProductCard({
 		(discount && <span className="badge discount">-{discount}%</span>) ||
 		(tags?.includes("baru") && <span className="badge new">Baru</span>);
 
+	function handleWishlist() {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
+		toggleWishlist(name);
+	}
+
+	function handleAddToCart() {
+		if (!user) {
+			navigate("/login");
+			return;
+		}
+		addToCart(name);
+	}
+
 	return (
 		<article className="card group">
 			<div className="relative overflow-hidden">
-				<Link to={`/details/${slugify(name)}`}>
+				<Link to={`/details/${slug}`}>
 					<img
 						src={img}
 						alt={name}
@@ -60,7 +78,7 @@ export function ProductCard({
 					aria-label={
 						isWishlisted ? "Hapus dari wishlist" : "Tambah ke wishlist"
 					}
-					onClick={() => setIsWishlisted((w) => !w)}
+					onClick={handleWishlist}
 					className={cn(
 						"absolute inset-bs-2 inset-e-2 grid place-content-center size-8 rounded-full bg-white shadow-sm cursor-pointer transition-opacity",
 						isWishlisted
@@ -75,6 +93,7 @@ export function ProductCard({
 
 				<button
 					type="button"
+					onClick={handleAddToCart}
 					className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 py-3 bg-orange-500 text-white text-sm font-medium translate-y-full group-hover:translate-y-0 transition-transform duration-200 cursor-pointer"
 				>
 					<ShoppingCart className="size-4" /> Tambah ke Keranjang
@@ -83,7 +102,7 @@ export function ProductCard({
 
 			<div className="m-4 flex flex-col gap-1 product">
 				<p>{brand}</p>
-				<Link to={`/details/${slugify(name)}`}>
+				<Link to={`/details/${slug}`}>
 					<h3>{name}</h3>
 				</Link>
 				<div
