@@ -60,7 +60,7 @@ export default function QuantityStepper({
 					button,
 				)}
 			>
-				&minus;
+				{"-"}
 			</button>
 			<input
 				type="number"
@@ -79,7 +79,7 @@ export default function QuantityStepper({
 					button,
 				)}
 			>
-				&plus;
+				{"+"}
 			</button>
 		</div>
 	);
