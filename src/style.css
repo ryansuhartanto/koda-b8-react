@@ -103,7 +103,7 @@
 					color-mix(in oklch, var(--color-black) 80%, transparent),
 					color-mix(in oklch, var(--color-black) 0%, transparent)
 				),
-				url("images/marketing/fashion.png");
+				url("/images/marketing/fashion.png");
 			background-position: center;
 			background-size: cover;
 		}
@@ -115,7 +115,7 @@
 					color-mix(in oklch, var(--color-blue-800) 80%, transparent),
 					color-mix(in oklch, var(--color-blue-800) 0%, transparent)
 				),
-				url("images/marketing/electronic.png");
+				url("/images/marketing/electronic.png");
 			background-position: center;
 			background-size: cover;
 		}
