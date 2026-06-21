@@ -171,11 +171,11 @@ export default function Page() {
 							</div>
 						</article>
 					</Link>
-					<Link to="/browse?category=Electronik">
+					<Link to="/browse?category=Elektronik">
 						<article className="card electronic flex flex-col justify-center h-44 text-white text-sm leading-normal">
 							<div className="m-6 flex flex-col gap-2">
 								<div>
-									<span className="text-white/80">Electronik Pilihan</span>
+									<span className="text-white/80">Elektronik Pilihan</span>
 									<br />
 									<strong className="text-xl font-bold">Harga Terbaik</strong>
 								</div>
