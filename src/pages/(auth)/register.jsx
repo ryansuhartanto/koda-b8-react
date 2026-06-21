@@ -1,18 +1,38 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
+import * as yup from "yup";
 import ArrowRight from "~icons/lucide/arrow-right";
 import CheckCircle from "~icons/lucide/check-circle";
 import Eye from "~icons/lucide/eye";
 import EyeOff from "~icons/lucide/eye-off";
 import Lock from "~icons/lucide/lock";
 import Mail from "~icons/lucide/mail";
-import User from "~icons/lucide/user";
+import UserIcon from "~icons/lucide/user";
 import SiFacebook from "~icons/simple-icons/facebook";
 import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
 import { useAuth } from "#/context/auth";
+
+const schema = yup.object({
+	name: yup.string().trim().required("Nama wajib diisi"),
+	email: yup.string().email("Email tidak valid").required("Email wajib diisi"),
+	password: yup
+		.string()
+		.min(6, "Minimal 6 karakter")
+		.required("Kata sandi wajib diisi"),
+	confirm: yup
+		.string()
+		.oneOf([yup.ref("password")], "Kata sandi tidak cocok")
+		.required("Konfirmasi kata sandi wajib diisi"),
+	terms: yup
+		.boolean()
+		.oneOf([true], "Kamu harus menyetujui syarat & ketentuan")
+		.required(),
+});
 
 const perks = [
 	"Akses ribuan produk dengan harga terbaik",
@@ -38,31 +58,31 @@ function Perks() {
 }
 
 export default function Page() {
-	const { register } = useAuth();
+	const { register: registerUser } = useAuth();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
-	const [error, setError] = useState("");
 
-	/** @param {React.FormEvent<HTMLFormElement>} e */
-	function handleSubmit(e) {
-		e.preventDefault();
-		const form = new FormData(e.currentTarget);
-		const password = String(form.get("password"));
-		const confirm = String(form.get("confirm"));
-		if (password !== confirm) {
-			setError("Kata sandi tidak cocok");
-			return;
-		}
+	const {
+		register,
+		handleSubmit,
+		setError,
+		formState: { errors, isSubmitting },
+	} = useForm({ resolver: yupResolver(schema) });
+
+	/** @param {yup.InferType<typeof schema>} data */
+	async function onSubmit(data) {
 		try {
-			register({
-				name: String(form.get("name")),
-				email: String(form.get("email")),
-				password,
+			registerUser({
+				name: data.name,
+				email: data.email,
+				password: data.password,
 			});
 			navigate("/");
 		} catch (error) {
-			setError(error instanceof Error ? error.message : "Pendaftaran gagal");
+			setError("root", {
+				message: error instanceof Error ? error.message : "Pendaftaran gagal",
+			});
 		}
 	}
 
@@ -108,35 +128,37 @@ export default function Page() {
 
 			<form
 				className="flex flex-col gap-4"
-				onSubmit={handleSubmit}
+				onSubmit={handleSubmit(onSubmit)}
 			>
-				{error && (
+				{errors.root && (
 					<p className="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded-xl">
-						{error}
+						{errors.root.message}
 					</p>
 				)}
 				<FormField
 					label="Nama Lengkap"
-					name="name"
 					autoComplete="name"
 					placeholder="Nama lengkap kamu"
-					icon={User}
+					icon={UserIcon}
+					error={errors.name?.message}
+					{...register("name")}
 				/>
 				<FormField
 					label="Email"
 					type="email"
-					name="email"
 					autoComplete="email"
 					placeholder="email@contoh.com"
 					icon={Mail}
+					error={errors.email?.message}
+					{...register("email")}
 				/>
 				<FormField
 					label="Kata Sandi"
 					type={showPassword ? "text" : "password"}
-					name="password"
 					autoComplete="new-password"
 					placeholder="Minimal 6 karakter"
 					icon={Lock}
+					error={errors.password?.message}
 					trailing={
 						<button
 							type="button"
@@ -147,14 +169,15 @@ export default function Page() {
 							{showPassword ? <EyeOff /> : <Eye />}
 						</button>
 					}
+					{...register("password")}
 				/>
 				<FormField
 					label="Konfirmasi Kata Sandi"
 					type={showConfirm ? "text" : "password"}
-					name="confirm"
 					autoComplete="new-password"
 					placeholder="Ulangi kata sandi"
 					icon={Lock}
+					error={errors.confirm?.message}
 					trailing={
 						<button
 							type="button"
@@ -165,37 +188,45 @@ export default function Page() {
 							{showConfirm ? <EyeOff /> : <Eye />}
 						</button>
 					}
+					{...register("confirm")}
 				/>
 
-				<label className="flex items-start gap-2 text-sm text-gray-600 cursor-pointer">
-					<input
-						type="checkbox"
-						name="terms"
-						required
-						className="accent-blue-600 size-4 mt-0.5 shrink-0"
-					/>
-					<span>
-						Saya menyetujui{" "}
-						<Link
-							className="text-blue-600 hover:underline"
-							to="/terms"
-						>
-							Syarat &amp; Ketentuan
-						</Link>{" "}
-						dan{" "}
-						<Link
-							className="text-blue-600 hover:underline"
-							to="/privacy"
-						>
-							Kebijakan Privasi
-						</Link>{" "}
-						BeliMudah
-					</span>
-				</label>
+				<div className="flex flex-col gap-1">
+					<label className="flex items-start gap-2 text-sm text-gray-600 cursor-pointer">
+						<input
+							type="checkbox"
+							className="accent-blue-600 size-4 mt-0.5 shrink-0"
+							{...register("terms")}
+						/>
+						<span>
+							Saya menyetujui{" "}
+							<Link
+								className="text-blue-600 hover:underline"
+								to="/terms"
+							>
+								Syarat &amp; Ketentuan
+							</Link>{" "}
+							dan{" "}
+							<Link
+								className="text-blue-600 hover:underline"
+								to="/privacy"
+							>
+								Kebijakan Privasi
+							</Link>{" "}
+							BeliMudah
+						</span>
+					</label>
+					{errors.terms && (
+						<span className="text-xs text-red-500 ml-6">
+							{errors.terms.message}
+						</span>
+					)}
+				</div>
 
 				<button
 					type="submit"
-					className="flex items-center justify-center gap-2 w-full bg-orange-500 text-white py-3 rounded-xl font-medium hover:bg-orange-600 transition-colors cursor-pointer"
+					disabled={isSubmitting}
+					className="flex items-center justify-center gap-2 w-full bg-orange-500 text-white py-3 rounded-xl font-medium hover:bg-orange-600 transition-colors cursor-pointer disabled:opacity-60"
 				>
 					Daftar Sekarang <ArrowRight />
 				</button>
