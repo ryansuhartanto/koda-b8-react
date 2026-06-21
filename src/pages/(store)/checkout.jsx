@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import Check from "~icons/lucide/check";
 import CheckCircle2 from "~icons/lucide/check-circle-2";
@@ -11,19 +12,29 @@ import Truck from "~icons/lucide/truck";
 import { Stepper, Summary } from "#/components/Checkout";
 import FormField from "#/components/FormField";
 import { OrderReviewItem } from "#/components/ProductCard";
+import { useAuth } from "#/context/auth";
 import data from "#/data.json";
 import { useCheckout } from "#/hooks/useCheckout";
+import { rupiah } from "#/lib/utils";
 
 /**
- * @typedef {{ name: string; brand: string; category: string; img: string; price: number; originalPrice: number | null; stock: number; rating: number; ratingCount: number; tags: string[] }} Product
+ * @typedef {import("#/lib/db").ShippingInfo} ShippingInfo
+ * @typedef {import("#/lib/db").Order} Order
  */
-const cartItem = { .../** @type {Product} */ (data.products[0]), quantity: 1 };
-const formattedTotal = `Rp ${(cartItem.price * cartItem.quantity).toLocaleString("id-ID")}`;
 
 const shippingMethods = [
-	{ label: "JNE Reguler", sub: "3-5 hari kerja", defaultChecked: true },
-	{ label: "JNE Express", sub: "1-2 hari kerja" },
-	{ label: "Same Day Delivery", sub: "Hari ini (sebelum 16:00)" },
+	{
+		id: "jne-reg",
+		label: "JNE Reguler",
+		sub: "3-5 hari kerja",
+		defaultChecked: true,
+	},
+	{ id: "jne-exp", label: "JNE Express", sub: "1-2 hari kerja" },
+	{
+		id: "same-day",
+		label: "Same Day Delivery",
+		sub: "Hari ini (sebelum 16:00)",
+	},
 ];
 
 const paymentMethods = [
@@ -61,17 +72,28 @@ const paymentMethods = [
 	},
 ];
 
-const timeline = [
-	{ Icon: Check, label: "Pesanan Diterima", sub: "Baru saja", done: true },
-	{ Icon: Package, label: "Sedang Dikemas", sub: "Estimasi 1-2 jam" },
-	{ Icon: Truck, label: "Dalam Pengiriman", sub: "3-5 hari kerja" },
-	{ Icon: MapPin, label: "Terkirim", sub: "14-16 Juni 2026" },
-];
-
 /**
- * @param {{ onNext: () => void }} props
+ * @param {{ onNext: (shipping: ShippingInfo) => void }} props
  */
 function StepShipping({ onNext }) {
+	/** @param {React.FormEvent<HTMLFormElement>} e */
+	function handleSubmit(e) {
+		e.preventDefault();
+		const form = new FormData(e.currentTarget);
+		onNext({
+			name: String(form.get("name")),
+			phone: String(form.get("phone")),
+			email: String(form.get("email")),
+			address: String(form.get("address")),
+			city: String(form.get("city")),
+			province: String(form.get("province")),
+			postalCode: String(form.get("postalCode")),
+			note: String(form.get("note") ?? ""),
+			method: String(form.get("shipping") ?? shippingMethods[0].label),
+			cost: 0,
+		});
+	}
+
 	return (
 		<section
 			aria-label="Shipping details"
@@ -83,59 +105,54 @@ function StepShipping({ onNext }) {
 
 			<form
 				className="flex flex-col gap-6"
-				onSubmit={(e) => {
-					e.preventDefault();
-					onNext();
-				}}
+				onSubmit={handleSubmit}
 			>
 				<div className="flex flex-col gap-4">
 					<div className="grid grid-cols-2 gap-4">
 						<FormField
 							label="Nama Penerima"
-							defaultValue="Budi Santoso"
+							name="name"
 							required
 						/>
 						<FormField
 							label="Nomor Telepon"
 							type="tel"
-							defaultValue="0812-3456-7890"
+							name="phone"
 							required
 						/>
 					</div>
-
 					<FormField
 						label="Email"
 						type="email"
-						defaultValue="budi@email.com"
+						name="email"
 						required
 					/>
 					<FormField
 						label="Alamat Lengkap"
-						defaultValue="Jl. Kebon Jeruk No. 15"
+						name="address"
 						required
 					/>
-
 					<div className="grid grid-cols-2 gap-4">
 						<FormField
 							label="Kota"
-							defaultValue="Jakarta Barat"
+							name="city"
 							required
 						/>
 						<FormField
 							label="Provinsi"
-							defaultValue="DKI Jakarta"
+							name="province"
 							required
 						/>
 					</div>
-
 					<div className="grid grid-cols-2 gap-4">
 						<FormField
 							label="Kode Pos"
-							defaultValue="11530"
+							name="postalCode"
 							required
 						/>
 						<FormField
 							label="Catatan (opsional)"
+							name="note"
 							placeholder="Warna pagar, dll."
 						/>
 					</div>
@@ -148,15 +165,16 @@ function StepShipping({ onNext }) {
 						Metode Pengiriman
 					</h3>
 					<div className="flex flex-col gap-3">
-						{shippingMethods.map(({ label, sub, defaultChecked }) => (
+						{shippingMethods.map(({ id, label, sub, defaultChecked }) => (
 							<label
-								key={label}
+								key={id}
 								className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-colors ${defaultChecked ? "border-blue-600 bg-blue-50/30" : "border-black/10 hover:border-blue-600"}`}
 							>
 								<div className="flex items-center gap-3">
 									<input
 										type="radio"
 										name="shipping"
+										value={label}
 										defaultChecked={defaultChecked}
 										className="size-4 accent-blue-600"
 									/>
@@ -187,9 +205,9 @@ function StepShipping({ onNext }) {
 }
 
 /**
- * @param {{ onNext: () => void; onBack: () => void }} props
+ * @param {{ selectedId: string; onSelect: (id: string) => void; onNext: () => void; onBack: () => void }} props
  */
-function StepPayment({ onNext, onBack }) {
+function StepPayment({ selectedId, onSelect, onNext, onBack }) {
 	return (
 		<section
 			aria-label="Payment methods"
@@ -201,33 +219,30 @@ function StepPayment({ onNext, onBack }) {
 
 			<div className="flex flex-col gap-6">
 				<div className="grid grid-cols-2 gap-4">
-					{paymentMethods.map(
-						({ id, label, badge, badgeClass, useIcon, defaultChecked }) => (
-							<label
-								key={id}
-								className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${defaultChecked ? "border-blue-600 bg-blue-50/30" : "border-black/10 hover:border-blue-600"}`}
-							>
-								<input
-									type="radio"
-									name="payment"
-									defaultChecked={defaultChecked}
-									className="size-4 accent-blue-600 shrink-0"
-								/>
-								{useIcon ? (
-									<CreditCard className="text-gray-400 size-6 shrink-0" />
-								) : (
-									<div
-										className={`w-8 h-5 rounded flex items-center justify-center text-[8px] font-bold shrink-0 ${badgeClass}`}
-									>
-										{badge}
-									</div>
-								)}
-								<span className="text-sm font-medium text-gray-900">
-									{label}
-								</span>
-							</label>
-						),
-					)}
+					{paymentMethods.map(({ id, label, badge, badgeClass, useIcon }) => (
+						<label
+							key={id}
+							className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${selectedId === id ? "border-blue-600 bg-blue-50/30" : "border-black/10 hover:border-blue-600"}`}
+						>
+							<input
+								type="radio"
+								name="payment"
+								checked={selectedId === id}
+								onChange={() => onSelect(id)}
+								className="size-4 accent-blue-600 shrink-0"
+							/>
+							{useIcon ? (
+								<CreditCard className="text-gray-400 size-6 shrink-0" />
+							) : (
+								<div
+									className={`w-8 h-5 rounded flex items-center justify-center text-[8px] font-bold shrink-0 ${badgeClass}`}
+								>
+									{badge}
+								</div>
+							)}
+							<span className="text-sm font-medium text-gray-900">{label}</span>
+						</label>
+					))}
 				</div>
 
 				<div className="flex gap-3 items-center p-4 rounded-xl bg-blue-50 text-blue-700 text-xs">
@@ -258,9 +273,19 @@ function StepPayment({ onNext, onBack }) {
 }
 
 /**
- * @param {{ onNext: () => void; onBack: () => void }} props
+ * @param {{ shipping: ShippingInfo; paymentId: string; cartItems: { name: string; img: string; price: number; quantity: number }[]; total: number; onNext: () => void; onBack: () => void }} props
  */
-function StepConfirmation({ onNext, onBack }) {
+function StepConfirmation({
+	shipping,
+	paymentId,
+	cartItems,
+	total,
+	onNext,
+	onBack,
+}) {
+	const paymentLabel =
+		paymentMethods.find((m) => m.id === paymentId)?.label ?? paymentId;
+
 	return (
 		<section
 			aria-label="Order confirmation"
@@ -275,27 +300,37 @@ function StepConfirmation({ onNext, onBack }) {
 							Alamat Pengiriman
 						</h3>
 						<p className="text-sm text-gray-600">
-							Budi Santoso &bull; 0812-3456-7890
+							{shipping.name} &bull; {shipping.phone}
 						</p>
 						<p className="text-sm text-gray-600">
-							Jl. Kebon Jeruk No. 15, Jakarta Barat, DKI Jakarta 11530
+							{shipping.address}, {shipping.city}, {shipping.province}{" "}
+							{shipping.postalCode}
 						</p>
 					</div>
 					<div className="flex flex-col gap-1 p-4 bg-gray-50 rounded-xl">
 						<h3 className="text-sm font-medium text-gray-900">
 							Metode Pengiriman
 						</h3>
-						<p className="text-sm text-gray-600">
-							JNE Reguler &bull; 3-5 hari kerja
-						</p>
+						<p className="text-sm text-gray-600">{shipping.method}</p>
 					</div>
 					<div className="flex flex-col gap-4 p-4 bg-gray-50 rounded-xl">
 						<h3 className="text-sm font-medium text-gray-900">
 							Produk yang Dipesan
 						</h3>
 						<div className="flex flex-col gap-3">
-							<OrderReviewItem {...cartItem} />
+							{cartItems.map((item) => (
+								<OrderReviewItem
+									key={item.name}
+									{...item}
+								/>
+							))}
 						</div>
+					</div>
+					<div className="flex flex-col gap-1 p-4 bg-gray-50 rounded-xl">
+						<h3 className="text-sm font-medium text-gray-900">
+							Metode Pembayaran
+						</h3>
+						<p className="text-sm text-gray-600">{paymentLabel}</p>
 					</div>
 				</div>
 
@@ -303,8 +338,7 @@ function StepConfirmation({ onNext, onBack }) {
 					<ShieldCheck className="size-5 shrink-0" />
 					<p>
 						Dengan menekan 'Bayar Sekarang', kamu menyetujui Syarat &amp;
-						Ketentuan kami. Pembayaran baru akan diproses setelah kamu
-						mengkonfirmasi di langkah ini.
+						Ketentuan kami.
 					</p>
 				</div>
 
@@ -321,7 +355,7 @@ function StepConfirmation({ onNext, onBack }) {
 						onClick={onNext}
 						className="flex-1 flex items-center justify-center gap-2 bg-orange-500 text-white py-3 rounded-xl hover:bg-orange-600 font-medium cursor-pointer shadow-sm shadow-orange-500/20 transition-colors"
 					>
-						🔒 Bayar {formattedTotal} Sekarang
+						🔒 Bayar {rupiah(total)} Sekarang
 					</button>
 				</div>
 			</div>
@@ -329,7 +363,17 @@ function StepConfirmation({ onNext, onBack }) {
 	);
 }
 
-function StepSuccess() {
+/**
+ * @param {{ order: Order }} props
+ */
+function StepSuccess({ order }) {
+	const timeline = [
+		{ Icon: Check, label: "Pesanan Diterima", sub: "Baru saja", done: true },
+		{ Icon: Package, label: "Sedang Dikemas", sub: "Estimasi 1-2 jam" },
+		{ Icon: Truck, label: "Dalam Pengiriman", sub: order.shipping.method },
+		{ Icon: MapPin, label: "Terkirim", sub: order.shipping.city },
+	];
+
 	return (
 		<main className="pt-12 pb-24 bg-gray-50">
 			<div className="wrapper flex flex-col items-center gap-8 max-w-2xl text-center mx-auto">
@@ -337,7 +381,7 @@ function StepSuccess() {
 					<div className="size-20 rounded-full bg-green-100 text-green-500 flex items-center justify-center outline-8 outline-green-50">
 						<CheckCircle2 className="size-10" />
 					</div>
-					<h1 className="text-2xl font-bold text-gray-900 flex items-center justify-center gap-2">
+					<h1 className="text-2xl font-bold text-gray-900">
 						Pesanan Berhasil! 🎉
 					</h1>
 					<p className="text-sm text-gray-600">
@@ -352,13 +396,13 @@ function StepSuccess() {
 							<div className="flex flex-col gap-1">
 								<span className="text-xs text-gray-500">Nomor Pesanan</span>
 								<span className="text-sm font-bold text-blue-600">
-									#BM28371132
+									#{order.id}
 								</span>
 							</div>
 							<div className="flex flex-col gap-1 text-right">
 								<span className="text-xs text-gray-500">Total Pembayaran</span>
 								<span className="text-sm font-bold text-gray-900">
-									Rp 450.000
+									{rupiah(order.total)}
 								</span>
 							</div>
 						</div>
@@ -368,10 +412,7 @@ function StepSuccess() {
 								<Truck className="text-gray-400 size-5 shrink-0" />
 								<div className="flex flex-col gap-1">
 									<span className="text-sm font-medium text-gray-900">
-										JNE Reguler
-									</span>
-									<span className="text-xs text-gray-500">
-										Estimasi tiba: 14-16 Juni 2026
+										{order.shipping.method}
 									</span>
 								</div>
 							</div>
@@ -382,7 +423,8 @@ function StepSuccess() {
 										Alamat Pengiriman
 									</span>
 									<span className="text-xs text-gray-500 leading-relaxed">
-										Jl. Kebon Jeruk No. 15, Jakarta Barat, DKI Jakarta 11530
+										{order.shipping.address}, {order.shipping.city},{" "}
+										{order.shipping.province} {order.shipping.postalCode}
 									</span>
 								</div>
 							</div>
@@ -420,20 +462,14 @@ function StepSuccess() {
 
 					<div className="flex justify-center items-center gap-4">
 						<Link
-							to="/track-order"
-							className="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium cursor-pointer hover:bg-blue-700 transition-colors flex items-center gap-2"
-						>
-							Lacak Pesanan
-						</Link>
-						<Link
 							to="/orders"
-							className="px-6 py-3 border border-black/10 rounded-xl text-gray-600 font-medium hover:bg-gray-50 cursor-pointer transition-colors"
+							className="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium cursor-pointer hover:bg-blue-700 transition-colors"
 						>
-							Lihat Riwayat Pesanan
+							Lihat Pesanan
 						</Link>
 						<Link
 							to="/"
-							className="text-blue-600 font-medium hover:text-blue-800 transition-colors ml-4 text-sm"
+							className="text-blue-600 font-medium hover:text-blue-800 transition-colors text-sm"
 						>
 							Lanjut Belanja &rarr;
 						</Link>
@@ -445,10 +481,65 @@ function StepSuccess() {
 }
 
 export default function Page() {
+	const { user, placeOrder } = useAuth();
 	const { step, nextStep, prevStep } = useCheckout();
 
-	if (step === 4) {
-		return <StepSuccess />;
+	const [shipping, setShipping] = useState(
+		/** @type {ShippingInfo | null} */ (null),
+	);
+	const [paymentId, setPaymentId] = useState("bca");
+	const [placedOrder, setPlacedOrder] = useState(
+		/** @type {Order | null} */ (null),
+	);
+
+	const cartItems = (user?.cart ?? [])
+		.map((item) => {
+			const product = data.products.find((p) => p.name === item.productName);
+			return product
+				? {
+						name: product.name,
+						img: product.img,
+						price: product.price,
+						quantity: item.quantity,
+					}
+				: null;
+		})
+		.filter(Boolean);
+
+	const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+	/** @param {ShippingInfo} info */
+	function handleShippingNext(info) {
+		setShipping(info);
+		nextStep();
+	}
+
+	function handleConfirm() {
+		if (!shipping) {
+			return;
+		}
+		const order = placeOrder({
+			items: cartItems.map((i) => ({
+				productName: i.name,
+				quantity: i.quantity,
+				price: i.price,
+			})),
+			shipping,
+			paymentMethod:
+				paymentMethods.find((m) => m.id === paymentId)?.label ?? paymentId,
+			promoCode: null,
+			discount: 0,
+			subtotal,
+			total: subtotal,
+		});
+		if (order) {
+			setPlacedOrder(order);
+			nextStep();
+		}
+	}
+
+	if (step === 4 && placedOrder) {
+		return <StepSuccess order={placedOrder} />;
 	}
 
 	return (
@@ -457,23 +548,29 @@ export default function Page() {
 				<Stepper activeStep={step} />
 
 				<div className="grid grid-cols-3 gap-8 items-start">
-					{step === 1 && <StepShipping onNext={nextStep} />}
+					{step === 1 && <StepShipping onNext={handleShippingNext} />}
 					{step === 2 && (
 						<StepPayment
+							selectedId={paymentId}
+							onSelect={setPaymentId}
 							onNext={nextStep}
 							onBack={prevStep}
 						/>
 					)}
-					{step === 3 && (
+					{step === 3 && shipping && (
 						<StepConfirmation
-							onNext={nextStep}
+							shipping={shipping}
+							paymentId={paymentId}
+							cartItems={cartItems}
+							total={subtotal}
+							onNext={handleConfirm}
 							onBack={prevStep}
 						/>
 					)}
 
 					<Summary
-						items={[cartItem]}
-						subtotal={formattedTotal}
+						items={cartItems}
+						subtotal={rupiah(subtotal)}
 					/>
 				</div>
 			</div>

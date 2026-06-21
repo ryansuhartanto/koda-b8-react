@@ -2,16 +2,15 @@ import { Link } from "react-router";
 import Heart from "~icons/lucide/heart";
 
 import { ProductCard } from "#/components/ProductCard";
+import { useAuth } from "#/context/auth";
 import data from "#/data.json";
 
-const wishlistNames = ["Headphone Wireless Premium", "Sneakers Sport Runfast"];
-const items = /** @type {(typeof data.products)[number][]} */ (
-	wishlistNames
-		.map((name) => data.products.find((p) => p.name === name))
-		.filter(Boolean)
-);
-
 export default function Page() {
+	const { user } = useAuth();
+	const items = (user?.wishlist ?? [])
+		.map((name) => data.products.find((p) => p.name === name))
+		.filter((name) => name !== undefined);
+
 	return (
 		<>
 			<h1 className="text-2xl font-medium text-gray-900">
@@ -24,7 +23,6 @@ export default function Page() {
 						<ProductCard
 							key={p.name}
 							{...p}
-							initialWishlisted
 						/>
 					))}
 				</div>

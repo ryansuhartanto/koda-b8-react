@@ -1,4 +1,5 @@
-import { Link, NavLink, Outlet } from "react-router";
+import { useEffect } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router";
 import ChevronRight from "~icons/lucide/chevron-right";
 import ClipboardList from "~icons/lucide/clipboard-list";
 import CreditCard from "~icons/lucide/credit-card";
@@ -8,14 +9,8 @@ import MapPin from "~icons/lucide/map-pin";
 import Settings from "~icons/lucide/settings";
 
 import Avatar from "#/components/Avatar";
+import { useAuth } from "#/context/auth";
 import { cn } from "#/lib/utils";
-
-const user = {
-	name: "Budi Santoso",
-	email: "budi@email.com",
-	orderCount: 2,
-	wishlistCount: 2,
-};
 
 const menu = [
 	{ to: "/orders", label: "Pesanan Saya", Icon: ClipboardList },
@@ -26,24 +21,25 @@ const menu = [
 ];
 
 function ProfileCard() {
+	const { user } = useAuth();
 	return (
 		<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col items-center gap-3 text-center">
 			<Avatar className="size-16 text-xl" />
 			<div className="flex flex-col">
-				<span className="font-bold text-gray-900">{user.name}</span>
-				<span className="text-sm text-gray-500">{user.email}</span>
+				<span className="font-bold text-gray-900">{user?.name}</span>
+				<span className="text-sm text-gray-500">{user?.email}</span>
 			</div>
 			<hr className="w-full border-gray-100" />
 			<dl className="grid grid-cols-2 w-full">
 				<div className="flex flex-col">
 					<dd className="font-bold text-gray-900 tabular-nums">
-						{user.orderCount}
+						{user?.orders.length ?? 0}
 					</dd>
 					<dt className="text-xs text-gray-500">Pesanan</dt>
 				</div>
 				<div className="flex flex-col">
 					<dd className="font-bold text-gray-900 tabular-nums">
-						{user.wishlistCount}
+						{user?.wishlist.length ?? 0}
 					</dd>
 					<dt className="text-xs text-gray-500">Wishlist</dt>
 				</div>
@@ -53,6 +49,14 @@ function ProfileCard() {
 }
 
 function AccountNav() {
+	const { logout } = useAuth();
+	const navigate = useNavigate();
+
+	function handleLogout() {
+		logout();
+		navigate("/login");
+	}
+
 	return (
 		<nav
 			aria-label="Account navigation"
@@ -79,18 +83,32 @@ function AccountNav() {
 
 			<hr className="my-2 border-gray-100" />
 
-			<Link
-				to="/logout"
-				className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-colors"
+			<button
+				type="button"
+				onClick={handleLogout}
+				className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
 			>
 				<LogOut className="size-5 shrink-0" />
 				<span>Keluar</span>
-			</Link>
+			</button>
 		</nav>
 	);
 }
 
 export default function Layout() {
+	const { isLoggedIn } = useAuth();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!isLoggedIn) {
+			navigate("/login");
+		}
+	}, [isLoggedIn, navigate]);
+
+	if (!isLoggedIn) {
+		return null;
+	}
+
 	return (
 		<main className="pt-6 pb-16 bg-gray-50 min-h-[60vh]">
 			<div className="wrapper grid grid-cols-[18rem_1fr] gap-6 items-start">

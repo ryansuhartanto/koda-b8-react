@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import ArrowRight from "~icons/lucide/arrow-right";
 import CheckCircle from "~icons/lucide/check-circle";
 import Eye from "~icons/lucide/eye";
@@ -12,6 +12,7 @@ import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
+import { useAuth } from "#/context/auth";
 
 const perks = [
 	"Akses ribuan produk dengan harga terbaik",
@@ -37,8 +38,33 @@ function Perks() {
 }
 
 export default function Page() {
+	const { register } = useAuth();
+	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
+	const [error, setError] = useState("");
+
+	/** @param {React.FormEvent<HTMLFormElement>} e */
+	function handleSubmit(e) {
+		e.preventDefault();
+		const form = new FormData(e.currentTarget);
+		const password = String(form.get("password"));
+		const confirm = String(form.get("confirm"));
+		if (password !== confirm) {
+			setError("Kata sandi tidak cocok");
+			return;
+		}
+		try {
+			register({
+				name: String(form.get("name")),
+				email: String(form.get("email")),
+				password,
+			});
+			navigate("/");
+		} catch (error) {
+			setError(error instanceof Error ? error.message : "Pendaftaran gagal");
+		}
+	}
 
 	return (
 		<AuthLayout
@@ -80,7 +106,15 @@ export default function Page() {
 				<hr className="flex-1 border-black/10" />
 			</div>
 
-			<form className="flex flex-col gap-4">
+			<form
+				className="flex flex-col gap-4"
+				onSubmit={handleSubmit}
+			>
+				{error && (
+					<p className="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded-xl">
+						{error}
+					</p>
+				)}
 				<FormField
 					label="Nama Lengkap"
 					name="name"
@@ -137,6 +171,7 @@ export default function Page() {
 					<input
 						type="checkbox"
 						name="terms"
+						required
 						className="accent-blue-600 size-4 mt-0.5 shrink-0"
 					/>
 					<span>

@@ -6,7 +6,9 @@ import Trash2 from "~icons/lucide/trash-2";
 
 import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
+import { useAuth } from "#/context/auth";
 import data from "#/data.json";
+import { rupiah } from "#/lib/utils";
 
 const suggestionNames = [
 	"Headphone Wireless Premium",
@@ -14,18 +16,31 @@ const suggestionNames = [
 	"Smartwatch Series 5",
 	"Sneakers Sport Runfast",
 ];
-const suggestions = /** @type {(typeof data.products)[number][]} */ (
-	suggestionNames
-		.map((name) => data.products.find((p) => p.name === name))
-		.filter(Boolean)
-);
+const suggestions = suggestionNames
+	.map((name) => data.products.find((p) => p.name === name))
+	.filter((name) => name !== undefined);
 
 export default function Page() {
+	const { user, removeFromCart, updateCartQty, toggleWishlist } = useAuth();
+
+	const cartItems = (user?.cart ?? [])
+		.map((item) => {
+			const product = data.products.find((p) => p.name === item.productName);
+			if (!product) {
+				return;
+			}
+			return Object.assign(product, { quantity: item.quantity });
+		})
+		.filter((product) => product !== undefined);
+
+	const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
 	return (
 		<main className="pt-6 pb-16 bg-gray-50">
 			<div className="wrapper flex flex-col gap-8">
 				<h1 className="text-2xl font-medium text-gray-900">
-					Keranjang Belanja (<span className="tabular-nums">1</span> item)
+					Keranjang Belanja (
+					<span className="tabular-nums">{cartItems.length}</span> item)
 				</h1>
 
 				<div className="grid grid-cols-3 gap-8 items-start">
@@ -33,44 +48,69 @@ export default function Page() {
 						aria-label="Cart items"
 						className="col-span-2 flex flex-col gap-4"
 					>
-						<article className="bg-white border border-black/10 rounded-2xl p-5 flex gap-6">
-							<div className="size-24 shrink-0 rounded-xl overflow-hidden bg-gray-100">
-								<img
-									src="images/product/soundwave-headphone_wireless_premium.png"
-									alt="Headphone Wireless Premium"
-									className="w-full h-full object-cover"
-								/>
-							</div>
-							<div className="flex-1 flex flex-col justify-between gap-2">
-								<div className="flex justify-between items-start">
-									<div className="flex flex-col gap-1">
-										<h3 className="font-medium text-gray-900 text-sm">
-											Headphone Wireless Premium
-										</h3>
-										<div className="text-xs text-gray-500">Hitam</div>
+						{cartItems.length > 0 ? (
+							cartItems.map((item) => (
+								<article
+									key={item.name}
+									className="bg-white border border-black/10 rounded-2xl p-5 flex gap-6"
+								>
+									<div className="size-24 shrink-0 rounded-xl overflow-hidden bg-gray-100">
+										<img
+											src={item.img}
+											alt={item.name}
+											className="w-full h-full object-cover"
+										/>
 									</div>
-									<button
-										type="button"
-										className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors"
-										aria-label="Hapus item"
-									>
-										<Trash2 className="size-5" />
-									</button>
-								</div>
-								<div className="flex justify-between items-end">
-									<div className="flex flex-col gap-2 items-start">
-										<QuantityStepper size="sm" />
-										<button
-											type="button"
-											className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-900 cursor-pointer transition-colors"
-										>
-											<Heart className="size-4" /> Simpan ke Wishlist
-										</button>
+									<div className="flex-1 flex flex-col justify-between gap-2">
+										<div className="flex justify-between items-start">
+											<div className="flex flex-col gap-1">
+												<h3 className="font-medium text-gray-900 text-sm">
+													{item.name}
+												</h3>
+												<div className="text-xs text-gray-500">
+													{item.brand}
+												</div>
+											</div>
+											<button
+												type="button"
+												onClick={() => removeFromCart(item.name)}
+												className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors"
+												aria-label="Hapus item"
+											>
+												<Trash2 className="size-5" />
+											</button>
+										</div>
+										<div className="flex justify-between items-end">
+											<div className="flex flex-col gap-2 items-start">
+												<QuantityStepper
+													size="sm"
+													value={item.quantity}
+													max={item.stock}
+													onChange={(qty) => updateCartQty(item.name, qty)}
+												/>
+												<button
+													type="button"
+													onClick={() => {
+														toggleWishlist(item.name);
+														removeFromCart(item.name);
+													}}
+													className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-900 cursor-pointer transition-colors"
+												>
+													<Heart className="size-4" /> Simpan ke Wishlist
+												</button>
+											</div>
+											<span className="text-blue-600 font-medium">
+												{rupiah(item.price * item.quantity)}
+											</span>
+										</div>
 									</div>
-									<span className="text-blue-600 font-medium">Rp 450.000</span>
-								</div>
+								</article>
+							))
+						) : (
+							<div className="bg-white border border-black/10 rounded-2xl p-12 flex flex-col items-center gap-3 text-center text-gray-500 text-sm">
+								Keranjang kamu masih kosong.
 							</div>
-						</article>
+						)}
 
 						<div className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-6">
 							<h2 className="flex items-center gap-2 font-medium text-gray-900">
@@ -103,8 +143,8 @@ export default function Page() {
 						</h2>
 						<div className="flex flex-col gap-2 text-sm text-gray-600">
 							<div className="flex justify-between">
-								<span>Subtotal (1 item)</span>
-								<span>Rp 450.000</span>
+								<span>Subtotal ({cartItems.length} item)</span>
+								<span>{rupiah(subtotal)}</span>
 							</div>
 							<div className="flex justify-between">
 								<span>Ongkos Kirim</span>
@@ -113,7 +153,9 @@ export default function Page() {
 							<hr className="border-gray-200" />
 							<div className="flex justify-between items-center">
 								<span className="font-medium text-gray-900">Total</span>
-								<span className="font-bold text-blue-600">Rp 450.000</span>
+								<span className="font-bold text-blue-600">
+									{rupiah(subtotal)}
+								</span>
 							</div>
 						</div>
 						<Link

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Eye from "~icons/lucide/eye";
 import EyeOff from "~icons/lucide/eye-off";
 import Lock from "~icons/lucide/lock";
@@ -10,6 +10,7 @@ import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
+import { useAuth } from "#/context/auth";
 
 function Stats() {
 	return (
@@ -32,7 +33,26 @@ function Stats() {
 }
 
 export default function Page() {
+	const { login } = useAuth();
+	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
+	const [error, setError] = useState("");
+
+	/** @param {React.FormEvent<HTMLFormElement>} e */
+	function handleSubmit(e) {
+		e.preventDefault();
+		const form = new FormData(e.currentTarget);
+		try {
+			login(
+				String(form.get("email")),
+				String(form.get("password")),
+				form.get("remember") === "on",
+			);
+			navigate("/");
+		} catch (error) {
+			setError(error instanceof Error ? error.message : "Login gagal");
+		}
+	}
 
 	return (
 		<AuthLayout
@@ -75,7 +95,15 @@ export default function Page() {
 				<hr className="flex-1 border-black/10" />
 			</div>
 
-			<form className="flex flex-col gap-4">
+			<form
+				className="flex flex-col gap-4"
+				onSubmit={handleSubmit}
+			>
+				{error && (
+					<p className="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded-xl">
+						{error}
+					</p>
+				)}
 				<FormField
 					label="Email"
 					type="email"

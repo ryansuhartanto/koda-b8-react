@@ -1,44 +1,44 @@
 import { Link } from "react-router";
 import CircleCheck from "~icons/lucide/circle-check";
+import Clock from "~icons/lucide/clock";
+import Package from "~icons/lucide/package";
 import Star from "~icons/lucide/star";
 import Truck from "~icons/lucide/truck";
+import XCircle from "~icons/lucide/x-circle";
 
+import { useAuth } from "#/context/auth";
 import data from "#/data.json";
 import { cn, rupiah } from "#/lib/utils";
 
 /** @param {string} name */
-const imgOf = (name) => data.products.find((p) => p.name === name)?.img;
+const imgOf = (name) => data.products.find((p) => p.name === name)?.img ?? "";
 
-const orders = [
-	{
-		id: "BM98765432",
-		date: "20 Mei 2026",
-		status: "delivered",
-		items: [{ name: "Headphone Wireless Premium", quantity: 1, price: 450000 }],
-		total: 450000,
-	},
-	{
-		id: "BM87654321",
-		date: "26 Mei 2026",
-		status: "shipped",
-		items: [
-			{ name: "Kaos Polos Premium Cotton", quantity: 2, price: 125000 },
-			{ name: "Sneakers Sport Runfast", quantity: 1, price: 550000 },
-		],
-		total: 800000,
-	},
-];
-
+/** @type {Record<import("#/lib/db").OrderStatus, { label: string; Icon: React.ComponentType<{ className?: string }>; className: string }>} */
 const statusConfig = {
-	delivered: {
-		label: "Terkirim",
-		Icon: CircleCheck,
-		className: "text-green-600 bg-green-50",
+	pending: {
+		label: "Menunggu",
+		Icon: Clock,
+		className: "text-amber-600 bg-amber-50",
+	},
+	packed: {
+		label: "Dikemas",
+		Icon: Package,
+		className: "text-indigo-600 bg-indigo-50",
 	},
 	shipped: {
 		label: "Dikirim",
 		Icon: Truck,
 		className: "text-blue-600 bg-blue-50",
+	},
+	delivered: {
+		label: "Terkirim",
+		Icon: CircleCheck,
+		className: "text-green-600 bg-green-50",
+	},
+	cancelled: {
+		label: "Dibatalkan",
+		Icon: XCircle,
+		className: "text-red-600 bg-red-50",
 	},
 };
 
@@ -49,11 +49,15 @@ const buttonOutlinePrimary = `${buttonBase} border border-blue-600 text-blue-600
 const buttonReview = `${buttonBase} flex items-center gap-1.5 bg-orange-500 text-white hover:bg-orange-600`;
 
 /**
- * @param {(typeof orders)[number]} order
+ * @param {import("#/lib/db").Order} order
  */
-function OrderCard({ id, date, status, items, total }) {
-	const { label, Icon, className } =
-		statusConfig[/** @type {keyof typeof statusConfig} */ (status)];
+function OrderCard({ id, createdAt, status, items, total }) {
+	const { label, Icon, className } = statusConfig[status];
+	const date = new Date(createdAt).toLocaleDateString("id-ID", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
 
 	return (
 		<article className="bg-white border border-black/10 rounded-2xl p-5 flex flex-col gap-4">
@@ -77,19 +81,19 @@ function OrderCard({ id, date, status, items, total }) {
 			<div className="flex flex-col gap-3">
 				{items.map((item) => (
 					<div
-						key={item.name}
+						key={item.productName}
 						className="flex gap-4 items-center"
 					>
 						<div className="size-12 shrink-0 rounded-lg overflow-hidden bg-gray-100">
 							<img
-								src={imgOf(item.name)}
-								alt={item.name}
+								src={imgOf(item.productName)}
+								alt={item.productName}
 								className="w-full h-full object-cover"
 							/>
 						</div>
 						<div className="flex-1 flex flex-col">
 							<span className="text-sm font-medium text-gray-900">
-								{item.name}
+								{item.productName}
 							</span>
 							<span className="text-xs text-gray-500 tabular-nums">
 								&times;{item.quantity} &middot; {rupiah(item.price)}
@@ -136,18 +140,36 @@ function OrderCard({ id, date, status, items, total }) {
 }
 
 export default function Page() {
+	const { user } = useAuth();
+	const orders = user?.orders ?? [];
+
 	return (
 		<>
 			<h1 className="text-2xl font-medium text-gray-900">Pesanan Saya</h1>
 
-			<div className="flex flex-col gap-4">
-				{orders.map((order) => (
-					<OrderCard
-						key={order.id}
-						{...order}
-					/>
-				))}
-			</div>
+			{orders.length > 0 ? (
+				<div className="flex flex-col gap-4">
+					{orders.map((order) => (
+						<OrderCard
+							key={order.id}
+							{...order}
+						/>
+					))}
+				</div>
+			) : (
+				<div className="bg-white border border-black/10 rounded-2xl p-12 flex flex-col items-center gap-3 text-center">
+					<Package className="size-10 text-gray-300" />
+					<p className="text-gray-500 text-sm">
+						Kamu belum memiliki pesanan. Yuk, mulai belanja!
+					</p>
+					<Link
+						to="/browse"
+						className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
+					>
+						Mulai Belanja
+					</Link>
+				</div>
+			)}
 		</>
 	);
 }
