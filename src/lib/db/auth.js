@@ -27,7 +27,7 @@ export function getCurrentUser() {
 export function register({ name, email, password }) {
 	const users = getUsers();
 	if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
-		throw new Error("Email sudah terdaftar");
+		throw new Error("EMAIL_TAKEN");
 	}
 	/** @type {User} */
 	const user = {
@@ -58,8 +58,11 @@ export function login(email, password, remember = false) {
 	const user = getUsers().find(
 		(u) => u.email.toLowerCase() === email.toLowerCase(),
 	);
-	if (!user || user.passwordHash !== btoa(password)) {
-		throw new Error("Email atau kata sandi salah");
+	if (!user) {
+		throw new Error("EMAIL_NOT_FOUND");
+	}
+	if (user.passwordHash !== btoa(password)) {
+		throw new Error("WRONG_PASSWORD");
 	}
 	_createSession(user.id, remember);
 	return user;

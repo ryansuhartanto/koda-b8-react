@@ -80,9 +80,12 @@ export default function Page() {
 			});
 			navigate("/");
 		} catch (error) {
-			setError("root", {
-				message: error instanceof Error ? error.message : "Pendaftaran gagal",
-			});
+			const code = error instanceof Error ? error.message : "";
+			if (code === "EMAIL_TAKEN") {
+				setError("email", { message: "Email sudah terdaftar, coba masuk" });
+			} else {
+				setError("root", { message: "Pendaftaran gagal" });
+			}
 		}
 	}
 

@@ -59,9 +59,14 @@ export default function Page() {
 			login(data.email, data.password, data.remember ?? false);
 			navigate("/");
 		} catch (error) {
-			setError("root", {
-				message: error instanceof Error ? error.message : "Login gagal",
-			});
+			const code = error instanceof Error ? error.message : "";
+			if (code === "EMAIL_NOT_FOUND") {
+				setError("email", { message: "Email tidak terdaftar" });
+			} else if (code === "WRONG_PASSWORD") {
+				setError("password", { message: "Kata sandi salah" });
+			} else {
+				setError("root", { message: "Login gagal" });
+			}
 		}
 	}
 
