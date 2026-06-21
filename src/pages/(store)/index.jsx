@@ -63,7 +63,7 @@ export default function Page() {
 
 				<img
 					className="absolute inset-y-0 inset-e-0 w-1/2 h-full object-cover mix-blend-hard-light opacity-25"
-					src="/images/category/electronic.png"
+					src="/images/category/electronik.png"
 					alt="Electronics"
 				/>
 
@@ -171,8 +171,8 @@ export default function Page() {
 							</div>
 						</article>
 					</Link>
-					<Link to="/browse?category=Electronic">
-						<article className="card electronic flex flex-col justify-center h-44 text-white text-sm leading-normal">
+					<Link to="/browse?category=Electronik">
+						<article className="card electronik flex flex-col justify-center h-44 text-white text-sm leading-normal">
 							<div className="m-6 flex flex-col gap-2">
 								<div>
 									<span className="text-white/80">Electronik Pilihan</span>

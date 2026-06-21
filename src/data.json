@@ -1,9 +1,9 @@
 {
 	"categories": [
 		{
-			"name": "Electronic",
+			"name": "Electronik",
 			"icon": "💻",
-			"img": "/images/category/electronic.png",
+			"img": "/images/category/electronik.png",
 			"items": 7
 		},
 		{
