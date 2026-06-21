@@ -127,12 +127,13 @@ function OrderCard({ id, createdAt, status, items, total }) {
 							<Star className="size-4" /> Beri Ulasan
 						</button>
 					)}
-					<button
+					<Link
+						to="/browse"
 						type="button"
 						className={buttonOutline}
 					>
 						Beli Lagi
-					</button>
+					</Link>
 				</div>
 			</footer>
 		</article>
