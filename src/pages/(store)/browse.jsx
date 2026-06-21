@@ -26,7 +26,7 @@ export default function Page() {
 	const selectedCategories = searchParams.getAll("category");
 	const minRating = searchParams.get("rating")
 		? Number(searchParams.get("rating"))
-		: null;
+		: undefined;
 	const inStockOnly = searchParams.get("inStock") === "1";
 	const sort = searchParams.get("sort") ?? "popular";
 	const urlTag = searchParams.get("tag");
@@ -111,7 +111,7 @@ export default function Page() {
 	}
 
 	const hasActiveFilters =
-		selectedCategories.length > 0 || minRating !== null || inStockOnly;
+		selectedCategories.length > 0 || minRating !== undefined || inStockOnly;
 
 	const filtered = useMemo(() => {
 		let result = data.products;
@@ -122,7 +122,7 @@ export default function Page() {
 		if (selectedCategories.length > 0) {
 			result = result.filter((p) => selectedCategories.includes(p.category));
 		}
-		if (minRating !== null) {
+		if (minRating !== undefined) {
 			result = result.filter((p) => p.rating >= minRating);
 		}
 		if (inStockOnly) {

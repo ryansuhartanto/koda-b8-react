@@ -14,11 +14,11 @@ export default function Page() {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
 		updateProfile({
-			name: String(form.get("name")),
-			phone: String(form.get("phone")) || null,
-			birthdate: String(form.get("birthdate")) || null,
-			gender: /** @type {"L" | "P" | "X" | null} */ (
-				String(form.get("gender")) || null
+			name: form.get("name")?.toString() ?? undefined,
+			phone: form.get("phone")?.toString() ?? undefined,
+			birthdate: form.get("birthdate")?.toString() ?? undefined,
+			gender: /** @type {"M" | "F" | "X" | undefined} */ (
+				form.get("gender")?.toString() ?? undefined
 			),
 		});
 		setSaved(true);
@@ -94,8 +94,8 @@ export default function Page() {
 								className="flex-1 w-full outline-none bg-transparent text-sm cursor-pointer"
 							>
 								<option value="">Pilih jenis kelamin</option>
-								<option value="L">Laki-laki</option>
-								<option value="P">Perempuan</option>
+								<option value="M">Laki-laki</option>
+								<option value="F">Perempuan</option>
 								<option value="X">Lainnya</option>
 							</select>
 						</div>

@@ -81,15 +81,16 @@ function StepShipping({ onNext }) {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
 		onNext({
-			name: String(form.get("name")),
-			phone: String(form.get("phone")),
-			email: String(form.get("email")),
-			address: String(form.get("address")),
-			city: String(form.get("city")),
-			province: String(form.get("province")),
-			postalCode: String(form.get("postalCode")),
-			note: String(form.get("note") ?? ""),
-			method: String(form.get("shipping") ?? shippingMethods[0].label),
+			name: form.get("name")?.toString() ?? "",
+			phone: form.get("phone")?.toString() ?? "",
+			email: form.get("email")?.toString() ?? "",
+			address: form.get("address")?.toString() ?? "",
+			city: form.get("city")?.toString() ?? "",
+			province: form.get("province")?.toString() ?? "",
+			postalCode: form.get("postalCode")?.toString() ?? "",
+			note: form.get("note")?.toString() ?? "",
+			method:
+				form.get("shipping")?.toString() ?? shippingMethods[0]?.label ?? "",
 			cost: 0,
 		});
 	}
@@ -485,26 +486,27 @@ export default function Page() {
 	const { step, nextStep, prevStep } = useCheckout();
 
 	const [shipping, setShipping] = useState(
-		/** @type {ShippingInfo | null} */ (null),
+		/** @type {ShippingInfo | undefined} */ (undefined),
 	);
 	const [paymentId, setPaymentId] = useState("bca");
 	const [placedOrder, setPlacedOrder] = useState(
-		/** @type {Order | null} */ (null),
+		/** @type {Order | undefined} */ (undefined),
 	);
 
 	const cartItems = (user?.cart ?? [])
 		.map((item) => {
 			const product = data.products.find((p) => p.name === item.productName);
-			return product
-				? {
-						name: product.name,
-						img: product.img,
-						price: product.price,
-						quantity: item.quantity,
-					}
-				: null;
+			if (!product) {
+				return;
+			}
+			return {
+				name: product.name,
+				img: product.img,
+				price: product.price,
+				quantity: item.quantity,
+			};
 		})
-		.filter(Boolean);
+		.filter((x) => x !== undefined);
 
 	const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
@@ -527,7 +529,6 @@ export default function Page() {
 			shipping,
 			paymentMethod:
 				paymentMethods.find((m) => m.id === paymentId)?.label ?? paymentId,
-			promoCode: null,
 			discount: 0,
 			subtotal,
 			total: subtotal,
