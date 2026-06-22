@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import Bell from "~icons/lucide/bell";
 import ExternalLink from "~icons/lucide/external-link";
 import LayoutGrid from "~icons/lucide/layout-grid";
+import Menu from "~icons/lucide/menu";
 import Package from "~icons/lucide/package";
 import Settings from "~icons/lucide/settings";
 import ShoppingCart from "~icons/lucide/shopping-cart";
@@ -18,14 +20,34 @@ const nav = [
 	{ to: "/admin/settings", label: "Pengaturan", Icon: Settings },
 ];
 
-function Sidebar() {
-	return (
-		<aside className="flex flex-col w-64 shrink-0 bg-gray-900 text-gray-400">
-			<div className="flex items-center gap-3 h-16 px-6 border-b border-white/10">
-				<span className="grid place-content-center size-8 rounded-lg bg-blue-600 text-white text-sm font-bold">
-					B
-				</span>
-				<span className="text-white font-semibold">BeliMudah Admin</span>
+/**
+ * @param {{ open: boolean, onClose: () => void }} props
+ */
+function Sidebar({ open, onClose }) {
+	useEffect(() => {
+		document.body.style.overflow = open ? "hidden" : "";
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [open]);
+
+	const content = (
+		<>
+			<div className="flex items-center justify-between h-16 px-6 border-b border-white/10">
+				<div className="flex items-center gap-3">
+					<span className="grid place-content-center size-8 rounded-lg bg-blue-600 text-white text-sm font-bold">
+						B
+					</span>
+					<span className="text-white font-semibold">BeliMudah Admin</span>
+				</div>
+				<button
+					type="button"
+					aria-label="Close sidebar"
+					onClick={onClose}
+					className="md:hidden grid place-content-center size-8 rounded-full bg-white/10 text-gray-400 hover:text-white cursor-pointer"
+				>
+					<X />
+				</button>
 			</div>
 
 			<nav
@@ -37,6 +59,7 @@ function Sidebar() {
 						key={to}
 						to={to}
 						end={end}
+						onClick={onClose}
 						className={({ isActive }) =>
 							cn(
 								"flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors",
@@ -58,20 +81,51 @@ function Sidebar() {
 			>
 				<ExternalLink className="size-4" /> Kembali ke Toko
 			</Link>
-		</aside>
+		</>
+	);
+
+	return (
+		<>
+			{/* Desktop sidebar */}
+			<aside className="hidden md:flex flex-col w-64 shrink-0 bg-gray-900 text-gray-400">
+				{content}
+			</aside>
+
+			{/* Mobile overlay */}
+			<div
+				className={cn(
+					"fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 backdrop-blur-sm",
+					open ? "opacity-100" : "opacity-0 pointer-events-none",
+				)}
+				onClick={onClose}
+				aria-hidden="true"
+			/>
+
+			{/* Mobile drawer */}
+			<aside
+				aria-label="Admin navigation"
+				className={cn(
+					"fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 text-gray-400 flex flex-col md:hidden transition-transform duration-300 ease-out shadow-2xl",
+					open ? "translate-x-0" : "-translate-x-full",
+				)}
+			>
+				{content}
+			</aside>
+		</>
 	);
 }
 
-function Topbar() {
+function Topbar({ onMenuOpen }) {
 	return (
-		<header className="flex items-center justify-between h-16 px-6 bg-white border-b border-black/10 shrink-0">
+		<header className="flex items-center justify-between h-16 px-4 md:px-6 bg-white border-b border-black/10 shrink-0">
 			<div className="flex items-center gap-3 text-gray-500">
 				<button
 					type="button"
 					aria-label="Toggle menu"
+					onClick={onMenuOpen}
 					className="hover:text-gray-900 transition-colors cursor-pointer"
 				>
-					<X className="size-5" />
+					<Menu className="size-5" />
 				</button>
 				<span className="text-sm">Admin</span>
 			</div>
@@ -89,7 +143,9 @@ function Topbar() {
 					<span className="grid place-content-center size-8 rounded-full bg-blue-100 text-blue-600 text-sm font-bold">
 						A
 					</span>
-					<span className="text-sm font-medium text-gray-900">Admin</span>
+					<span className="hidden sm:block text-sm font-medium text-gray-900">
+						Admin
+					</span>
 				</div>
 			</div>
 		</header>
@@ -97,12 +153,17 @@ function Topbar() {
 }
 
 export default function Layout() {
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+
 	return (
 		<div className="flex min-h-dvh bg-gray-50">
-			<Sidebar />
+			<Sidebar
+				open={sidebarOpen}
+				onClose={() => setSidebarOpen(false)}
+			/>
 			<div className="flex-1 flex flex-col min-w-0">
-				<Topbar />
-				<main className="flex-1 p-8">
+				<Topbar onMenuOpen={() => setSidebarOpen((o) => !o)} />
+				<main className="flex-1 p-4 md:p-8">
 					<Outlet />
 				</main>
 			</div>

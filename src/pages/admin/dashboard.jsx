@@ -203,7 +203,7 @@ export default function Page() {
 				<span className="text-sm text-gray-500">{dateLabel}</span>
 			</div>
 
-			<div className="grid grid-cols-4 gap-6">
+			<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
 				{stats.map((s) => (
 					<StatCard
 						key={s.label}
@@ -221,8 +221,8 @@ export default function Page() {
 				))}
 			</div>
 
-			<div className="grid grid-cols-3 gap-6 items-start">
-				<div className="col-span-2">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+				<div className="lg:col-span-2">
 					<Card
 						title="Pendapatan & Pesanan (2026)"
 						action={
@@ -239,7 +239,7 @@ export default function Page() {
 				</Card>
 			</div>
 
-			<div className="grid grid-cols-2 gap-6 items-start">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
 				<Card
 					title="Pesanan Terbaru"
 					action={

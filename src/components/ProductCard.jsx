@@ -102,9 +102,7 @@ export function ProductCard({
 
 			<div className="m-4 flex flex-col gap-1 product">
 				<p>{brand}</p>
-				<Link to={`/details/${slug}`}>
-					<h3>{name}</h3>
-				</Link>
+				<h3>{name}</h3>
 				<div
 					itemProp="aggregateRating"
 					itemScope
@@ -119,7 +117,7 @@ export function ProductCard({
 						<span itemProp="reviewCount">{ratingCount}</span>)
 					</span>
 				</div>
-				<p className="tabular-nums flex gap-2 items-center pt-1 price">
+				<p className="tabular-nums flex flex-col lg:flex-row gap-2 items-start lg:items-center pt-1 price">
 					{originalPrice ? (
 						<>
 							<ins>{rupiah(price)}</ins>

@@ -111,7 +111,7 @@ export default function Layout() {
 
 	return (
 		<main className="pt-6 pb-16 bg-gray-50 min-h-[60vh]">
-			<div className="wrapper grid grid-cols-[18rem_1fr] gap-6 items-start">
+			<div className="wrapper grid grid-cols-1 md:grid-cols-[18rem_1fr] gap-6 items-start">
 				<aside className="flex flex-col gap-4">
 					<ProfileCard />
 					<AccountNav />

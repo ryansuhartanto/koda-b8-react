@@ -72,7 +72,7 @@ export function FooterPromotions() {
 			aria-label="Promotions"
 			className="py-8"
 		>
-			<div className="wrapper grid grid-cols-4 gap-8">
+			<div className="wrapper grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
 				{promotions.map(({ Icon, title, sub }) => (
 					<div
 						key={title}
@@ -98,8 +98,8 @@ export function FooterNav() {
 			aria-label="Main footer"
 			className="py-8"
 		>
-			<div className="wrapper grid grid-cols-4 gap-8">
-				<div className="flex flex-col gap-4">
+			<div className="wrapper grid grid-cols-2 md:grid-cols-4 gap-8">
+				<div className="col-span-2 md:col-span-1 flex flex-col gap-4">
 					<Link
 						className="brand text-white text-lg"
 						to="/"
@@ -167,7 +167,7 @@ export function FooterNav() {
 					</ul>
 				</div>
 
-				<div className="flex flex-col gap-4">
+				<div className="col-span-2 md:col-span-1 flex flex-col gap-4">
 					<h5 className="text-white text-base font-medium">Kontak</h5>
 					<ul className="flex flex-col gap-4 list-none *:ps-6 *:relative [&_svg]:absolute [&_svg]:left-0 [&_svg]:text-base">
 						<li>
@@ -230,7 +230,7 @@ export function FooterCopyright() {
 			aria-label="Copyright"
 			className="py-4 text-xs text-gray-500"
 		>
-			<div className="wrapper flex justify-between">
+			<div className="wrapper flex flex-col sm:flex-row justify-between gap-2">
 				<small>&copy; 2026 BeliMudah. Seluruh hak cipta dilindungi.</small>
 				<small className="flex gap-4">
 					<Link to="/privacy">Kebijakan Privasi</Link>
