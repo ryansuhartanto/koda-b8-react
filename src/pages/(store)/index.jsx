@@ -20,7 +20,7 @@ export default function Page() {
 		<main className="flex flex-col gap-12 pt-6 pb-16 bg-gray-50">
 			<section
 				aria-label="Hero"
-				className="-mt-6 relative h-100 bg-linear-to-r from-blue-600 to-purple-700"
+				className="-mt-6 relative h-64 sm:h-80 md:h-100 bg-linear-to-r from-blue-600 to-purple-700"
 			>
 				<nav
 					aria-label="Hero slides navigations"
@@ -68,16 +68,16 @@ export default function Page() {
 				/>
 
 				<div className="wrapper absolute inset-0 flex flex-col justify-center">
-					<div className="w-2/5 flex flex-col gap-4">
-						<h2 className="text-white font-bold text-[2.5rem] leading-tight">
+					<div className="w-full md:w-2/5 flex flex-col gap-3 md:gap-4">
+						<h2 className="text-white font-bold text-2xl md:text-[2.5rem] leading-tight">
 							Elektronik Pilihan, Harga Spesial
 						</h2>
-						<p className="text-white/80 text-lg leading-relaxed">
+						<p className="hidden sm:block text-white/80 text-base md:text-lg leading-relaxed">
 							Laptop, smartphone, headphone, dan masih banyak lagi dengan diskon
 							hingga 40%
 						</p>
 						<Link
-							className="flex gap-2 items-center w-fit bg-white text-blue-600 py-3 px-6 rounded-xl"
+							className="flex gap-2 items-center w-fit bg-white text-blue-600 py-2.5 px-5 md:py-3 md:px-6 rounded-xl text-sm md:text-base"
 							to="/browse?tag=promo"
 						>
 							Lihat Promo <ArrowRight />
@@ -100,7 +100,7 @@ export default function Page() {
 							Lihat Semua <ArrowRight />
 						</Link>
 					</header>
-					<div className="grid grid-cols-6 gap-3">
+					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
 						{data.categories.map(({ name, img, items }) => (
 							<Link
 								key={name}
@@ -144,7 +144,7 @@ export default function Page() {
 							Lihat Semua <ArrowRight />
 						</Link>
 					</header>
-					<div className="grid grid-cols-4 gap-4">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 						{flashDeals.map((p) => (
 							<ProductCard
 								key={p.name}
@@ -156,7 +156,7 @@ export default function Page() {
 			</section>
 
 			<section aria-label="Marketing">
-				<div className="wrapper grid grid-cols-2 gap-4">
+				<div className="wrapper grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<Link to="/browse?category=Fashion">
 						<article className="card fashion flex flex-col justify-center h-44 text-white text-sm leading-normal">
 							<div className="m-6 flex flex-col gap-2">
@@ -201,7 +201,7 @@ export default function Page() {
 							Lihat Semua <ArrowRight />
 						</Link>
 					</header>
-					<div className="grid grid-cols-4 gap-4">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 						{newest.map((p) => (
 							<ProductCard
 								key={p.name}
@@ -223,7 +223,7 @@ export default function Page() {
 							Lihat Semua <ArrowRight />
 						</Link>
 					</header>
-					<div className="grid grid-cols-4 gap-4">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 						{featured.map((p) => (
 							<ProductCard
 								key={p.name}

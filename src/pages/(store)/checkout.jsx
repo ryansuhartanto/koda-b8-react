@@ -98,7 +98,7 @@ function StepShipping({ onNext }) {
 	return (
 		<section
 			aria-label="Shipping details"
-			className="col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
+			className="lg:col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
 		>
 			<h2 className="flex items-center gap-2 text-lg font-medium text-gray-900">
 				<Truck className="text-blue-600" /> Alamat Pengiriman
@@ -109,7 +109,7 @@ function StepShipping({ onNext }) {
 				onSubmit={handleSubmit}
 			>
 				<div className="flex flex-col gap-4">
-					<div className="grid grid-cols-2 gap-4">
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<FormField
 							label="Nama Penerima"
 							name="name"
@@ -133,7 +133,7 @@ function StepShipping({ onNext }) {
 						name="address"
 						required
 					/>
-					<div className="grid grid-cols-2 gap-4">
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<FormField
 							label="Kota"
 							name="city"
@@ -145,7 +145,7 @@ function StepShipping({ onNext }) {
 							required
 						/>
 					</div>
-					<div className="grid grid-cols-2 gap-4">
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<FormField
 							label="Kode Pos"
 							name="postalCode"
@@ -212,7 +212,7 @@ function StepPayment({ selectedId, onSelect, onNext, onBack }) {
 	return (
 		<section
 			aria-label="Payment methods"
-			className="col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
+			className="lg:col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
 		>
 			<h2 className="flex items-center gap-2 text-lg font-medium text-gray-900">
 				<CreditCard className="text-blue-600" /> Metode Pembayaran
@@ -290,7 +290,7 @@ function StepConfirmation({
 	return (
 		<section
 			aria-label="Order confirmation"
-			className="col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
+			className="lg:col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
 		>
 			<h2 className="text-lg font-medium text-gray-900">Konfirmasi Pesanan</h2>
 
@@ -548,7 +548,7 @@ export default function Page() {
 			<div className="wrapper flex flex-col gap-12">
 				<Stepper activeStep={step} />
 
-				<div className="grid grid-cols-3 gap-8 items-start">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
 					{step === 1 && <StepShipping onNext={handleShippingNext} />}
 					{step === 2 && (
 						<StepPayment

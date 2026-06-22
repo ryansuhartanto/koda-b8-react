@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import SlidersHorizontal from "~icons/lucide/sliders-horizontal";
+import X from "~icons/lucide/x";
 
 import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
 import Star5 from "#/components/Star5";
 import data from "#/data.json";
+import { cn } from "#/lib/utils";
 
 const PAGE_SIZE = 12;
 
@@ -22,6 +25,7 @@ const categories = [
 
 export default function Page() {
 	const [searchParams, setSearchParams] = useSearchParams();
+	const [filtersOpen, setFiltersOpen] = useState(false);
 
 	const selectedCategories = searchParams.getAll("category");
 	const minRating = searchParams.get("rating")
@@ -43,6 +47,13 @@ export default function Page() {
 	useEffect(() => {
 		setPage(1);
 	}, [filterKey]);
+
+	useEffect(() => {
+		document.body.style.overflow = filtersOpen ? "hidden" : "";
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [filtersOpen]);
 
 	/** @param {string} name */
 	function toggleCategory(name) {
@@ -152,6 +163,82 @@ export default function Page() {
 			? "🔥 Produk Promo"
 			: (selectedCategories[0] ?? "Semua Produk");
 
+	const filterPanel = (
+		<div className="flex flex-col gap-8 text-sm [&_h3]:text-xl [&_h3]:font-medium [&_h3]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-3 [&_ul]:text-gray-600 [&_label]:flex [&_label]:gap-2 [&_label]:items-center [&_label]:cursor-pointer hover:[&_label]:text-black [&_input]:accent-blue-600 [&_input]:size-4">
+			<section aria-label="Category filter">
+				<h3>Kategori</h3>
+				<ul>
+					{categories.map((name) => (
+						<li key={name}>
+							<label>
+								<input
+									type="checkbox"
+									checked={selectedCategories.includes(name)}
+									onChange={() => toggleCategory(name)}
+								/>{" "}
+								{name}
+							</label>
+						</li>
+					))}
+				</ul>
+			</section>
+
+			<section aria-label="Rating filter">
+				<h3>Rating Minimum</h3>
+				<ul>
+					{[4, 3, 2].map((rating) => (
+						<li key={rating}>
+							<label>
+								<input
+									type="radio"
+									name="rating"
+									checked={minRating === rating}
+									onChange={() => handleRating(rating)}
+								/>
+								<span
+									className="flex gap-0.5"
+									aria-label={`${rating} bintang ke atas`}
+								>
+									<Star5
+										count={rating}
+										variant="monochrome"
+									/>
+								</span>{" "}
+								ke atas
+							</label>
+						</li>
+					))}
+				</ul>
+			</section>
+
+			<section>
+				<h3>Ketersediaan</h3>
+				<ul>
+					<li>
+						<label>
+							<input
+								type="checkbox"
+								checked={inStockOnly}
+								onChange={(e) => handleInStock(e.target.checked)}
+							/>{" "}
+							Stok tersedia
+						</label>
+					</li>
+				</ul>
+			</section>
+
+			{hasActiveFilters && (
+				<button
+					type="button"
+					onClick={resetFilters}
+					className="text-sm text-red-500 hover:text-red-700 text-left cursor-pointer"
+				>
+					Reset filter
+				</button>
+			)}
+		</div>
+	);
+
 	return (
 		<main className="pt-6 pb-16 bg-gray-50">
 			<div className="wrapper flex flex-col gap-6">
@@ -162,93 +249,54 @@ export default function Page() {
 				<h1 className="text-2xl font-medium">{pageTitle}</h1>
 
 				<div className="flex gap-8 items-start">
-					<aside className="w-56 shrink-0 flex flex-col gap-8 text-sm [&_h3]:text-xl [&_h3]:font-medium [&_h3]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-3 [&_ul]:text-gray-600 [&_label]:flex [&_label]:gap-2 [&_label]:items-center [&_label]:cursor-pointer hover:[&_label]:text-black [&_input]:accent-blue-600 [&_input]:size-4">
-						<section aria-label="Category filter">
-							<h3>Kategori</h3>
-							<ul>
-								{categories.map((name) => (
-									<li key={name}>
-										<label>
-											<input
-												type="checkbox"
-												checked={selectedCategories.includes(name)}
-												onChange={() => toggleCategory(name)}
-											/>{" "}
-											{name}
-										</label>
-									</li>
-								))}
-							</ul>
-						</section>
-
-						<section aria-label="Rating filter">
-							<h3>Rating Minimum</h3>
-							<ul>
-								{[4, 3, 2].map((rating) => (
-									<li key={rating}>
-										<label>
-											<input
-												type="radio"
-												name="rating"
-												checked={minRating === rating}
-												onChange={() => handleRating(rating)}
-											/>
-											<span
-												className="flex gap-0.5"
-												aria-label={`${rating} bintang ke atas`}
-											>
-												<Star5
-													count={rating}
-													variant="monochrome"
-												/>
-											</span>{" "}
-											ke atas
-										</label>
-									</li>
-								))}
-							</ul>
-						</section>
-
-						<section>
-							<h3>Ketersediaan</h3>
-							<ul>
-								<li>
-									<label>
-										<input
-											type="checkbox"
-											checked={inStockOnly}
-											onChange={(e) => handleInStock(e.target.checked)}
-										/>{" "}
-										Stok tersedia
-									</label>
-								</li>
-							</ul>
-						</section>
-
-						{hasActiveFilters && (
-							<button
-								type="button"
-								onClick={resetFilters}
-								className="text-sm text-red-500 hover:text-red-700 text-left cursor-pointer"
-							>
-								Reset filter
-							</button>
-						)}
+					{/* Desktop sidebar */}
+					<aside className="hidden md:flex w-56 shrink-0 flex-col gap-8">
+						{filterPanel}
 					</aside>
 
 					<section
 						aria-label="Product list"
 						className="flex-1 flex flex-col gap-6"
 					>
-						<header className="flex justify-between items-center text-sm *:text-gray-500">
-							<span>{filtered.length} produk ditemukan</span>
+						<header className="flex justify-between items-center gap-3 text-sm">
 							<div className="flex items-center gap-3">
-								<label htmlFor="sort">Urutkan:</label>
+								{/* Mobile filter button */}
+								<button
+									type="button"
+									onClick={() => setFiltersOpen(true)}
+									className={cn(
+										"md:hidden flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition-colors cursor-pointer",
+										hasActiveFilters
+											? "border-blue-600 text-blue-600 bg-blue-50"
+											: "border-black/10 text-gray-600 bg-white",
+									)}
+								>
+									<SlidersHorizontal className="size-4" />
+									Filter
+									{hasActiveFilters && (
+										<span className="grid place-content-center size-4 rounded-full bg-blue-600 text-white text-[10px] font-bold">
+											{selectedCategories.length +
+												(minRating ? 1 : 0) +
+												(inStockOnly ? 1 : 0)}
+										</span>
+									)}
+								</button>
+								<span className="text-gray-500">
+									{filtered.length} produk ditemukan
+								</span>
+							</div>
+							<div className="flex items-center gap-3">
+								<label
+									htmlFor="sort"
+									className="text-gray-500 hidden sm:block"
+								>
+									Urutkan:
+								</label>
 								<select
 									id="sort"
 									value={sort}
 									onChange={(e) => handleSort(e.target.value)}
-									className="border border-black/10 rounded-lg p-2 px-4 bg-white text-black outline-none focus:border-black/50 transition-colors cursor-pointer"
+									className="border border-black/10 rounded-lg p-2 px-3 bg-white text-black outline-none focus:border-black/50 transition-colors cursor-pointer text-sm"
 								>
 									{sortOptions.map(({ value, label }) => (
 										<option
@@ -263,7 +311,7 @@ export default function Page() {
 						</header>
 
 						{visible.length > 0 ? (
-							<div className="grid grid-cols-4 gap-4">
+							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
 								{visible.map((p) => (
 									<ProductCard
 										key={p.name}
@@ -291,6 +339,57 @@ export default function Page() {
 					</section>
 				</div>
 			</div>
+
+			{/* Mobile filter drawer (bottom sheet) */}
+			<div
+				className={cn(
+					"fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 backdrop-blur-sm",
+					filtersOpen ? "opacity-100" : "opacity-0 pointer-events-none",
+				)}
+				onClick={() => setFiltersOpen(false)}
+				aria-hidden="true"
+			/>
+			<aside
+				aria-label="Filters"
+				className={cn(
+					"fixed inset-x-0 bottom-0 z-50 md:hidden bg-white rounded-t-2xl flex flex-col max-h-[85vh] transition-transform duration-300 ease-out shadow-2xl",
+					filtersOpen ? "translate-y-0" : "translate-y-full",
+				)}
+			>
+				<div className="flex items-center justify-between px-5 py-4 border-b border-black/10">
+					<h2 className="font-semibold text-gray-900">Filter</h2>
+					<button
+						type="button"
+						aria-label="Close filters"
+						onClick={() => setFiltersOpen(false)}
+						className="grid place-content-center size-8 rounded-full bg-gray-100 text-gray-500 cursor-pointer"
+					>
+						<X />
+					</button>
+				</div>
+				<div className="flex-1 overflow-y-auto p-5">{filterPanel}</div>
+				<div className="p-4 border-t border-black/10 flex gap-3">
+					{hasActiveFilters && (
+						<button
+							type="button"
+							onClick={() => {
+								resetFilters();
+								setFiltersOpen(false);
+							}}
+							className="flex-1 py-3 rounded-xl border border-red-200 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors cursor-pointer"
+						>
+							Reset
+						</button>
+					)}
+					<button
+						type="button"
+						onClick={() => setFiltersOpen(false)}
+						className="flex-1 py-3 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer"
+					>
+						Lihat {filtered.length} Produk
+					</button>
+				</div>
+			</aside>
 		</main>
 	);
 }

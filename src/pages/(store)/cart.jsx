@@ -43,10 +43,10 @@ export default function Page() {
 					<span className="tabular-nums">{cartItems.length}</span> item)
 				</h1>
 
-				<div className="grid grid-cols-3 gap-8 items-start">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
 					<section
 						aria-label="Cart items"
-						className="col-span-2 flex flex-col gap-4"
+						className="lg:col-span-2 flex flex-col gap-4"
 					>
 						{cartItems.length > 0 ? (
 							cartItems.map((item) => (
@@ -137,7 +137,7 @@ export default function Page() {
 						</div>
 					</section>
 
-					<aside className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-5 sticky top-36">
+					<aside className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-5 lg:sticky lg:top-36">
 						<h2 className="text-lg font-medium text-gray-900">
 							Ringkasan Pesanan
 						</h2>
@@ -178,7 +178,7 @@ export default function Page() {
 
 				<section className="flex flex-col gap-6">
 					<h2 className="text-xl font-medium">Mungkin Kamu Suka Ini</h2>
-					<div className="grid grid-cols-4 gap-4">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 						{suggestions.map((p) => (
 							<ProductCard
 								key={p.name}
