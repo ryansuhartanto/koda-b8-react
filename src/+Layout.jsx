@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 
 import { AuthProvider } from "#/context/auth";
 
@@ -9,6 +9,7 @@ export default function Layout() {
 	return (
 		<AuthProvider>
 			<Outlet />
+			<ScrollRestoration />
 		</AuthProvider>
 	);
 }
