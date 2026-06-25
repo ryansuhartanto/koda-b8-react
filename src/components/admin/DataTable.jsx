@@ -98,7 +98,7 @@ export function TableSearch({ table, placeholder = "Cari...", className }) {
  * @param {string} [props.emptyLabel]
  */
 export function DataTable({ table, emptyLabel = "Tidak ada data." }) {
-	const rows = table.getRowModel().rows;
+	const { rows } = table.getRowModel();
 	const columnCount = table.getVisibleFlatColumns().length;
 
 	return (

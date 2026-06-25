@@ -11,7 +11,7 @@
 const KEY_USERS = "bm:users";
 const KEY_SESSION = "bm:session";
 
-const localStorage = globalThis.window.localStorage;
+const { localStorage } = globalThis.window;
 
 /** @returns {User[]} */
 export function getUsers() {

@@ -16,7 +16,7 @@ import data from "#/data.json";
 import { orderStatus, orderStatusTabs } from "#/lib/status";
 import { cn, rupiah } from "#/lib/utils";
 
-const orders = data.admin.orders;
+const { orders } = data.admin;
 
 /** @param {string} iso */
 const fmtDate = (iso) =>
@@ -108,7 +108,7 @@ const columns = [
 		id: "actions",
 		header: "Aksi",
 		cell: ({ row }) => {
-			const status = row.original.status;
+			const { status } = row.original;
 			return (
 				<div className="flex items-center gap-2 text-gray-400">
 					<button

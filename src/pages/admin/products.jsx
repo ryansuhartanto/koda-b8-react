@@ -20,7 +20,7 @@ import data from "#/data.json";
 import { productTag } from "#/lib/status";
 import { cn, rupiah } from "#/lib/utils";
 
-const products = data.products;
+const { products } = data;
 
 const productStats = [
 	{ label: "Total Produk", value: products.length },
