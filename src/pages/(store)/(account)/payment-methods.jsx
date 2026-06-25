@@ -3,7 +3,8 @@ import Plus from "~icons/lucide/plus";
 import Trash2 from "~icons/lucide/trash-2";
 import Wallet from "~icons/lucide/wallet";
 
-import { useAuth } from "#/context/auth";
+import { useAppDispatch, useAppSelector } from "#/store";
+import { removeSavedPayment, selectCurrentUser } from "#/store/reducers/auth";
 
 /** @type {Record<string, React.ComponentType<{ className?: string }>>} */
 const iconMap = {
@@ -50,7 +51,8 @@ function MethodCard({ type, isDefault, onDelete }) {
 }
 
 export default function Page() {
-	const { user, removeSavedPayment } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
+	const dispatch = useAppDispatch();
 	const methods = user?.savedPayments ?? [];
 
 	return (
@@ -73,7 +75,7 @@ export default function Page() {
 						<MethodCard
 							key={method.id}
 							{...method}
-							onDelete={() => removeSavedPayment(method.id)}
+							onDelete={() => dispatch(removeSavedPayment(method.id))}
 						/>
 					))}
 				</div>

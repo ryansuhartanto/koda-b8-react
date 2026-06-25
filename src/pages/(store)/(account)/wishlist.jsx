@@ -2,11 +2,12 @@ import { Link } from "react-router";
 import Heart from "~icons/lucide/heart";
 
 import { ProductCard } from "#/components/ProductCard";
-import { useAuth } from "#/context/auth";
 import data from "#/data.json";
+import { useAppSelector } from "#/store";
+import { selectCurrentUser } from "#/store/reducers/auth";
 
 export default function Page() {
-	const { user } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
 	const items = (user?.wishlist ?? [])
 		.map((name) => data.products.find((p) => p.name === name))
 		.filter((name) => name !== undefined);

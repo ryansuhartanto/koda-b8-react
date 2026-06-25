@@ -3,24 +3,28 @@ import SquarePen from "~icons/lucide/square-pen";
 
 import Avatar from "#/components/Avatar";
 import FormField from "#/components/FormField";
-import { useAuth } from "#/context/auth";
+import { useAppDispatch, useAppSelector } from "#/store";
+import { selectCurrentUser, updateProfile } from "#/store/reducers/auth";
 
 export default function Page() {
-	const { user, updateProfile } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
+	const dispatch = useAppDispatch();
 	const [saved, setSaved] = useState(false);
 
 	/** @param {React.FormEvent<HTMLFormElement>} e */
 	function handleSubmit(e) {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
-		updateProfile({
-			name: form.get("name")?.toString() ?? undefined,
-			phone: form.get("phone")?.toString() ?? undefined,
-			birthdate: form.get("birthdate")?.toString() ?? undefined,
-			gender: /** @type {"M" | "F" | "X" | undefined} */ (
-				form.get("gender")?.toString() ?? undefined
-			),
-		});
+		dispatch(
+			updateProfile({
+				name: form.get("name")?.toString() ?? undefined,
+				phone: form.get("phone")?.toString() ?? undefined,
+				birthdate: form.get("birthdate")?.toString() ?? undefined,
+				gender: /** @type {"M" | "F" | "X" | undefined} */ (
+					form.get("gender")?.toString() ?? undefined
+				),
+			}),
+		);
 		setSaved(true);
 		setTimeout(() => setSaved(false), 2000);
 	}

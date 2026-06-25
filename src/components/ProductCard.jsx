@@ -3,8 +3,13 @@ import Heart from "~icons/lucide/heart";
 import ShoppingCart from "~icons/lucide/shopping-cart";
 
 import Star5 from "#/components/Star5";
-import { useAuth } from "#/context/auth";
 import { cn, rupiah } from "#/lib/utils";
+import { useAppDispatch, useAppSelector } from "#/store";
+import {
+	addToCart,
+	selectCurrentUser,
+	toggleWishlist,
+} from "#/store/reducers/auth";
 
 /**
  * @typedef ProductCardProps
@@ -33,7 +38,8 @@ export function ProductCard({
 	ratingCount,
 	tags,
 }) {
-	const { user, toggleWishlist, addToCart } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const isWishlisted = user?.wishlist.includes(name) ?? false;
 
@@ -50,7 +56,7 @@ export function ProductCard({
 			navigate("/login");
 			return;
 		}
-		toggleWishlist(name);
+		dispatch(toggleWishlist(name));
 	}
 
 	function handleAddToCart() {
@@ -58,7 +64,7 @@ export function ProductCard({
 			navigate("/login");
 			return;
 		}
-		addToCart(name);
+		dispatch(addToCart(name));
 	}
 
 	return (

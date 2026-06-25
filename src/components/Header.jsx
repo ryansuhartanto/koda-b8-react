@@ -10,8 +10,9 @@ import ShoppingCart from "~icons/lucide/shopping-cart";
 import User from "~icons/lucide/user";
 import X from "~icons/lucide/x";
 
-import { useAuth } from "#/context/auth";
 import { cn } from "#/lib/utils";
+import { useAppSelector } from "#/store";
+import { selectCurrentUser } from "#/store/reducers/auth";
 
 export function HeaderUtility() {
 	return (
@@ -41,7 +42,7 @@ export function HeaderUtility() {
  * @param {{ onMenuOpen: () => void }} props
  */
 export function HeaderMain({ onMenuOpen }) {
-	const { user } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
 	const cartCount = user?.cart.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
 	const firstName = user?.name.split(" ")[0];
 
@@ -148,7 +149,7 @@ export function HeaderMain({ onMenuOpen }) {
  * @param {{ open: boolean, onClose: () => void, navigations: Array<{href: string, text: string}> }} props
  */
 function MobileDrawer({ open, onClose, navigations }) {
-	const { user } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
 	const firstName = user?.name.split(" ")[0];
 
 	useEffect(() => {

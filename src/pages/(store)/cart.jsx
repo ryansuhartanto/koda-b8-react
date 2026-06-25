@@ -6,9 +6,15 @@ import Trash2 from "~icons/lucide/trash-2";
 
 import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
-import { useAuth } from "#/context/auth";
 import data from "#/data.json";
 import { rupiah } from "#/lib/utils";
+import { useAppDispatch, useAppSelector } from "#/store";
+import {
+	removeFromCart,
+	selectCurrentUser,
+	toggleWishlist,
+	updateCartQty,
+} from "#/store/reducers/auth";
 
 const suggestionNames = [
 	"Headphone Wireless Premium",
@@ -21,7 +27,8 @@ const suggestions = suggestionNames
 	.filter((name) => name !== undefined);
 
 export default function Page() {
-	const { user, removeFromCart, updateCartQty, toggleWishlist } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
+	const dispatch = useAppDispatch();
 
 	const cartItems = (user?.cart ?? [])
 		.map((item) => {
@@ -73,7 +80,7 @@ export default function Page() {
 											</div>
 											<button
 												type="button"
-												onClick={() => removeFromCart(item.name)}
+												onClick={() => dispatch(removeFromCart(item.name))}
 												className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors"
 												aria-label="Hapus item"
 											>
@@ -86,13 +93,15 @@ export default function Page() {
 													size="sm"
 													value={item.quantity}
 													max={item.stock}
-													onChange={(qty) => updateCartQty(item.name, qty)}
+													onChange={(qty) =>
+														dispatch(updateCartQty(item.name, qty))
+													}
 												/>
 												<button
 													type="button"
 													onClick={() => {
-														toggleWishlist(item.name);
-														removeFromCart(item.name);
+														dispatch(toggleWishlist(item.name));
+														dispatch(removeFromCart(item.name));
 													}}
 													className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-900 cursor-pointer transition-colors"
 												>

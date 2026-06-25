@@ -1,9 +1,12 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router";
+import { PersistGate } from "redux-persist/integration/react";
 
 import LayoutRoot from "#/+Layout.jsx";
 import LayoutStore from "#/pages/(store)/+Layout";
+import { persistor, store } from "#/store";
 
 const router = createBrowserRouter([
 	{
@@ -117,6 +120,10 @@ const router = createBrowserRouter([
 const root = createRoot(document.body);
 root.render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<Provider store={store}>
+			<PersistGate persistor={persistor}>
+				<RouterProvider router={router} />
+			</PersistGate>
+		</Provider>
 	</React.StrictMode>,
 );

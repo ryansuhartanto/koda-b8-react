@@ -9,8 +9,13 @@ import MapPin from "~icons/lucide/map-pin";
 import Settings from "~icons/lucide/settings";
 
 import Avatar from "#/components/Avatar";
-import { useAuth } from "#/context/auth";
 import { cn } from "#/lib/utils";
+import { useAppDispatch, useAppSelector } from "#/store";
+import {
+	logout,
+	selectCurrentUser,
+	selectIsLoggedIn,
+} from "#/store/reducers/auth";
 
 const menu = [
 	{ to: "/orders", label: "Pesanan Saya", Icon: ClipboardList },
@@ -21,7 +26,7 @@ const menu = [
 ];
 
 function ProfileCard() {
-	const { user } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
 	return (
 		<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col items-center gap-3 text-center">
 			<Avatar className="size-16 text-xl" />
@@ -49,11 +54,11 @@ function ProfileCard() {
 }
 
 function AccountNav() {
-	const { logout } = useAuth();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	function handleLogout() {
-		logout();
+		dispatch(logout());
 		navigate("/login");
 	}
 
@@ -96,7 +101,7 @@ function AccountNav() {
 }
 
 export default function Layout() {
-	const { isLoggedIn } = useAuth();
+	const isLoggedIn = useAppSelector(selectIsLoggedIn);
 	const navigate = useNavigate();
 
 	useEffect(() => {

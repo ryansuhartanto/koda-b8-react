@@ -2,7 +2,12 @@ import Plus from "~icons/lucide/plus";
 import SquarePen from "~icons/lucide/square-pen";
 import Trash2 from "~icons/lucide/trash-2";
 
-import { useAuth } from "#/context/auth";
+import { useAppDispatch, useAppSelector } from "#/store";
+import {
+	removeAddress,
+	selectCurrentUser,
+	updateAddress,
+} from "#/store/reducers/auth";
 
 /**
  * @param {import("#/lib/db").Address & { onDelete: () => void; onSetDefault: () => void }} props
@@ -76,7 +81,8 @@ function AddressCard({
 }
 
 export default function Page() {
-	const { user, removeAddress, updateAddress } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
+	const dispatch = useAppDispatch();
 	const addresses = user?.addresses ?? [];
 
 	return (
@@ -97,8 +103,10 @@ export default function Page() {
 						<AddressCard
 							key={addr.id}
 							{...addr}
-							onDelete={() => removeAddress(addr.id)}
-							onSetDefault={() => updateAddress(addr.id, { isDefault: true })}
+							onDelete={() => dispatch(removeAddress(addr.id))}
+							onSetDefault={() =>
+								dispatch(updateAddress(addr.id, { isDefault: true }))
+							}
 						/>
 					))}
 				</div>

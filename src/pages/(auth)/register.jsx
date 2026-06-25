@@ -15,7 +15,8 @@ import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
-import { useAuth } from "#/context/auth";
+import { useAppDispatch } from "#/store";
+import { register as registerUser } from "#/store/reducers/auth";
 
 const schema = yup.object({
 	name: yup.string().trim().required("Nama wajib diisi"),
@@ -58,7 +59,7 @@ function Perks() {
 }
 
 export default function Page() {
-	const { register: registerUser } = useAuth();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -73,11 +74,13 @@ export default function Page() {
 	/** @param {yup.InferType<typeof schema>} data */
 	async function onSubmit(data) {
 		try {
-			registerUser({
-				name: data.name,
-				email: data.email,
-				password: data.password,
-			});
+			dispatch(
+				registerUser({
+					name: data.name,
+					email: data.email,
+					password: data.password,
+				}),
+			);
 			navigate("/");
 		} catch (error) {
 			const code = error instanceof Error ? error.message : "";

@@ -12,10 +12,11 @@ import Truck from "~icons/lucide/truck";
 import { Stepper, Summary } from "#/components/Checkout";
 import FormField from "#/components/FormField";
 import { OrderReviewItem } from "#/components/ProductCard";
-import { useAuth } from "#/context/auth";
 import data from "#/data.json";
 import { useCheckout } from "#/hooks/useCheckout";
 import { rupiah } from "#/lib/utils";
+import { useAppDispatch, useAppSelector } from "#/store";
+import { placeOrder, selectCurrentUser } from "#/store/reducers/auth";
 
 /**
  * @typedef {import("#/lib/db").ShippingInfo} ShippingInfo
@@ -482,7 +483,8 @@ function StepSuccess({ order }) {
 }
 
 export default function Page() {
-	const { user, placeOrder } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
+	const dispatch = useAppDispatch();
 	const { step, nextStep, prevStep } = useCheckout();
 
 	const [shipping, setShipping] = useState(
@@ -520,19 +522,21 @@ export default function Page() {
 		if (!shipping) {
 			return;
 		}
-		const order = placeOrder({
-			items: cartItems.map((i) => ({
-				productName: i.name,
-				quantity: i.quantity,
-				price: i.price,
-			})),
-			shipping,
-			paymentMethod:
-				paymentMethods.find((m) => m.id === paymentId)?.label ?? paymentId,
-			discount: 0,
-			subtotal,
-			total: subtotal,
-		});
+		const order = dispatch(
+			placeOrder({
+				items: cartItems.map((i) => ({
+					productName: i.name,
+					quantity: i.quantity,
+					price: i.price,
+				})),
+				shipping,
+				paymentMethod:
+					paymentMethods.find((m) => m.id === paymentId)?.label ?? paymentId,
+				discount: 0,
+				subtotal,
+				total: subtotal,
+			}),
+		);
 		if (order) {
 			setPlacedOrder(order);
 			nextStep();

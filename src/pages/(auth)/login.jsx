@@ -13,7 +13,8 @@ import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
-import { useAuth } from "#/context/auth";
+import { useAppDispatch } from "#/store";
+import { login } from "#/store/reducers/auth";
 
 const schema = yup.object({
 	email: yup.string().email("Email tidak valid").required("Email wajib diisi"),
@@ -42,7 +43,7 @@ function Stats() {
 }
 
 export default function Page() {
-	const { login } = useAuth();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 
@@ -56,7 +57,7 @@ export default function Page() {
 	/** @param {yup.InferType<typeof schema>} data */
 	async function onSubmit(data) {
 		try {
-			login(data.email, data.password, data.remember ?? false);
+			dispatch(login(data.email, data.password, data.remember ?? false));
 			navigate("/");
 		} catch (error) {
 			const code = error instanceof Error ? error.message : "";

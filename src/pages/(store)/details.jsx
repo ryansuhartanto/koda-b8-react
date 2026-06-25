@@ -11,13 +11,19 @@ import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
 import Star5 from "#/components/Star5";
-import { useAuth } from "#/context/auth";
 import data from "#/data.json";
 import { cn, rupiah } from "#/lib/utils";
+import { useAppDispatch, useAppSelector } from "#/store";
+import {
+	addToCart,
+	selectCurrentUser,
+	toggleWishlist,
+} from "#/store/reducers/auth";
 
 export default function Page() {
 	const { slug } = useParams();
-	const { user, addToCart, toggleWishlist } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [qty, setQty] = useState(1);
 
@@ -64,7 +70,7 @@ export default function Page() {
 			navigate("/login");
 			return;
 		}
-		addToCart(name, qty);
+		dispatch(addToCart(name, qty));
 		navigate("/cart");
 	}
 
@@ -73,7 +79,7 @@ export default function Page() {
 			navigate("/login");
 			return;
 		}
-		addToCart(name, qty);
+		dispatch(addToCart(name, qty));
 		navigate("/checkout");
 	}
 
@@ -82,7 +88,7 @@ export default function Page() {
 			navigate("/login");
 			return;
 		}
-		toggleWishlist(name);
+		dispatch(toggleWishlist(name));
 	}
 
 	return (

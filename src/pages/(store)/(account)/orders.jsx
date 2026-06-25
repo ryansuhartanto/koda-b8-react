@@ -6,9 +6,10 @@ import Star from "~icons/lucide/star";
 import Truck from "~icons/lucide/truck";
 import XCircle from "~icons/lucide/x-circle";
 
-import { useAuth } from "#/context/auth";
 import data from "#/data.json";
 import { cn, rupiah } from "#/lib/utils";
+import { useAppSelector } from "#/store";
+import { selectCurrentUser } from "#/store/reducers/auth";
 
 /** @param {string} name */
 const imgOf = (name) => data.products.find((p) => p.name === name)?.img ?? "";
@@ -141,7 +142,7 @@ function OrderCard({ id, createdAt, status, items, total }) {
 }
 
 export default function Page() {
-	const { user } = useAuth();
+	const user = useAppSelector(selectCurrentUser);
 	const orders = user?.orders ?? [];
 
 	return (
