@@ -5,7 +5,9 @@ import react from "@vitejs/plugin-react";
 import icons from "unplugin-icons/vite";
 import { defineConfig } from "vite-plus";
 
-export default defineConfig({
+/** @type {ReturnType<typeof defineConfig>} */
+// @ts-ignore
+const config = defineConfig({
 	plugins: [
 		react(),
 		tailwindcss(),
@@ -21,7 +23,10 @@ export default defineConfig({
 		...oxfmt,
 	},
 	lint: {
-		extends: [oxlint],
+		extends: [
+			// @ts-ignore
+			oxlint,
+		],
 		options: {
 			typeAware: false,
 		},
@@ -30,3 +35,5 @@ export default defineConfig({
 		"*": "vp check --no-error-on-unmatched-pattern",
 	},
 });
+
+export default config;
