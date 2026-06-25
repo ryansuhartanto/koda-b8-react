@@ -21,7 +21,9 @@ const nav = [
 ];
 
 /**
- * @param {{ open: boolean, onClose: () => void }} props
+ * @param {object} props
+ * @param {boolean} props.open
+ * @param {() => void} props.onClose
  */
 function Sidebar({ open, onClose }) {
 	useEffect(() => {
@@ -115,6 +117,11 @@ function Sidebar({ open, onClose }) {
 	);
 }
 
+/**
+ * @param {object} props
+ * @param {() => void} props.onMenuOpen
+ * @returns
+ */
 function Topbar({ onMenuOpen }) {
 	return (
 		<header className="flex items-center justify-between h-16 px-4 md:px-6 bg-white border-b border-black/10 shrink-0">
