@@ -16,4 +16,45 @@ jobs:
         run: bun vp check
 
       # - name: Test
-      #   run: bun vp test
+      #   run: bun run test
+
+      - name: Build
+        run: bun run build
+
+      # - uses: actions/upload-artifact@v7
+      #   if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+      #   with:
+      #     name: dist
+      #     path: dist/
+      #     if-no-files-found: error
+
+  build:
+    needs: ci
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            Dockerfile
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}:latest
