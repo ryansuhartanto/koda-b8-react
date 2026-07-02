@@ -19,7 +19,7 @@ COPY <<EOF /etc/caddy/Caddyfile
 :80
 
 root * /var/www/html
-encode gzip zstd
+encode
 file_server
 try_files {path} /index.html
 EOF
