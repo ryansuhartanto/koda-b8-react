@@ -4,8 +4,8 @@ on:
   push:
 
 jobs:
-  ci:
-    name: CI
+  check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -30,8 +30,8 @@ jobs:
           if-no-files-found: error
 
   build:
-    name: Build
-    needs: ci
+    name: Build Image
+    needs: check
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     runs-on: ubuntu-latest
 
