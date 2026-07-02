@@ -1,7 +1,7 @@
 # BeliMudah
 
 [![CI](https://github.com/ryansuhartanto/koda-b8-react/actions/workflows/ci.yaml/badge.svg)](https://github.com/ryansuhartanto/koda-b8-react/actions/workflows/ci.yaml)
-[![Ghcr](https://ghcr-badge.egpl.dev/ryansuhartanto/koda-b8-react/latest_tag?label=ghcr)](https://ghcr.io/ryansuhartanto/koda-b8-react)
+[![Ghcr](https://ghcr-badge.egpl.dev/ryansuhartanto/koda-b8-react/latest_tag?label=ghcr&ignore=latest,sha-*)](https://ghcr.io/ryansuhartanto/koda-b8-react)
 [![Netlify](https://api.netlify.com/api/v1/badges/005e81c9-a22a-4168-b34b-5a18786e5f6d/deploy-status)](https://app.netlify.com/projects/ryan-belimudah/deploys)
 
 A full e-commerce frontend (storefront through admin dashboard), built solo from a shared Figma brief as the final project for Koda Academy (Fullstack track, Batch 8).
