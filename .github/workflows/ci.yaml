@@ -1,0 +1,15 @@
+on:
+  push:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile --ignore-scripts
+
+      - name: Lint & Format Check
+        run: bun vp check
+
+      # - name: Test
+      #   run: bun vp test
