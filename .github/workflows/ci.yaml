@@ -7,6 +7,8 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.ref }}
     steps:
       - uses: actions/checkout@v7
 
@@ -89,3 +91,21 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    name: Deploy
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          username: github
+
+          script: |
+            docker pull ghcr.io/${{github.repository}}:latest
+            docker container rm frontend --force
+            docker run -d -p 9802:80 --name frontend ghcr.io/${{github.repository}}:latest
