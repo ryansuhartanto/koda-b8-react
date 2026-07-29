@@ -13,10 +13,11 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/es/storage";
 
+import { migrations } from "./migrations";
 import { rootReducer } from "./reducers";
 
 const persistedReducer = persistReducer(
-	{ key: "bm", version: 1, storage },
+	{ key: "bm", version: 2, storage, migrate: createMigrate(migrations) },
 	rootReducer,
 );
 
