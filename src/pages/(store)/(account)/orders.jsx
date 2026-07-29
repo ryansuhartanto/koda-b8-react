@@ -9,7 +9,7 @@ import XCircle from "~icons/lucide/x-circle";
 import data from "#/data.json";
 import { cn, rupiah } from "#/lib/utils";
 import { useAppSelector } from "#/store";
-import { selectCurrentUser } from "#/store/reducers/auth";
+import { selectOrders } from "#/store/reducers/orders";
 
 /** @param {string} name */
 const imgOf = (name) => data.products.find((p) => p.name === name)?.img ?? "";
@@ -142,8 +142,7 @@ function OrderCard({ id, createdAt, status, items, total }) {
 }
 
 export default function Page() {
-	const user = useAppSelector(selectCurrentUser);
-	const orders = user?.orders ?? [];
+	const orders = useAppSelector(selectOrders);
 
 	return (
 		<>

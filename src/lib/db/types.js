@@ -76,7 +76,6 @@
  * @prop {string} createdAt
  * @prop {CartItem[]} cart
  * @prop {string[]} wishlist
- * @prop {Order[]} orders
  * @prop {Address[]} addresses
  * @prop {SavedPayment[]} savedPayments
  */

@@ -16,6 +16,7 @@ import {
 	selectCurrentUser,
 	selectIsLoggedIn,
 } from "#/store/reducers/auth";
+import { selectOrders } from "#/store/reducers/orders";
 
 const menu = [
 	{ to: "/orders", label: "Pesanan Saya", Icon: ClipboardList },
@@ -27,6 +28,7 @@ const menu = [
 
 function ProfileCard() {
 	const user = useAppSelector(selectCurrentUser);
+	const orders = useAppSelector(selectOrders);
 	return (
 		<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col items-center gap-3 text-center">
 			<Avatar className="size-16 text-xl" />
@@ -38,7 +40,7 @@ function ProfileCard() {
 			<dl className="grid grid-cols-2 w-full">
 				<div className="flex flex-col">
 					<dd className="font-bold text-gray-900 tabular-nums">
-						{user?.orders.length ?? 0}
+						{orders.length}
 					</dd>
 					<dt className="text-xs text-gray-500">Pesanan</dt>
 				</div>

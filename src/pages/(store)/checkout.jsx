@@ -16,7 +16,8 @@ import data from "#/data.json";
 import { useCheckout } from "#/hooks/useCheckout";
 import { rupiah } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
-import { placeOrder, selectCurrentUser } from "#/store/reducers/auth";
+import { selectCurrentUser } from "#/store/reducers/auth";
+import { placeOrder } from "#/store/reducers/orders";
 
 /**
  * @typedef {import("#/lib/db").ShippingInfo} ShippingInfo

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	createMigrate,
 	FLUSH,
 	PAUSE,
 	PERSIST,
