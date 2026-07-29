@@ -18,38 +18,39 @@
 		"build": "vp build"
 	},
 	"dependencies": {
-		"@hookform/resolvers": "^5.4.0",
+		"@hookform/resolvers": "^5.5.7",
 		"@reduxjs/toolkit": "^2.12.0",
 		"@tanstack/react-table": "^8.21.3",
 		"clsx": "^2.1.1",
-		"react": "^19.2.7",
-		"react-dom": "^19.2.7",
-		"react-hook-form": "^7.80.0",
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
+		"react-hook-form": "^7.83.0",
 		"react-redux": "^9.3.0",
-		"react-router": "^8.0.1",
-		"recharts": "^3.9.0",
+		"react-router": "^8.3.0",
+		"recharts": "^3.10.1",
 		"redux-persist": "^6.0.0",
 		"tailwind-merge": "^3.6.0",
 		"yup": "^1.7.1"
 	},
 	"devDependencies": {
-		"@iconify-json/lucide": "^1.2.114",
-		"@iconify-json/simple-icons": "^1.2.87",
-		"@kekkon-nexus/config": "^2.260624.0",
+		"@iconify-json/lucide": "^1.2.120",
+		"@iconify-json/simple-icons": "^1.2.92",
+		"@kekkon-nexus/config": "^2.260728.0",
 		"@svgr/core": "^8.1.0",
 		"@svgr/plugin-jsx": "^8.1.0",
-		"@tailwindcss/vite": "^4.3.1",
+		"@tailwindcss/vite": "^4.3.3",
 		"@types/react": "^19.2.17",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react": "^6.0.3",
-		"commitlint": "^21.1.0",
-		"tailwindcss": "^4.3.1",
+		"@vitejs/plugin-react": "^6.0.4",
+		"commitlint": "^21.2.1",
+		"tailwindcss": "^4.3.3",
 		"unplugin-icons": "^23.0.1",
-		"vite-plus": "latest"
+		"vite-plus": "^0.2.6"
 	},
 	"overrides": {
-		"oxfmt": "0.56.0",
-		"oxlint": "1.71.0",
-		"vite": "npm:@voidzero-dev/vite-plus-core@latest"
+		"oxfmt": "0.61.0",
+		"oxlint": "1.76.0",
+		"oxlint-tsgolint": "7.0.2001",
+		"vite": "npm:@voidzero-dev/vite-plus-core@^0.2.6"
 	}
 }
