@@ -1,14 +1,12 @@
 import type { JSX } from "react";
 import { Link } from "react-router";
 import ArrowRight from "~icons/lucide/arrow-right";
-import ChevronLeft from "~icons/lucide/chevron-left";
-import ChevronRight from "~icons/lucide/chevron-right";
 import Clock from "~icons/lucide/clock";
 import TrendingUp from "~icons/lucide/trending-up";
 import Zap from "~icons/lucide/zap";
 
+import Hero from "#/components/Hero";
 import { ProductCard } from "#/components/ProductCard";
-import { Button } from "#/components/ui/button";
 import data from "#/data.json";
 
 const flashDeals = data.products
@@ -20,76 +18,7 @@ const featured = data.products.filter((p) => p.tags.includes("unggulan"));
 export default function Page(): JSX.Element {
 	return (
 		<main className="flex flex-col gap-12 pt-6 pb-16 bg-gray-50">
-			<section
-				aria-label="Hero"
-				className="-mt-6 relative h-64 sm:h-80 md:h-100 bg-linear-to-r from-brand-600 to-purple-700"
-			>
-				<nav
-					aria-label="Hero slides navigations"
-					className="absolute z-10 inset-0 m-4 grid text-xl text-white grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] pointer-events-none [&_button]:pointer-events-auto [&_button]:cursor-pointer"
-				>
-					<div className="flex flex-col justify-center gap-2 col-1 row-[1/4] *:size-10 *:grid *:place-content-center *:rounded-full *:bg-white/20">
-						<Button
-							aria-label="Previous"
-							size="none"
-							variant="icon"
-						>
-							<ChevronLeft />
-						</Button>
-					</div>
-					<div className="flex flex-col justify-center gap-2 col-3 row-[1/4] *:size-10 *:grid *:place-content-center *:rounded-full *:bg-white/20">
-						<Button
-							aria-label="Next"
-							size="none"
-							variant="icon"
-						>
-							<ChevronRight />
-						</Button>
-					</div>
-					<div className="flex justify-center gap-2 col-2 row-3 *:size-2 *:rounded-full *:bg-white/50 *:pointer-events-auto *:transition-all *:duration-200 *:ease-out *:aria-current:w-6 *:aria-current:bg-white">
-						<Button
-							aria-label="Go to slide 1"
-							size="none"
-							variant="icon"
-						/>
-						<Button
-							aria-label="Go to slide 2"
-							size="none"
-							variant="icon"
-							aria-current="true"
-						/>
-						<Button
-							aria-label="Go to slide 3"
-							size="none"
-							variant="icon"
-						/>
-					</div>
-				</nav>
-
-				<img
-					className="absolute inset-y-0 inset-e-0 w-1/2 h-full object-cover mix-blend-hard-light opacity-25"
-					src="/images/category/electronic.png"
-					alt="Electronics"
-				/>
-
-				<div className="wrapper absolute inset-0 flex flex-col justify-center">
-					<div className="w-full md:w-2/5 flex flex-col gap-3 md:gap-4">
-						<h2 className="text-white font-bold text-2xl md:text-[2.5rem] leading-tight">
-							Elektronik Pilihan, Harga Spesial
-						</h2>
-						<p className="hidden sm:block text-white/80 text-base md:text-lg leading-relaxed">
-							Laptop, smartphone, headphone, dan masih banyak lagi dengan diskon
-							hingga 40%
-						</p>
-						<Link
-							className="flex gap-2 items-center w-fit bg-white text-brand-600 py-2.5 px-5 md:py-3 md:px-6 rounded-xl text-sm md:text-base"
-							to="/browse?tag=promo"
-						>
-							Lihat Promo <ArrowRight />
-						</Link>
-					</div>
-				</div>
-			</section>
+			<Hero />
 
 			<section
 				aria-label="Browse categories"

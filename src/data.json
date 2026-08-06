@@ -557,5 +557,31 @@
 			{ "month": "Mei", "value": 79 },
 			{ "month": "Jun", "value": 86 }
 		]
-	}
+	},
+	"banners": [
+		{
+			"theme": "electronic",
+			"title": "Elektronik Pilihan, Harga Spesial",
+			"body": "Laptop, smartphone, headphone, dan masih banyak lagi dengan diskon hingga 40%",
+			"cta": "Lihat Promo",
+			"href": "/browse?tag=promo",
+			"img": "/images/category/electronic.png"
+		},
+		{
+			"theme": "fashion",
+			"title": "Koleksi Fashion Terbaru",
+			"body": "Tampil percaya diri dengan pilihan busana dari brand lokal favorit",
+			"cta": "Belanja Fashion",
+			"href": "/browse?category=Fashion",
+			"img": "/images/category/fashion.png"
+		},
+		{
+			"theme": "sport",
+			"title": "Perlengkapan Olahraga Lengkap",
+			"body": "Mulai kebiasaan baru hari ini, gratis ongkir untuk pembelian di atas Rp 100.000",
+			"cta": "Lihat Semua",
+			"href": "/browse?category=Olahraga",
+			"img": "/images/category/sport.png"
+		}
+	]
 }
