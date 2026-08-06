@@ -4,7 +4,6 @@ import {
 	Area,
 	AreaChart,
 	CartesianGrid,
-	Cell,
 	Pie,
 	PieChart,
 	ResponsiveContainer,
@@ -25,7 +24,7 @@ import type { OrderStatus } from "#/lib/db";
 import { orderStatus } from "#/lib/status";
 import { rupiah } from "#/lib/utils";
 
-const { stats, revenue, categorySales, topProducts } = data.admin.dashboard;
+const { stats, revenue, topProducts } = data.admin.dashboard;
 const recentOrders = data.admin.orders.slice(0, 5);
 
 const icons = {
@@ -42,6 +41,12 @@ const categoryColors = {
 	"Kecantikan": "var(--color-violet-500)",
 	"Lainnya": "var(--color-gray-400)",
 };
+
+// Recharts reads `fill` off each datum; Cell is deprecated as of Recharts 3.
+const categorySales = data.admin.dashboard.categorySales.map((c) => ({
+	...c,
+	fill: categoryColors[c.name as keyof typeof categoryColors],
+}));
 
 const dateLabel = new Intl.DateTimeFormat("id-ID", {
 	day: "numeric",
@@ -157,14 +162,7 @@ function CategoryDonut() {
 							outerRadius={80}
 							paddingAngle={2}
 							stroke="none"
-						>
-							{categorySales.map((c) => (
-								<Cell
-									key={c.name}
-									fill={categoryColors[c.name as keyof typeof categoryColors]}
-								/>
-							))}
-						</Pie>
+						/>
 						<Tooltip formatter={(v) => `${String(v)}%`} />
 					</PieChart>
 				</ResponsiveContainer>
