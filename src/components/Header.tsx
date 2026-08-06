@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Form, Link, useSearchParams } from "react-router";
 import Bell from "~icons/lucide/bell";
 import ChevronDown from "~icons/lucide/chevron-down";
 import Heart from "~icons/lucide/heart";
@@ -49,6 +49,8 @@ export function HeaderMain({
 	const user = useAppSelector(selectCurrentUser);
 	const cartCount = user?.cart.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
 	const firstName = user?.name.split(" ")[0];
+	const [searchParams] = useSearchParams();
+	const query = searchParams.get("q") ?? "";
 
 	return (
 		<section
@@ -63,11 +65,18 @@ export function HeaderMain({
 					BeliMudah
 				</Link>
 
-				<form className="hidden md:flex flex-1 items-center gap-2 h-10 border border-black/10 rounded-xl bg-gray-100 overflow-hidden focus-within:border-black/50 transition-colors duration-200 *:px-4 *:h-full *:transition-colors *:duration-200">
+				<Form
+					role="search"
+					method="get"
+					action="/browse"
+					className="hidden md:flex flex-1 items-center gap-2 h-10 border border-black/10 rounded-xl bg-gray-100 overflow-hidden focus-within:border-black/50 transition-colors duration-200 *:px-4 *:h-full *:transition-colors *:duration-200"
+				>
 					<input
+						key={query}
 						className="flex-1 min-w-0 text-sm bg-transparent focus:outline-none"
-						type="text"
+						type="search"
 						name="q"
+						defaultValue={query}
 						autoComplete="off"
 						placeholder="Cari produk, merek, kategori..."
 					/>
@@ -79,7 +88,7 @@ export function HeaderMain({
 					>
 						<Search className="text-base" />
 					</Button>
-				</form>
+				</Form>
 
 				<div className="hidden md:flex items-center mx-2 gap-6 text-xl **:transition-colors **:duration-200 *:flex *:items-center *:gap-2">
 					<Link
@@ -161,6 +170,8 @@ function MobileDrawer({
 }) {
 	const user = useAppSelector(selectCurrentUser);
 	const firstName = user?.name.split(" ")[0];
+	const [searchParams] = useSearchParams();
+	const query = searchParams.get("q") ?? "";
 	const close = () => {
 		onOpenChange(false);
 	};
@@ -200,11 +211,19 @@ function MobileDrawer({
 				</div>
 
 				<div className="px-4 py-3 bg-gray-50 border-b border-black/10">
-					<form className="flex items-center h-10 border border-black/10 rounded-xl bg-white overflow-hidden focus-within:border-brand-400 transition-colors *:h-full">
+					<Form
+						role="search"
+						method="get"
+						action="/browse"
+						onSubmit={close}
+						className="flex items-center h-10 border border-black/10 rounded-xl bg-white overflow-hidden focus-within:border-brand-400 transition-colors *:h-full"
+					>
 						<input
+							key={query}
 							className="flex-1 min-w-0 px-4 text-sm bg-transparent focus:outline-none"
-							type="text"
+							type="search"
 							name="q"
+							defaultValue={query}
 							autoComplete="off"
 							placeholder="Cari produk..."
 						/>
@@ -216,7 +235,7 @@ function MobileDrawer({
 						>
 							<Search className="text-base" />
 						</Button>
-					</form>
+					</Form>
 				</div>
 
 				<Link

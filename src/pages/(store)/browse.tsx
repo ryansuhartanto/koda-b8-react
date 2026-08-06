@@ -28,6 +28,20 @@ const categories = [
 	...new Set(data.products.map((p) => p.category)),
 ].toSorted();
 
+function titleFor(
+	query: string,
+	tag: string | undefined,
+	category: string | undefined,
+): string {
+	if (query) {
+		return `Hasil pencarian "${query}"`;
+	}
+	if (tag === "promo") {
+		return "🔥 Produk Promo";
+	}
+	return category ?? "Semua Produk";
+}
+
 export default function Page(): JSX.Element {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [filtersOpen, setFiltersOpen] = useState(false);
@@ -39,6 +53,7 @@ export default function Page(): JSX.Element {
 	const inStockOnly = searchParams.get("inStock") === "1";
 	const sort = searchParams.get("sort") ?? "popular";
 	const urlTag = searchParams.get("tag");
+	const query = (searchParams.get("q") ?? "").trim();
 
 	const [page, setPage] = useState(1);
 	const filterKey = [
@@ -47,6 +62,7 @@ export default function Page(): JSX.Element {
 		inStockOnly,
 		sort,
 		urlTag,
+		query,
 	].join("|");
 	useEffect(() => {
 		setPage(1);
@@ -120,6 +136,14 @@ export default function Page(): JSX.Element {
 	const filtered = useMemo(() => {
 		let result = data.products;
 
+		if (query) {
+			const needle = query.toLowerCase();
+			result = result.filter((p) =>
+				[p.name, p.brand, p.category].some((field) =>
+					field.toLowerCase().includes(needle),
+				),
+			);
+		}
 		if (urlTag) {
 			result = result.filter((p) => p.tags.includes(urlTag));
 		}
@@ -146,15 +170,12 @@ export default function Page(): JSX.Element {
 			return [...result].toSorted((a, b) => b.rating - a.rating);
 		}
 		return result;
-	}, [selectedCategories, minRating, inStockOnly, sort, urlTag]);
+	}, [selectedCategories, minRating, inStockOnly, sort, urlTag, query]);
 
 	const visible = filtered.slice(0, page * PAGE_SIZE);
 	const remaining = filtered.length - visible.length;
 
-	const pageTitle =
-		urlTag === "promo"
-			? "🔥 Produk Promo"
-			: (selectedCategories[0] ?? "Semua Produk");
+	const pageTitle = titleFor(query, urlTag ?? undefined, selectedCategories[0]);
 
 	const filterPanel = (
 		<div className="flex flex-col gap-8 text-sm [&_h3]:text-xl [&_h3]:font-medium [&_h3]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-3">
@@ -307,7 +328,9 @@ export default function Page(): JSX.Element {
 							</div>
 						) : (
 							<div className="py-24 flex flex-col items-center gap-3 text-center text-gray-500 text-sm">
-								Tidak ada produk yang sesuai filter.
+								{query
+									? `Tidak ada produk yang cocok dengan "${query}".`
+									: "Tidak ada produk yang sesuai filter."}
 							</div>
 						)}
 
