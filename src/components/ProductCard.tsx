@@ -44,13 +44,16 @@ export function ProductCard({
 		? Math.round((1 - price / originalPrice) * 100)
 		: undefined;
 
-	const badge =
-		(discount && <span className="badge discount">-{discount}%</span>) ||
-		(tags?.includes("baru") && <span className="badge new">Baru</span>);
+	let badge;
+	if (discount) {
+		badge = <span className="badge discount">-{discount}%</span>;
+	} else if (tags?.includes("baru")) {
+		badge = <span className="badge new">Baru</span>;
+	}
 
 	function handleWishlist() {
 		if (!user) {
-			navigate("/login");
+			void navigate("/login");
 			return;
 		}
 		dispatch(toggleWishlist(name));
@@ -58,7 +61,7 @@ export function ProductCard({
 
 	function handleAddToCart() {
 		if (!user) {
-			navigate("/login");
+			void navigate("/login");
 			return;
 		}
 		dispatch(addToCart(name));

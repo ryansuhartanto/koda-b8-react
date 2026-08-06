@@ -81,7 +81,9 @@ export default function Page(): JSX.Element {
 											</div>
 											<button
 												type="button"
-												onClick={() => dispatch(removeFromCart(item.name))}
+												onClick={() => {
+													dispatch(removeFromCart(item.name));
+												}}
 												className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors"
 												aria-label="Hapus item"
 											>
@@ -94,9 +96,9 @@ export default function Page(): JSX.Element {
 													size="sm"
 													value={item.quantity}
 													max={item.stock}
-													onChange={(qty) =>
-														dispatch(updateCartQty(item.name, qty))
-													}
+													onChange={(qty) => {
+														dispatch(updateCartQty(item.name, qty));
+													}}
 												/>
 												<button
 													type="button"

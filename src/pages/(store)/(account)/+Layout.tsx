@@ -1,6 +1,5 @@
 import type { JSX } from "react";
-import { useEffect } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router";
+import { Navigate, NavLink, Outlet, useNavigate } from "react-router";
 import ChevronRight from "~icons/lucide/chevron-right";
 import ClipboardList from "~icons/lucide/clipboard-list";
 import CreditCard from "~icons/lucide/credit-card";
@@ -103,18 +102,16 @@ function AccountNav() {
 	);
 }
 
-export default function Layout(): JSX.Element | undefined {
+export default function Layout(): JSX.Element {
 	const isLoggedIn = useAppSelector(selectIsLoggedIn);
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate("/login");
-		}
-	}, [isLoggedIn, navigate]);
 
 	if (!isLoggedIn) {
-		return undefined;
+		return (
+			<Navigate
+				to="/login"
+				replace
+			/>
+		);
 	}
 
 	return (

@@ -102,10 +102,12 @@ export default function Page(): JSX.Element {
 						<AddressCard
 							key={addr.id}
 							{...addr}
-							onDelete={() => dispatch(removeAddress(addr.id))}
-							onSetDefault={() =>
-								dispatch(updateAddress(addr.id, { isDefault: true }))
-							}
+							onDelete={() => {
+								dispatch(removeAddress(addr.id));
+							}}
+							onSetDefault={() => {
+								dispatch(updateAddress(addr.id, { isDefault: true }));
+							}}
 						/>
 					))}
 				</div>

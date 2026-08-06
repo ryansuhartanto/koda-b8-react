@@ -1,4 +1,4 @@
-import type { JSX, FormEvent } from "react";
+import type { JSX, SubmitEvent } from "react";
 import { useState } from "react";
 import { Link } from "react-router";
 import Check from "~icons/lucide/check";
@@ -16,7 +16,7 @@ import { OrderReviewItem } from "#/components/ProductCard";
 import data from "#/data.json";
 import { useCheckout } from "#/hooks/useCheckout";
 import type { Order, ShippingInfo } from "#/lib/db";
-import { rupiah } from "#/lib/utils";
+import { field, rupiah } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
 import { selectCurrentUser } from "#/store/reducers/auth";
 import { placeOrder } from "#/store/reducers/orders";
@@ -76,20 +76,19 @@ function StepShipping({
 }: {
 	onNext: (shipping: ShippingInfo) => void;
 }) {
-	function handleSubmit(e: FormEvent<HTMLFormElement>) {
+	function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
 		onNext({
-			name: form.get("name")?.toString() ?? "",
-			phone: form.get("phone")?.toString() ?? "",
-			email: form.get("email")?.toString() ?? "",
-			address: form.get("address")?.toString() ?? "",
-			city: form.get("city")?.toString() ?? "",
-			province: form.get("province")?.toString() ?? "",
-			postalCode: form.get("postalCode")?.toString() ?? "",
-			note: form.get("note")?.toString() ?? "",
-			method:
-				form.get("shipping")?.toString() ?? shippingMethods[0]?.label ?? "",
+			name: field(form, "name") ?? "",
+			phone: field(form, "phone") ?? "",
+			email: field(form, "email") ?? "",
+			address: field(form, "address") ?? "",
+			city: field(form, "city") ?? "",
+			province: field(form, "province") ?? "",
+			postalCode: field(form, "postalCode") ?? "",
+			note: field(form, "note") ?? "",
+			method: field(form, "shipping") ?? shippingMethods[0]?.label ?? "",
 			cost: 0,
 		});
 	}

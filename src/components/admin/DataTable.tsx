@@ -88,7 +88,7 @@ export function TableSearch({
 			<Search className="size-5 text-gray-400 shrink-0" />
 			<input
 				type="search"
-				value={table.getState().globalFilter ?? ""}
+				value={(table.getState().globalFilter as string | undefined) ?? ""}
 				onChange={(e) => table.setGlobalFilter(e.target.value)}
 				placeholder={placeholder}
 				className="flex-1 w-full outline-none bg-transparent text-sm text-gray-900"

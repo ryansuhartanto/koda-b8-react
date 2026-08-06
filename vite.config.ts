@@ -23,7 +23,8 @@ export default defineConfig({
 	lint: {
 		extends: [oxlint],
 		options: {
-			typeAware: false,
+			typeAware: true,
+			typeCheck: true,
 		},
 	},
 	staged: {

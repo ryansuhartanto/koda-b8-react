@@ -18,51 +18,55 @@ const router = createBrowserRouter([
 				children: [
 					{
 						index: true,
-						Component: React.lazy(() => import("#/pages/(store)/index")),
+						Component: React.lazy(async () => import("#/pages/(store)/index")),
 					},
 					{
 						path: "browse",
-						Component: React.lazy(() => import("#/pages/(store)/browse")),
+						Component: React.lazy(async () => import("#/pages/(store)/browse")),
 					},
 					{
 						path: "details/:slug",
-						Component: React.lazy(() => import("#/pages/(store)/details")),
+						Component: React.lazy(
+							async () => import("#/pages/(store)/details"),
+						),
 					},
 					{
 						path: "cart",
-						Component: React.lazy(() => import("#/pages/(store)/cart")),
+						Component: React.lazy(async () => import("#/pages/(store)/cart")),
 					},
 					{
 						path: "checkout",
-						Component: React.lazy(() => import("#/pages/(store)/checkout")),
+						Component: React.lazy(
+							async () => import("#/pages/(store)/checkout"),
+						),
 					},
 					{
 						Component: React.lazy(
-							() => import("#/pages/(store)/(account)/+Layout"),
+							async () => import("#/pages/(store)/(account)/+Layout"),
 						),
 						children: [
 							{
 								path: "profile",
 								Component: React.lazy(
-									() => import("#/pages/(store)/(account)/profile"),
+									async () => import("#/pages/(store)/(account)/profile"),
 								),
 							},
 							{
 								path: "orders",
 								Component: React.lazy(
-									() => import("#/pages/(store)/(account)/orders"),
+									async () => import("#/pages/(store)/(account)/orders"),
 								),
 							},
 							{
 								path: "wishlist",
 								Component: React.lazy(
-									() => import("#/pages/(store)/(account)/wishlist"),
+									async () => import("#/pages/(store)/(account)/wishlist"),
 								),
 							},
 							{
 								path: "addresses",
 								Component: React.lazy(
-									() => import("#/pages/(store)/(account)/addresses"),
+									async () => import("#/pages/(store)/(account)/addresses"),
 								),
 							},
 							{
@@ -78,41 +82,47 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "admin",
-				Component: React.lazy(() => import("#/pages/admin/+Layout")),
+				Component: React.lazy(async () => import("#/pages/admin/+Layout")),
 				children: [
 					{
 						index: true,
-						Component: React.lazy(() => import("#/pages/admin/dashboard")),
+						Component: React.lazy(
+							async () => import("#/pages/admin/dashboard"),
+						),
 					},
 					{
 						path: "products",
-						Component: React.lazy(() => import("#/pages/admin/products")),
+						Component: React.lazy(async () => import("#/pages/admin/products")),
 					},
 					{
 						path: "orders",
-						Component: React.lazy(() => import("#/pages/admin/orders")),
+						Component: React.lazy(async () => import("#/pages/admin/orders")),
 					},
 					{
 						path: "customers",
-						Component: React.lazy(() => import("#/pages/admin/customers")),
+						Component: React.lazy(
+							async () => import("#/pages/admin/customers"),
+						),
 					},
 					{
 						path: "settings",
-						Component: React.lazy(() => import("#/pages/admin/settings")),
+						Component: React.lazy(async () => import("#/pages/admin/settings")),
 					},
 				],
 			},
 			{
 				path: "login",
-				Component: React.lazy(() => import("#/pages/(auth)/login")),
+				Component: React.lazy(async () => import("#/pages/(auth)/login")),
 			},
 			{
 				path: "register",
-				Component: React.lazy(() => import("#/pages/(auth)/register")),
+				Component: React.lazy(async () => import("#/pages/(auth)/register")),
 			},
 			{
 				path: "forgot-password",
-				Component: React.lazy(() => import("#/pages/(auth)/forgot-password")),
+				Component: React.lazy(
+					async () => import("#/pages/(auth)/forgot-password"),
+				),
 			},
 		],
 	},

@@ -72,7 +72,7 @@ export default function Page(): JSX.Element {
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: yupResolver(schema) });
 
-	async function onSubmit(data: yup.InferType<typeof schema>) {
+	function onSubmit(data: yup.InferType<typeof schema>) {
 		try {
 			dispatch(
 				registerUser({
@@ -81,7 +81,7 @@ export default function Page(): JSX.Element {
 					password: data.password,
 				}),
 			);
-			navigate("/");
+			void navigate("/");
 		} catch (error) {
 			const code = error instanceof Error ? error.message : "";
 			if (code === "EMAIL_TAKEN") {
@@ -134,7 +134,7 @@ export default function Page(): JSX.Element {
 
 			<form
 				className="flex flex-col gap-4"
-				onSubmit={handleSubmit(onSubmit)}
+				onSubmit={(e) => void handleSubmit(onSubmit)(e)}
 			>
 				{errors.root && (
 					<p className="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded-xl">

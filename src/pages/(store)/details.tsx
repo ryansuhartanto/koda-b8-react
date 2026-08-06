@@ -74,25 +74,25 @@ export default function Page(): JSX.Element {
 
 	function handleAddToCart() {
 		if (!user) {
-			navigate("/login");
+			void navigate("/login");
 			return;
 		}
 		dispatch(addToCart(name, qty));
-		navigate("/cart");
+		void navigate("/cart");
 	}
 
 	function handleBuyNow() {
 		if (!user) {
-			navigate("/login");
+			void navigate("/login");
 			return;
 		}
 		dispatch(addToCart(name, qty));
-		navigate("/checkout");
+		void navigate("/checkout");
 	}
 
 	function handleWishlist() {
 		if (!user) {
-			navigate("/login");
+			void navigate("/login");
 			return;
 		}
 		dispatch(toggleWishlist(name));

@@ -1,9 +1,10 @@
-import type { JSX, FormEvent } from "react";
+import type { JSX, SubmitEvent } from "react";
 import { useState } from "react";
 import SquarePen from "~icons/lucide/square-pen";
 
 import Avatar from "#/components/Avatar";
 import FormField from "#/components/FormField";
+import { field } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
 import { selectCurrentUser, updateProfile } from "#/store/reducers/auth";
 
@@ -12,19 +13,15 @@ export default function Page(): JSX.Element {
 	const dispatch = useAppDispatch();
 	const [saved, setSaved] = useState(false);
 
-	function handleSubmit(e: FormEvent<HTMLFormElement>) {
+	function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
 		dispatch(
 			updateProfile({
-				name: form.get("name")?.toString() ?? undefined,
-				phone: form.get("phone")?.toString() ?? undefined,
-				birthdate: form.get("birthdate")?.toString() ?? undefined,
-				gender: (form.get("gender")?.toString() ?? undefined) as
-					| "M"
-					| "F"
-					| "X"
-					| undefined,
+				name: field(form, "name"),
+				phone: field(form, "phone"),
+				birthdate: field(form, "birthdate"),
+				gender: field(form, "gender") as "M" | "F" | "X" | undefined,
 			}),
 		);
 		setSaved(true);

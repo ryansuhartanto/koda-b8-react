@@ -120,7 +120,7 @@ function RevenueChart() {
 						tickFormatter={(v) => `${v}jt`}
 					/>
 					<Tooltip
-						formatter={(v) => [`Rp ${v} juta`, "Pendapatan"]}
+						formatter={(v) => [`Rp ${String(v)} juta`, "Pendapatan"]}
 						contentStyle={{
 							borderRadius: 12,
 							border: "1px solid var(--color-gray-200)",
@@ -165,7 +165,7 @@ function CategoryDonut() {
 								/>
 							))}
 						</Pie>
-						<Tooltip formatter={(v) => `${v}%`} />
+						<Tooltip formatter={(v) => `${String(v)}%`} />
 					</PieChart>
 				</ResponsiveContainer>
 			</div>

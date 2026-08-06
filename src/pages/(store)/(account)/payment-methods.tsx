@@ -77,7 +77,9 @@ export default function Page(): JSX.Element {
 						<MethodCard
 							key={method.id}
 							{...method}
-							onDelete={() => dispatch(removeSavedPayment(method.id))}
+							onDelete={() => {
+								dispatch(removeSavedPayment(method.id));
+							}}
 						/>
 					))}
 				</div>
