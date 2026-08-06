@@ -92,20 +92,20 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  deploy:
-    name: Deploy
-    needs: release
-    runs-on: ubuntu-latest
+  # deploy:
+  #   name: Deploy
+  #   needs: release
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}
-          username: github
+  #   steps:
+  #     - uses: appleboy/ssh-action@v1
+  #       with:
+  #         host: ${{ secrets.SSH_HOST }}
+  #         port: ${{ secrets.SSH_PORT }}
+  #         key: ${{ secrets.SSH_KEY }}
+  #         username: github
 
-          script: |
-            docker pull ghcr.io/${{github.repository}}:latest
-            docker container rm frontend --force
-            docker run -d -p 9802:80 --name frontend ghcr.io/${{github.repository}}:latest
+  #         script: |
+  #           docker pull ghcr.io/${{github.repository}}:latest
+  #           docker container rm frontend --force
+  #           docker run -d -p 9802:80 --name frontend ghcr.io/${{github.repository}}:latest
