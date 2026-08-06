@@ -46,7 +46,7 @@ export default function Page(): JSX.Element {
 		return (
 			<main className="pt-6 pb-16 bg-gray-50">
 				<div className="wrapper flex flex-col gap-4 items-center text-center py-24">
-					<h1 className="text-2xl font-medium text-gray-900">
+					<h1 className="text-h1 font-medium text-gray-900">
 						Produk Tidak Ditemukan
 					</h1>
 					<p className="text-sm text-gray-500">
@@ -116,7 +116,7 @@ export default function Page(): JSX.Element {
 					]}
 				/>
 
-				<section className="grid grid-cols-2 gap-12 items-start">
+				<section className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-start">
 					<div className="flex flex-col gap-4">
 						<div className="relative bg-white border border-black/10 rounded-2xl overflow-hidden aspect-square">
 							{discount && (
@@ -131,7 +131,7 @@ export default function Page(): JSX.Element {
 							/>
 						</div>
 						<div className="flex gap-4">
-							<div className="size-20 border-2 border-blue-600 rounded-xl overflow-hidden shrink-0">
+							<div className="size-20 border-2 border-brand-600 rounded-xl overflow-hidden shrink-0">
 								<img
 									src={img}
 									alt=""
@@ -146,7 +146,7 @@ export default function Page(): JSX.Element {
 							<div className="text-sm text-gray-500">
 								{brand} &bull; {category}
 							</div>
-							<h1 className="text-3xl font-bold text-gray-900">{name}</h1>
+							<h1 className="text-display font-bold text-gray-900">{name}</h1>
 							<div className="flex items-center gap-4 text-sm">
 								<div className="flex items-center gap-1 tabular-nums text-amber-400">
 									<Star5 count={Math.round(rating)} />
@@ -159,7 +159,7 @@ export default function Page(): JSX.Element {
 							</div>
 						</div>
 
-						<div className="flex flex-col gap-1 p-4 rounded-xl bg-blue-50">
+						<div className="flex flex-col gap-1 p-4 rounded-xl bg-brand-50">
 							<div className="flex items-center gap-3 price">
 								<ins className="text-3xl font-bold">{rupiah(price)}</ins>
 								{originalPrice && (
@@ -180,7 +180,7 @@ export default function Page(): JSX.Element {
 
 						<div className="flex flex-col gap-2">
 							<div className="text-sm text-gray-500">
-								Warna: <span className="text-blue-600">{color}</span>
+								Warna: <span className="text-brand-600">{color}</span>
 							</div>
 							<RadioGroup
 								value={color}
@@ -259,7 +259,7 @@ export default function Page(): JSX.Element {
 									key={title}
 									className="bg-gray-200/50 rounded-xl flex flex-col items-center justify-center text-center gap-2"
 								>
-									<Icon className="text-blue-600 size-5" />
+									<Icon className="text-brand-600 size-5" />
 									<div>
 										<div className="text-xs font-medium text-gray-900">
 											{title}
@@ -305,8 +305,8 @@ export default function Page(): JSX.Element {
 
 				{related.length > 0 && (
 					<section className="flex flex-col gap-6">
-						<h2 className="text-xl font-medium">Produk Serupa</h2>
-						<div className="grid grid-cols-4 gap-4">
+						<h2 className="text-h2 font-medium">Produk Serupa</h2>
+						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 							{related.map((p) => (
 								<ProductCard
 									key={p.name}

@@ -2,6 +2,57 @@
 
 @theme {
 	--font-sans: "InterVariable", "Inter", Helvetica, Arial, sans-serif;
+
+	--color-brand-50: oklch(97% 0.014 254.604);
+	--color-brand-100: oklch(93.2% 0.032 255.585);
+	--color-brand-200: oklch(88.2% 0.059 254.128);
+	--color-brand-300: oklch(80.9% 0.105 251.813);
+	--color-brand-400: oklch(70.7% 0.165 254.624);
+	--color-brand-500: oklch(62.3% 0.214 259.815);
+	--color-brand-600: oklch(54.6% 0.245 262.881);
+	--color-brand-700: oklch(48.8% 0.243 264.376);
+	--color-brand-800: oklch(42.4% 0.199 265.638);
+	--color-brand-900: oklch(37.9% 0.146 265.522);
+	--color-brand-950: oklch(28.2% 0.091 267.935);
+
+	--color-accent-50: oklch(98% 0.016 73.684);
+	--color-accent-500: oklch(70.5% 0.213 47.604);
+	--color-accent-600: oklch(64.6% 0.222 41.116);
+	--color-accent-700: oklch(55.3% 0.195 38.402);
+
+	/* Price is its own role so it can diverge from link blue without a sweep. */
+	--color-price: var(--color-brand-600);
+
+	--color-canvas: var(--color-gray-50);
+	--color-surface: var(--color-white);
+	--color-line: --alpha(var(--color-black) / 10%);
+
+	--radius-card: var(--radius-2xl);
+	--radius-control: var(--radius-xl);
+
+	--shadow-card: 0 1px 2px --alpha(var(--color-black) / 4%);
+	--shadow-card-hover: 0 12px 32px -8px --alpha(var(--color-black) / 18%);
+
+	--text-display: 1.875rem;
+	--text-display--line-height: 1.2;
+	--text-display--font-weight: 700;
+	--text-h1: 1.5rem;
+	--text-h1--line-height: 1.25;
+	--text-h1--font-weight: 600;
+	--text-h2: 1.25rem;
+	--text-h2--line-height: 1.35;
+	--text-h2--font-weight: 500;
+	--text-h3: 1rem;
+	--text-h3--line-height: 1.4;
+	--text-h3--font-weight: 600;
+	--text-body: 0.875rem;
+	--text-body--line-height: calc(1.25 / 0.875);
+	--text-meta: 0.75rem;
+	--text-meta--line-height: calc(1 / 0.75);
+
+	/* One knob for every `transition-*` utility that omits an explicit duration. */
+	--default-transition-duration: 180ms;
+	--default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @layer base {
@@ -17,6 +68,11 @@
 		@apply inline size-[1em];
 	}
 
+	a:focus-visible,
+	[tabindex]:focus-visible {
+		@apply outline-2 outline-offset-2 outline-brand-600 rounded-xs;
+	}
+
 	small {
 		font-size: unset;
 	}
@@ -27,7 +83,7 @@
 		@apply flex items-center gap-2 select-none;
 
 		&::before {
-			@apply content-['B'] grid place-content-center size-8 rounded-lg text-sm bg-blue-600 text-white;
+			@apply content-['B'] grid place-content-center size-8 rounded-lg text-sm bg-brand-600 text-white;
 		}
 
 		&.brand-invert {
@@ -42,14 +98,14 @@
 	.auth-banner {
 		@apply relative flex flex-col justify-between p-12 text-white/70 text-sm overflow-hidden;
 
-		@apply bg-linear-to-br from-blue-600 to-blue-800;
+		@apply bg-linear-to-br from-brand-600 to-brand-800;
 
 		&.login {
 			background-image:
 				linear-gradient(
 					in oklch to bottom right,
-					color-mix(in oklch, var(--color-blue-600) 90%, transparent),
-					color-mix(in oklch, var(--color-blue-800) 90%, transparent)
+					color-mix(in oklch, var(--color-brand-600) 90%, transparent),
+					color-mix(in oklch, var(--color-brand-800) 90%, transparent)
 				),
 				url("/images/auth/login.jpg");
 			background-position: center;
@@ -60,7 +116,7 @@
 			background-image:
 				linear-gradient(
 					in oklch to bottom right,
-					color-mix(in oklch, var(--color-blue-600) 90%, transparent),
+					color-mix(in oklch, var(--color-brand-600) 90%, transparent),
 					color-mix(in oklch, var(--color-indigo-800) 90%, transparent)
 				),
 				url("/images/auth/login.jpg");
@@ -82,7 +138,7 @@
 	}
 
 	.card {
-		@apply bg-white border border-black/10 rounded-2xl overflow-hidden relative text-gray-500 transition-shadow duration-500 hover:shadow-xl;
+		@apply bg-surface border border-line rounded-card overflow-hidden relative text-gray-500 shadow-card transition-shadow hover:shadow-card-hover;
 
 		img {
 			@apply aspect-square w-full;
@@ -99,7 +155,7 @@
 				@apply bg-red-600;
 			}
 			&.new {
-				@apply bg-blue-600;
+				@apply bg-brand-600;
 			}
 		}
 
@@ -119,8 +175,8 @@
 			background-image:
 				linear-gradient(
 					in oklch to right,
-					color-mix(in oklch, var(--color-blue-800) 80%, transparent),
-					color-mix(in oklch, var(--color-blue-800) 0%, transparent)
+					color-mix(in oklch, var(--color-brand-800) 80%, transparent),
+					color-mix(in oklch, var(--color-brand-800) 0%, transparent)
 				),
 				url("/images/marketing/electronic.png");
 			background-position: center;
@@ -140,7 +196,7 @@
 	.price {
 		& > span,
 		& > ins {
-			@apply text-blue-600 text-base font-semibold no-underline;
+			@apply text-price text-base font-semibold no-underline;
 		}
 
 		& > del {

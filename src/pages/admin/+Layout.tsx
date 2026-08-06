@@ -39,7 +39,7 @@ function Sidebar({
 		<>
 			<div className="flex items-center justify-between h-16 px-6 border-b border-white/10">
 				<div className="flex items-center gap-3">
-					<span className="grid place-content-center size-8 rounded-lg bg-blue-600 text-white text-sm font-bold">
+					<span className="grid place-content-center size-8 rounded-lg bg-brand-600 text-white text-sm font-bold">
 						B
 					</span>
 					<span className="text-white font-semibold">BeliMudah Admin</span>
@@ -70,7 +70,7 @@ function Sidebar({
 							cn(
 								"flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors",
 								isActive
-									? "bg-blue-600 text-white font-medium"
+									? "bg-brand-600 text-white font-medium"
 									: "hover:bg-white/5 hover:text-white",
 							)
 						}
@@ -102,6 +102,7 @@ function Sidebar({
 				side="left"
 				title="Admin navigation"
 				hideTitle
+				mobileOnly
 				className="w-64 bg-gray-900 text-gray-400 border-white/10 shadow-2xl"
 			>
 				<div className="flex flex-col h-full">{content}</div>
@@ -118,7 +119,7 @@ function Topbar({ onMenuOpen }: { onMenuOpen: () => void }) {
 					variant="icon"
 					tone="neutral"
 					size="none"
-					className="text-inherit"
+					className="text-inherit md:hidden"
 					aria-label="Toggle menu"
 					onClick={onMenuOpen}
 				>

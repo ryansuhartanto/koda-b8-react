@@ -92,7 +92,7 @@ export function ProductCard({
 						"absolute inset-bs-2 inset-e-2 bg-white shadow-sm transition-opacity",
 						isWishlisted
 							? "text-red-500 opacity-100"
-							: "text-gray-400 opacity-0 group-hover:opacity-100",
+							: "text-gray-400 opacity-0 pointer-coarse:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100",
 					)}
 				>
 					<Heart
@@ -103,7 +103,7 @@ export function ProductCard({
 				<Button
 					tone="accent"
 					size="none"
-					className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 py-3 text-sm shadow-none translate-y-full group-hover:translate-y-0 transition-transform duration-200"
+					className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 py-3 text-sm shadow-none translate-y-full pointer-coarse:translate-y-0 group-hover:translate-y-0 group-focus-within:translate-y-0 focus-visible:translate-y-0 transition-transform"
 					onClick={handleAddToCart}
 				>
 					<ShoppingCart className="size-4" /> Tambah ke Keranjang
@@ -162,7 +162,9 @@ export function SummaryItem({
 					className="w-full h-full object-cover"
 				/>
 			</div>
-			<div className="flex-1 text-sm text-gray-600 truncate">{name}</div>
+			<div className="flex-1 min-w-0 text-sm text-gray-600 truncate">
+				{name}
+			</div>
 			<div className="text-sm text-gray-900 font-medium">×{quantity}</div>
 		</div>
 	);
@@ -194,7 +196,7 @@ export function OrderReviewItem({
 				<span className="text-sm font-medium text-gray-900">{name}</span>
 				<span className="text-xs text-gray-500">x{quantity}</span>
 			</div>
-			<div className="text-sm font-medium text-blue-600">
+			<div className="text-sm font-medium text-brand-600">
 				{rupiah(price * quantity)}
 			</div>
 		</div>

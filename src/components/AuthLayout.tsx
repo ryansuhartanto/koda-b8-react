@@ -23,8 +23,8 @@ export default function AuthLayout({
 	children,
 }: AuthLayoutProps): JSX.Element {
 	return (
-		<div className="grid grid-cols-2 min-h-dvh">
-			<div className={cn("auth-banner", variant)}>
+		<div className="grid grid-cols-1 md:grid-cols-2 min-h-dvh">
+			<div className={cn("auth-banner hidden md:flex", variant)}>
 				<Link
 					className="brand brand-invert relative z-10"
 					to="/"
@@ -35,7 +35,7 @@ export default function AuthLayout({
 				<div className="relative z-10 flex flex-col gap-8 max-w-md">
 					{badge}
 					<div className="flex flex-col gap-4">
-						<h2 className="text-3xl font-bold leading-tight">{heading}</h2>
+						<h2 className="text-display font-bold leading-tight">{heading}</h2>
 						{description && (
 							<p className="text-white/80 leading-relaxed">{description}</p>
 						)}
@@ -48,8 +48,16 @@ export default function AuthLayout({
 				</small>
 			</div>
 
-			<main className="flex justify-center items-center p-12 bg-gray-50">
-				<div className="w-full max-w-md flex flex-col gap-8">{children}</div>
+			<main className="flex justify-center items-center p-6 md:p-12 bg-canvas">
+				<div className="w-full max-w-md flex flex-col gap-8">
+					<Link
+						className="brand md:hidden"
+						to="/"
+					>
+						BeliMudah
+					</Link>
+					{children}
+				</div>
 			</main>
 		</div>
 	);

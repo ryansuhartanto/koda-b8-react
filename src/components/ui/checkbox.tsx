@@ -37,7 +37,7 @@ export function Checkbox({
 			value={value}
 			disabled={disabled}
 			inputRef={inputRef}
-			className="grid place-content-center shrink-0 size-4 rounded border border-gray-300 bg-white cursor-pointer transition-colors data-checked:bg-blue-600 data-checked:border-blue-600 data-disabled:opacity-50 data-disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+			className="grid place-content-center shrink-0 size-4 rounded border border-gray-300 bg-white cursor-pointer transition-colors data-checked:bg-brand-600 data-checked:border-brand-600 data-disabled:opacity-50 data-disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
 		>
 			<BaseCheckbox.Indicator className="text-white text-[0.65rem] data-unchecked:hidden">
 				<IconCheck />

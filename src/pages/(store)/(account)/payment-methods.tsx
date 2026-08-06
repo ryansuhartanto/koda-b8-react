@@ -28,14 +28,14 @@ function MethodCard({
 	const Icon = iconMap[type] ?? CreditCard;
 	return (
 		<article className="bg-white border border-black/10 rounded-2xl p-5 flex items-center gap-4">
-			<div className="grid place-content-center size-12 shrink-0 rounded-xl bg-blue-50 text-blue-600">
+			<div className="grid place-content-center size-12 shrink-0 rounded-xl bg-brand-50 text-brand-600">
 				<Icon className="size-6" />
 			</div>
 			<div className="flex-1 flex flex-col">
 				<div className="flex items-center gap-2">
-					<h2 className="font-medium text-gray-900">{type}</h2>
+					<h2 className="text-h3 font-medium text-gray-900">{type}</h2>
 					{isDefault && (
-						<span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white">
+						<span className="px-2 py-0.5 rounded-full text-xs font-medium bg-brand-600 text-white">
 							Utama
 						</span>
 					)}
@@ -63,9 +63,7 @@ export default function Page(): JSX.Element {
 	return (
 		<>
 			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-medium text-gray-900">
-					Metode Pembayaran
-				</h1>
+				<h1 className="text-h1 font-medium text-gray-900">Metode Pembayaran</h1>
 				<Button>
 					<Plus className="size-4" /> Tambah Metode
 				</Button>

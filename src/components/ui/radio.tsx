@@ -8,12 +8,12 @@ import type { JSX, ReactNode } from "react";
 import { cn } from "#/lib/utils";
 
 export const radioVariants = cva(
-	"cursor-pointer select-none transition-colors data-disabled:opacity-50 data-disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
+	"cursor-pointer select-none transition-colors data-disabled:opacity-50 data-disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
 	{
 		variants: {
 			variant: {
-				dot: "grid place-content-center shrink-0 size-4 rounded-full border border-gray-300 bg-white data-checked:border-blue-600",
-				pill: "p-1.5 px-3 text-sm font-medium border rounded-lg border-gray-200 bg-white text-gray-600 hover:border-gray-300 data-checked:border-blue-600 data-checked:bg-blue-50 data-checked:text-blue-600",
+				dot: "grid place-content-center shrink-0 size-4 rounded-full border border-gray-300 bg-white data-checked:border-brand-600",
+				pill: "p-1.5 px-3 text-sm font-medium border rounded-lg border-gray-200 bg-white text-gray-600 hover:border-gray-300 data-checked:border-brand-600 data-checked:bg-brand-50 data-checked:text-brand-600",
 			},
 		},
 		defaultVariants: { variant: "dot" },
@@ -25,7 +25,7 @@ export const radioLabelVariants = cva(
 	{
 		variants: {
 			card: {
-				true: "border rounded-xl p-4 transition-colors border-black/10 hover:border-blue-300 has-data-checked:border-blue-600 has-data-checked:bg-blue-50/50",
+				true: "border rounded-xl p-4 transition-colors border-black/10 hover:border-brand-300 has-data-checked:border-brand-600 has-data-checked:bg-brand-50/50",
 				false: "text-sm text-gray-600",
 			},
 		},
@@ -88,7 +88,7 @@ export function Radio({
 			disabled={disabled}
 			className={radioVariants({ variant: "dot" })}
 		>
-			<BaseRadio.Indicator className="size-2 rounded-full bg-blue-600 data-unchecked:hidden" />
+			<BaseRadio.Indicator className="size-2 rounded-full bg-brand-600 data-unchecked:hidden" />
 		</BaseRadio.Root>
 	);
 

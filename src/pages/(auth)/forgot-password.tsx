@@ -45,7 +45,7 @@ export default function Page(): JSX.Element {
 			</Link>
 
 			<div className="flex flex-col gap-2">
-				<h1 className="text-2xl font-bold text-gray-900">Lupa Kata Sandi?</h1>
+				<h1 className="text-h1 font-bold text-gray-900">Lupa Kata Sandi?</h1>
 				<p className="text-sm text-gray-500 leading-relaxed">
 					Tidak perlu khawatir. Masukkan email yang terdaftar dan kami akan
 					mengirimkan tautan untuk membuat kata sandi baru.
@@ -85,7 +85,7 @@ export default function Page(): JSX.Element {
 			<p className="text-center text-sm text-gray-500">
 				Ingat kata sandi kamu?{" "}
 				<Link
-					className="text-blue-600 hover:underline font-medium"
+					className="text-brand-600 hover:underline font-medium"
 					to="/login"
 				>
 					Masuk sekarang

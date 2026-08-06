@@ -47,7 +47,7 @@ export default function Page(): JSX.Element {
 	return (
 		<main className="pt-6 pb-16 bg-gray-50">
 			<div className="wrapper flex flex-col gap-8">
-				<h1 className="text-2xl font-medium text-gray-900">
+				<h1 className="text-h1 font-medium text-gray-900">
 					Keranjang Belanja (
 					<span className="tabular-nums">{cartItems.length}</span> item)
 				</h1>
@@ -73,7 +73,7 @@ export default function Page(): JSX.Element {
 									<div className="flex-1 flex flex-col justify-between gap-2">
 										<div className="flex justify-between items-start">
 											<div className="flex flex-col gap-1">
-												<h3 className="font-medium text-gray-900 text-sm">
+												<h3 className="font-medium text-gray-900 text-body">
 													{item.name}
 												</h3>
 												<div className="text-xs text-gray-500">
@@ -116,7 +116,7 @@ export default function Page(): JSX.Element {
 													<Heart className="size-4" /> Simpan ke Wishlist
 												</Button>
 											</div>
-											<span className="text-blue-600 font-medium">
+											<span className="text-brand-600 font-medium">
 												{rupiah(item.price * item.quantity)}
 											</span>
 										</div>
@@ -130,15 +130,15 @@ export default function Page(): JSX.Element {
 						)}
 
 						<div className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-6">
-							<h2 className="flex items-center gap-2 font-medium text-gray-900">
-								<Tag className="text-blue-600" /> Kode Promo
+							<h2 className="text-h3 flex items-center gap-2 font-medium text-gray-900">
+								<Tag className="text-brand-600" /> Kode Promo
 							</h2>
 							<div className="flex flex-col gap-3">
 								<form className="flex gap-2">
 									<input
 										type="text"
 										placeholder="Masukkan kode promo"
-										className="flex-1 border border-black/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white"
+										className="flex-1 min-w-0 border border-black/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-brand-600 transition-colors bg-gray-50 focus:bg-white"
 									/>
 									<Button
 										className="shrink-0"
@@ -155,7 +155,7 @@ export default function Page(): JSX.Element {
 					</section>
 
 					<aside className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-5 lg:sticky lg:top-36">
-						<h2 className="text-lg font-medium text-gray-900">
+						<h2 className="text-h2 font-medium text-gray-900">
 							Ringkasan Pesanan
 						</h2>
 						<div className="flex flex-col gap-2 text-sm text-gray-600">
@@ -170,14 +170,14 @@ export default function Page(): JSX.Element {
 							<hr className="border-gray-200" />
 							<div className="flex justify-between items-center">
 								<span className="font-medium text-gray-900">Total</span>
-								<span className="font-bold text-blue-600">
+								<span className="font-bold text-brand-600">
 									{rupiah(subtotal)}
 								</span>
 							</div>
 						</div>
 						<Link
 							to="/checkout"
-							className="w-full bg-orange-500 text-white py-3 rounded-xl hover:bg-orange-600 font-medium flex justify-center items-center gap-2 cursor-pointer shadow-sm shadow-orange-500/20 transition-colors"
+							className="w-full bg-accent-500 text-white py-3 rounded-xl hover:bg-accent-600 font-medium flex justify-center items-center gap-2 cursor-pointer shadow-sm shadow-accent-500/20 transition-colors"
 						>
 							<ShieldCheck className="size-5" /> Checkout Aman
 						</Link>
@@ -194,7 +194,7 @@ export default function Page(): JSX.Element {
 				</div>
 
 				<section className="flex flex-col gap-6">
-					<h2 className="text-xl font-medium">Mungkin Kamu Suka Ini</h2>
+					<h2 className="text-h2 font-medium">Mungkin Kamu Suka Ini</h2>
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 						{suggestions.map((p) => (
 							<ProductCard

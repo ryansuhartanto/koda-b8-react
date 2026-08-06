@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { PersistGate } from "redux-persist/integration/react";
 
 import LayoutRoot from "#/+Layout";
+import ErrorBoundary from "#/components/ErrorBoundary";
 import LayoutStore from "#/pages/(store)/+Layout";
 import { persistor, store } from "#/store";
 
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		Component: LayoutRoot,
+		ErrorBoundary,
 		children: [
 			{
 				Component: LayoutStore,

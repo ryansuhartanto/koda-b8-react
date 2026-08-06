@@ -21,7 +21,7 @@ export function HeaderUtility(): JSX.Element {
 	return (
 		<section
 			aria-label="Utility bar"
-			className="hidden md:block bg-blue-600 text-white text-xs"
+			className="hidden md:block bg-brand-600 text-white text-xs"
 		>
 			<div className="wrapper flex justify-between items-center py-1.5">
 				<div className="flex gap-4">
@@ -114,7 +114,7 @@ export function HeaderMain({
 					>
 						<ShoppingCart className="text-gray-500 group-hover:text-black" />
 						{cartCount > 0 && (
-							<span className="absolute -top-2 -right-2 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
+							<span className="absolute -top-2 -right-2 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-accent-500 text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
 								{cartCount > 99 ? "99+" : cartCount}
 							</span>
 						)}
@@ -129,7 +129,7 @@ export function HeaderMain({
 					>
 						<ShoppingCart className="text-gray-500" />
 						{cartCount > 0 && (
-							<span className="absolute -top-2 -right-2 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
+							<span className="absolute -top-2 -right-2 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-accent-500 text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
 								{cartCount > 99 ? "99+" : cartCount}
 							</span>
 						)}
@@ -172,6 +172,7 @@ function MobileDrawer({
 			side="left"
 			title="Menu navigasi"
 			hideTitle
+			mobileOnly
 			className="w-80 max-w-[85vw] shadow-2xl"
 		>
 			<div className="flex flex-col h-full">
@@ -199,9 +200,9 @@ function MobileDrawer({
 				</div>
 
 				<div className="px-4 py-3 bg-gray-50 border-b border-black/10">
-					<form className="flex items-center h-10 border border-black/10 rounded-xl bg-white overflow-hidden focus-within:border-blue-400 transition-colors *:h-full">
+					<form className="flex items-center h-10 border border-black/10 rounded-xl bg-white overflow-hidden focus-within:border-brand-400 transition-colors *:h-full">
 						<input
-							className="flex-1 px-4 text-sm bg-transparent focus:outline-none"
+							className="flex-1 min-w-0 px-4 text-sm bg-transparent focus:outline-none"
 							type="text"
 							name="q"
 							autoComplete="off"
@@ -221,9 +222,9 @@ function MobileDrawer({
 				<Link
 					to={user ? "/profile" : "/login"}
 					onClick={close}
-					className="flex items-center gap-3 px-5 py-4 border-b border-black/10 hover:bg-blue-50 transition-colors group"
+					className="flex items-center gap-3 px-5 py-4 border-b border-black/10 hover:bg-brand-50 transition-colors group"
 				>
-					<div className="grid place-content-center size-10 rounded-full bg-blue-100 text-blue-600 font-bold text-sm shrink-0 group-hover:bg-blue-200 transition-colors">
+					<div className="grid place-content-center size-10 rounded-full bg-brand-100 text-brand-600 font-bold text-sm shrink-0 group-hover:bg-brand-200 transition-colors">
 						{firstName?.[0] ? (
 							firstName[0].toUpperCase()
 						) : (
@@ -239,12 +240,12 @@ function MobileDrawer({
 								{user.email}
 							</span>
 						) : (
-							<span className="text-xs text-blue-600">Tap untuk masuk →</span>
+							<span className="text-xs text-brand-600">Tap untuk masuk →</span>
 						)}
 					</div>
 				</Link>
 
-				<div className="mx-4 mt-3 px-3 py-2 rounded-xl bg-blue-600 text-white text-xs flex items-center gap-2">
+				<div className="mx-4 mt-3 px-3 py-2 rounded-xl bg-brand-600 text-white text-xs flex items-center gap-2">
 					<span>🚀</span>
 					<span>Gratis ongkir di atas Rp 100.000</span>
 				</div>

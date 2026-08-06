@@ -28,12 +28,12 @@ function AddressCard({
 		<article className="bg-white border border-black/10 rounded-2xl p-5 flex flex-col gap-3">
 			<div className="flex justify-between items-start">
 				<div className="flex items-center gap-2">
-					<h2 className="font-medium text-gray-900">
+					<h2 className="text-h3 font-medium text-gray-900">
 						{label}
 						{isDefault ? " (Utama)" : ""}
 					</h2>
 					{isDefault && (
-						<span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white">
+						<span className="px-2 py-0.5 rounded-full text-xs font-medium bg-brand-600 text-white">
 							Utama
 						</span>
 					)}
@@ -90,7 +90,7 @@ export default function Page(): JSX.Element {
 	return (
 		<>
 			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-medium text-gray-900">Alamat Saya</h1>
+				<h1 className="text-h1 font-medium text-gray-900">Alamat Saya</h1>
 				<Button>
 					<Plus className="size-4" /> Tambah Alamat
 				</Button>

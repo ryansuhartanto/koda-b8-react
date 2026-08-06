@@ -6,7 +6,7 @@ import type { ComponentProps, JSX } from "react";
 import { cn } from "#/lib/utils";
 
 export const buttonVariants = cva(
-	"font-medium whitespace-nowrap transition-colors cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-60 disabled:cursor-not-allowed data-disabled:opacity-60 data-disabled:cursor-not-allowed",
+	"font-medium whitespace-nowrap transition-colors cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-60 disabled:cursor-not-allowed data-disabled:opacity-60 data-disabled:cursor-not-allowed",
 	{
 		variants: {
 			variant: {
@@ -37,13 +37,13 @@ export const buttonVariants = cva(
 			{
 				variant: "solid",
 				tone: "primary",
-				class: "bg-blue-600 text-white hover:bg-blue-700",
+				class: "bg-brand-600 text-white hover:bg-brand-700",
 			},
 			{
 				variant: "solid",
 				tone: "accent",
 				class:
-					"bg-orange-500 text-white hover:bg-orange-600 shadow-sm shadow-orange-500/20",
+					"bg-accent-500 text-white hover:bg-accent-600 shadow-sm shadow-accent-500/20",
 			},
 			{
 				variant: "solid",
@@ -59,13 +59,13 @@ export const buttonVariants = cva(
 			{
 				variant: "outline",
 				tone: "primary",
-				class: "border-blue-600 text-blue-600 hover:bg-blue-50",
+				class: "border-brand-600 text-brand-600 hover:bg-brand-50",
 			},
 			{
 				variant: "outline",
 				tone: "accent",
 				class:
-					"border-2 border-orange-500 bg-orange-50/50 text-orange-500 hover:bg-orange-50",
+					"border-2 border-accent-500 bg-accent-50/50 text-accent-500 hover:bg-accent-50",
 			},
 			{
 				variant: "outline",
@@ -81,7 +81,7 @@ export const buttonVariants = cva(
 			{
 				variant: "ghost",
 				tone: "primary",
-				class: "text-gray-500 hover:text-blue-600 hover:bg-blue-50",
+				class: "text-gray-500 hover:text-brand-600 hover:bg-brand-50",
 			},
 			{
 				variant: "ghost",
@@ -97,7 +97,7 @@ export const buttonVariants = cva(
 			{
 				variant: "link",
 				tone: "primary",
-				class: "text-blue-600 hover:underline",
+				class: "text-brand-600 hover:underline",
 			},
 			{
 				variant: "link",
@@ -110,7 +110,7 @@ export const buttonVariants = cva(
 				class: "text-gray-600 hover:text-gray-900",
 			},
 
-			{ variant: "icon", tone: "primary", class: "hover:text-blue-600" },
+			{ variant: "icon", tone: "primary", class: "hover:text-brand-600" },
 			{
 				variant: "icon",
 				tone: "neutral",

@@ -6,10 +6,10 @@ import { Button } from "#/components/ui/button";
 export default function Page(): JSX.Element {
 	return (
 		<div className="flex flex-col gap-6 max-w-2xl">
-			<h1 className="text-2xl font-bold text-gray-900">Pengaturan</h1>
+			<h1 className="text-h1 font-bold text-gray-900">Pengaturan</h1>
 
 			<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-5">
-				<h2 className="text-lg font-medium text-gray-900">Informasi Toko</h2>
+				<h2 className="text-h2 font-medium text-gray-900">Informasi Toko</h2>
 				<FormField
 					label="Nama Toko"
 					name="storeName"

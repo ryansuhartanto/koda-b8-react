@@ -82,11 +82,11 @@ export default function Page(): JSX.Element {
 			banner={<Stats />}
 		>
 			<div className="flex flex-col gap-1">
-				<h1 className="text-2xl font-bold text-gray-900">Masuk ke Akun</h1>
+				<h1 className="text-h1 font-bold text-gray-900">Masuk ke Akun</h1>
 				<p className="text-sm text-gray-500">
 					Belum punya akun?{" "}
 					<Link
-						className="text-blue-600 hover:underline"
+						className="text-brand-600 hover:underline"
 						to="/register"
 					>
 						Daftar gratis
@@ -142,7 +142,7 @@ export default function Page(): JSX.Element {
 					error={errors.password?.message}
 					aside={
 						<Link
-							className="text-blue-600 hover:underline text-xs font-normal"
+							className="text-brand-600 hover:underline text-xs font-normal"
 							to="/forgot-password"
 						>
 							Lupa kata sandi?
@@ -196,14 +196,14 @@ export default function Page(): JSX.Element {
 			<p className="text-center text-xs text-gray-400">
 				Dengan masuk, kamu menyetujui{" "}
 				<Link
-					className="text-blue-600 hover:underline"
+					className="text-brand-600 hover:underline"
 					to="/terms"
 				>
 					Syarat &amp; Ketentuan
 				</Link>{" "}
 				dan{" "}
 				<Link
-					className="text-blue-600 hover:underline"
+					className="text-brand-600 hover:underline"
 					to="/privacy"
 				>
 					Kebijakan Privasi

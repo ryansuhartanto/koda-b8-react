@@ -102,11 +102,11 @@ export default function Page(): JSX.Element {
 			banner={<Perks />}
 		>
 			<div className="flex flex-col gap-1">
-				<h1 className="text-2xl font-bold text-gray-900">Buat Akun Baru</h1>
+				<h1 className="text-h1 font-bold text-gray-900">Buat Akun Baru</h1>
 				<p className="text-sm text-gray-500">
 					Sudah punya akun?{" "}
 					<Link
-						className="text-blue-600 hover:underline"
+						className="text-brand-600 hover:underline"
 						to="/login"
 					>
 						Masuk di sini
@@ -218,14 +218,14 @@ export default function Page(): JSX.Element {
 								<span>
 									Saya menyetujui{" "}
 									<Link
-										className="text-blue-600 hover:underline"
+										className="text-brand-600 hover:underline"
 										to="/terms"
 									>
 										Syarat &amp; Ketentuan
 									</Link>{" "}
 									dan{" "}
 									<Link
-										className="text-blue-600 hover:underline"
+										className="text-brand-600 hover:underline"
 										to="/privacy"
 									>
 										Kebijakan Privasi

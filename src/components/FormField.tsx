@@ -45,12 +45,12 @@ export default function FormField({
 				</Field.Label>
 				{aside}
 			</div>
-			<div className="flex items-center gap-2 border rounded-xl px-4 py-2.5 transition-colors bg-gray-50 text-gray-900 border-black/10 focus-within:border-blue-600 focus-within:bg-white has-data-invalid:border-red-400">
+			<div className="flex items-center gap-2 border rounded-xl px-4 py-2.5 transition-colors bg-gray-50 text-gray-900 border-black/10 focus-within:border-brand-600 focus-within:bg-white has-data-invalid:border-red-400">
 				{Icon && <Icon className="text-gray-400 shrink-0" />}
 				<Field.Control
 					ref={ref}
 					required={required}
-					className="flex-1 w-full outline-none bg-transparent text-sm"
+					className="flex-1 min-w-0 w-full outline-none bg-transparent text-sm"
 					{...inputProps}
 				/>
 				{trailing}

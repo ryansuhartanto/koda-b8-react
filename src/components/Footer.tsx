@@ -60,7 +60,7 @@ const socialLinks = [
 export function FloatingContact(): JSX.Element {
 	return (
 		<Link
-			className="fixed inset-be-4 inset-e-4 grid place-content-center w-14 h-14 text-2xl rounded-full bg-blue-600 text-white shadow-md"
+			className="fixed inset-be-4 inset-e-4 grid place-content-center w-14 h-14 text-2xl rounded-full bg-brand-600 text-white shadow-md"
 			aria-label="Contact us"
 			to="/contact"
 		>
@@ -81,7 +81,7 @@ export function FooterPromotions(): JSX.Element {
 						key={title}
 						className="flex gap-4"
 					>
-						<div className="grid place-content-center shrink-0 size-10 rounded-full bg-blue-600/20 text-blue-600">
+						<div className="grid place-content-center shrink-0 size-10 rounded-full bg-brand-600/20 text-brand-600">
 							<Icon className="text-lg" />
 						</div>
 						<div className="flex flex-col justify-center">
@@ -206,7 +206,7 @@ export function FooterNav(): JSX.Element {
 							</label>
 							<div className="flex gap-2">
 								<input
-									className="w-full flex-1 px-3 py-2.5 rounded-md bg-gray-700 border border-white/10"
+									className="w-full flex-1 min-w-0 px-3 py-2.5 rounded-md bg-gray-700 border border-white/10"
 									id="newsletter"
 									name="newsletter"
 									type="email"

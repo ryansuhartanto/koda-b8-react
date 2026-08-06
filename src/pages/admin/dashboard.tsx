@@ -36,8 +36,8 @@ const icons = {
 };
 
 const categoryColors = {
-	"Elektronik": "var(--color-blue-600)",
-	"Fashion": "var(--color-orange-500)",
+	"Elektronik": "var(--color-brand-600)",
+	"Fashion": "var(--color-accent-500)",
 	"Rumah & Dapur": "var(--color-green-500)",
 	"Kecantikan": "var(--color-violet-500)",
 	"Lainnya": "var(--color-gray-400)",
@@ -61,7 +61,7 @@ function Card({
 	return (
 		<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-6">
 			<header className="flex justify-between items-center">
-				<h2 className="text-lg font-medium text-gray-900">{title}</h2>
+				<h2 className="text-h2 font-medium text-gray-900">{title}</h2>
 				{action}
 			</header>
 			{children}
@@ -91,12 +91,12 @@ function RevenueChart() {
 						>
 							<stop
 								offset="0%"
-								stopColor="var(--color-blue-600)"
+								stopColor="var(--color-brand-600)"
 								stopOpacity={0.25}
 							/>
 							<stop
 								offset="100%"
-								stopColor="var(--color-blue-600)"
+								stopColor="var(--color-brand-600)"
 								stopOpacity={0}
 							/>
 						</linearGradient>
@@ -130,7 +130,7 @@ function RevenueChart() {
 					<Area
 						type="monotone"
 						dataKey="revenue"
-						stroke="var(--color-blue-600)"
+						stroke="var(--color-brand-600)"
 						strokeWidth={2}
 						fill="url(#revenueFill)"
 					/>
@@ -198,7 +198,7 @@ export default function Page(): JSX.Element {
 		<div className="flex flex-col gap-6">
 			<div className="flex justify-between items-start">
 				<div className="flex flex-col gap-1">
-					<h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+					<h1 className="text-h1 font-bold text-gray-900">Dashboard</h1>
 					<p className="text-sm text-gray-500">
 						Selamat datang kembali! Ini ringkasan bisnis hari ini.
 					</p>
@@ -244,7 +244,7 @@ export default function Page(): JSX.Element {
 					action={
 						<Link
 							to="/admin/orders"
-							className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
+							className="flex items-center gap-1 text-sm text-brand-600 hover:underline"
 						>
 							Lihat Semua <ArrowUpRight className="size-4" />
 						</Link>
@@ -275,7 +275,7 @@ export default function Page(): JSX.Element {
 									</span>
 								</div>
 								<div className="flex flex-col items-end gap-1">
-									<span className="text-sm font-semibold text-blue-600 tabular-nums">
+									<span className="text-sm font-semibold text-brand-600 tabular-nums">
 										{rupiah(o.total)}
 									</span>
 									<span className="text-xs text-gray-400">{o.items} item</span>
@@ -290,7 +290,7 @@ export default function Page(): JSX.Element {
 					action={
 						<Link
 							to="/admin/products"
-							className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
+							className="flex items-center gap-1 text-sm text-brand-600 hover:underline"
 						>
 							Kelola <ArrowUpRight className="size-4" />
 						</Link>
@@ -313,7 +313,7 @@ export default function Page(): JSX.Element {
 										{p.sold} terjual &middot; Stok: {p.stock}
 									</span>
 								</div>
-								<span className="text-sm font-semibold text-blue-600 tabular-nums">
+								<span className="text-sm font-semibold text-brand-600 tabular-nums">
 									{rupiah(p.revenue)}
 								</span>
 							</li>

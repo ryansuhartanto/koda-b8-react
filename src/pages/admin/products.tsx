@@ -94,7 +94,7 @@ const columns = [
 			const { price, originalPrice } = row.original;
 			return (
 				<div className="flex flex-col tabular-nums">
-					<span className="font-medium text-blue-600">{rupiah(price)}</span>
+					<span className="font-medium text-brand-600">{rupiah(price)}</span>
 					{originalPrice && (
 						<span className="text-xs text-gray-400 line-through">
 							{rupiah(originalPrice)}
@@ -195,7 +195,7 @@ function AddProductModal({
 			className="max-w-2xl"
 		>
 			<form className="p-6 pt-2 flex flex-col gap-5">
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<FormField
 						label="Nama Produk"
 						name="name"
@@ -232,7 +232,7 @@ function AddProductModal({
 					<textarea
 						name="description"
 						rows={3}
-						className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900 text-sm resize-y"
+						className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-brand-600 transition-colors bg-gray-50 focus:bg-white text-gray-900 text-sm resize-y"
 					/>
 				</label>
 
@@ -277,7 +277,7 @@ export default function Page(): JSX.Element {
 	return (
 		<div className="flex flex-col gap-6">
 			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-bold text-gray-900">Manajemen Produk</h1>
+				<h1 className="text-h1 font-bold text-gray-900">Manajemen Produk</h1>
 				<Button
 					tone="accent"
 					className="shadow-none"

@@ -78,7 +78,7 @@ function AccountNav() {
 						cn(
 							"flex items-center gap-3 px-4 py-3 rounded-xl transition-colors",
 							isActive
-								? "bg-blue-50 text-blue-600 font-medium"
+								? "bg-brand-50 text-brand-600 font-medium"
 								: "text-gray-600 hover:bg-gray-50",
 						)
 					}

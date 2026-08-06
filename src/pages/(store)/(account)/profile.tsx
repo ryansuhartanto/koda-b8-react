@@ -41,9 +41,7 @@ export default function Page(): JSX.Element {
 	return (
 		<>
 			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-medium text-gray-900">
-					Pengaturan Profil
-				</h1>
+				<h1 className="text-h1 font-medium text-gray-900">Pengaturan Profil</h1>
 				<Button
 					variant="outline"
 					className="py-2"
@@ -111,17 +109,17 @@ export default function Page(): JSX.Element {
 			</section>
 
 			<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-4">
-				<h2 className="text-lg font-medium text-gray-900">Keamanan Akun</h2>
+				<h2 className="text-h2 font-medium text-gray-900">Keamanan Akun</h2>
 				<div className="flex flex-col gap-3 text-sm">
 					<a
 						href="/account/password"
-						className="text-blue-600 hover:underline w-fit"
+						className="text-brand-600 hover:underline w-fit"
 					>
 						Ubah Kata Sandi
 					</a>
 					<a
 						href="/account/two-factor"
-						className="text-blue-600 hover:underline w-fit"
+						className="text-brand-600 hover:underline w-fit"
 					>
 						Aktifkan Verifikasi 2 Langkah
 					</a>

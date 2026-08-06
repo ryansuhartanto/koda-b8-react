@@ -63,7 +63,7 @@ export function Select<T>({
 				)}
 				<BaseSelect.Trigger
 					className={cn(
-						"flex items-center justify-between gap-2 w-full border border-black/10 rounded-xl px-4 py-2.5 bg-gray-50 text-gray-900 text-sm text-left cursor-pointer transition-colors select-none hover:bg-white data-popup-open:bg-white data-popup-open:border-blue-600 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue-600 data-disabled:opacity-50 data-disabled:cursor-not-allowed",
+						"flex items-center justify-between gap-2 w-full border border-black/10 rounded-xl px-4 py-2.5 bg-gray-50 text-gray-900 text-sm text-left cursor-pointer transition-colors select-none hover:bg-white data-popup-open:bg-white data-popup-open:border-brand-600 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand-600 data-disabled:opacity-50 data-disabled:cursor-not-allowed",
 						triggerClassName,
 					)}
 				>
@@ -88,10 +88,10 @@ export function Select<T>({
 								<BaseSelect.Item
 									key={String(item.value)}
 									value={item.value}
-									className="flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 cursor-pointer select-none outline-none data-highlighted:bg-blue-50 data-highlighted:text-blue-700 data-selected:font-medium"
+									className="flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 cursor-pointer select-none outline-none data-highlighted:bg-brand-50 data-highlighted:text-brand-700 data-selected:font-medium"
 								>
 									<BaseSelect.ItemText>{item.label}</BaseSelect.ItemText>
-									<BaseSelect.ItemIndicator className="text-blue-600">
+									<BaseSelect.ItemIndicator className="text-brand-600">
 										<IconCheck />
 									</BaseSelect.ItemIndicator>
 								</BaseSelect.Item>

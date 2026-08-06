@@ -69,7 +69,7 @@ const paymentMethods = [
 		id: "dana",
 		label: "DANA",
 		badge: "DN",
-		badgeClass: "bg-blue-500 text-white",
+		badgeClass: "bg-brand-500 text-white",
 	},
 ];
 
@@ -100,8 +100,8 @@ function StepShipping({
 			aria-label="Shipping details"
 			className="lg:col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
 		>
-			<h2 className="flex items-center gap-2 text-lg font-medium text-gray-900">
-				<Truck className="text-blue-600" /> Alamat Pengiriman
+			<h2 className="flex items-center gap-2 text-h2 font-medium text-gray-900">
+				<Truck className="text-brand-600" /> Alamat Pengiriman
 			</h2>
 
 			<form
@@ -162,7 +162,7 @@ function StepShipping({
 				<hr className="border-gray-100" />
 
 				<div className="flex flex-col gap-4">
-					<h3 className="text-base font-medium text-gray-900">
+					<h3 className="text-h3 font-medium text-gray-900">
 						Metode Pengiriman
 					</h3>
 					<RadioGroup
@@ -218,8 +218,8 @@ function StepPayment({
 			aria-label="Payment methods"
 			className="lg:col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
 		>
-			<h2 className="flex items-center gap-2 text-lg font-medium text-gray-900">
-				<CreditCard className="text-blue-600" /> Metode Pembayaran
+			<h2 className="flex items-center gap-2 text-h2 font-medium text-gray-900">
+				<CreditCard className="text-brand-600" /> Metode Pembayaran
 			</h2>
 
 			<div className="flex flex-col gap-6">
@@ -227,7 +227,7 @@ function StepPayment({
 					name="payment"
 					value={selectedId}
 					onValueChange={onSelect}
-					className="grid grid-cols-2 gap-4"
+					className="grid grid-cols-1 sm:grid-cols-2 gap-4"
 				>
 					{paymentMethods.map(({ id, label, badge, badgeClass, useIcon }) => (
 						<Radio
@@ -249,7 +249,7 @@ function StepPayment({
 					))}
 				</RadioGroup>
 
-				<div className="flex gap-3 items-center p-4 rounded-xl bg-blue-50 text-blue-700 text-xs">
+				<div className="flex gap-3 items-center p-4 rounded-xl bg-brand-50 text-brand-700 text-xs">
 					<Lock className="size-5 shrink-0" />
 					Informasi pembayaranmu dienkripsi dengan SSL 256-bit. Kami tidak
 					menyimpan data kartu kreditmu.
@@ -306,12 +306,12 @@ function StepConfirmation({
 			aria-label="Order confirmation"
 			className="lg:col-span-2 flex flex-col gap-6 bg-white border border-black/10 rounded-2xl p-6"
 		>
-			<h2 className="text-lg font-medium text-gray-900">Konfirmasi Pesanan</h2>
+			<h2 className="text-h2 font-medium text-gray-900">Konfirmasi Pesanan</h2>
 
 			<div className="flex flex-col gap-6">
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-col gap-1 p-4 bg-gray-50 rounded-xl">
-						<h3 className="text-sm font-medium text-gray-900">
+						<h3 className="text-body font-medium text-gray-900">
 							Alamat Pengiriman
 						</h3>
 						<p className="text-sm text-gray-600">
@@ -323,13 +323,13 @@ function StepConfirmation({
 						</p>
 					</div>
 					<div className="flex flex-col gap-1 p-4 bg-gray-50 rounded-xl">
-						<h3 className="text-sm font-medium text-gray-900">
+						<h3 className="text-body font-medium text-gray-900">
 							Metode Pengiriman
 						</h3>
 						<p className="text-sm text-gray-600">{shipping.method}</p>
 					</div>
 					<div className="flex flex-col gap-4 p-4 bg-gray-50 rounded-xl">
-						<h3 className="text-sm font-medium text-gray-900">
+						<h3 className="text-body font-medium text-gray-900">
 							Produk yang Dipesan
 						</h3>
 						<div className="flex flex-col gap-3">
@@ -342,14 +342,14 @@ function StepConfirmation({
 						</div>
 					</div>
 					<div className="flex flex-col gap-1 p-4 bg-gray-50 rounded-xl">
-						<h3 className="text-sm font-medium text-gray-900">
+						<h3 className="text-body font-medium text-gray-900">
 							Metode Pembayaran
 						</h3>
 						<p className="text-sm text-gray-600">{paymentLabel}</p>
 					</div>
 				</div>
 
-				<div className="flex gap-3 items-center p-4 rounded-xl bg-blue-50 text-blue-700 text-xs">
+				<div className="flex gap-3 items-center p-4 rounded-xl bg-brand-50 text-brand-700 text-xs">
 					<ShieldCheck className="size-5 shrink-0" />
 					<p>
 						Dengan menekan 'Bayar Sekarang', kamu menyetujui Syarat &amp;
@@ -396,7 +396,7 @@ function StepSuccess({ order }: { order: Order }) {
 					<div className="size-20 rounded-full bg-green-100 text-green-500 flex items-center justify-center outline-8 outline-green-50">
 						<CheckCircle2 className="size-10" />
 					</div>
-					<h1 className="text-2xl font-bold text-gray-900">
+					<h1 className="text-h1 font-bold text-gray-900">
 						Pesanan Berhasil! 🎉
 					</h1>
 					<p className="text-sm text-gray-600">
@@ -410,7 +410,7 @@ function StepSuccess({ order }: { order: Order }) {
 						<div className="flex justify-between items-start">
 							<div className="flex flex-col gap-1">
 								<span className="text-xs text-gray-500">Nomor Pesanan</span>
-								<span className="text-sm font-bold text-blue-600">
+								<span className="text-sm font-bold text-brand-600">
 									#{order.id}
 								</span>
 							</div>
@@ -432,7 +432,7 @@ function StepSuccess({ order }: { order: Order }) {
 								</div>
 							</div>
 							<div className="flex gap-3 items-start">
-								<MapPin className="text-blue-500 size-5 shrink-0" />
+								<MapPin className="text-brand-500 size-5 shrink-0" />
 								<div className="flex flex-col gap-1">
 									<span className="text-sm font-medium text-gray-900">
 										Alamat Pengiriman
@@ -447,7 +447,9 @@ function StepSuccess({ order }: { order: Order }) {
 					</section>
 
 					<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-6">
-						<h2 className="font-medium text-gray-900">Status Pesanan</h2>
+						<h2 className="text-h3 font-medium text-gray-900">
+							Status Pesanan
+						</h2>
 						<div className="flex flex-col gap-6 pl-2 relative before:absolute before:inset-y-0 before:left-4 before:w-0.5 before:bg-gray-100">
 							{timeline.map(({ Icon, label, sub, done }) => (
 								<div
@@ -478,13 +480,13 @@ function StepSuccess({ order }: { order: Order }) {
 					<div className="flex justify-center items-center gap-4">
 						<Link
 							to="/orders"
-							className="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium cursor-pointer hover:bg-blue-700 transition-colors"
+							className="bg-brand-600 text-white px-6 py-3 rounded-xl font-medium cursor-pointer hover:bg-brand-700 transition-colors"
 						>
 							Lihat Pesanan
 						</Link>
 						<Link
 							to="/"
-							className="text-blue-600 font-medium hover:text-blue-800 transition-colors text-sm"
+							className="text-brand-600 font-medium hover:text-brand-800 transition-colors text-sm"
 						>
 							Lanjut Belanja &rarr;
 						</Link>

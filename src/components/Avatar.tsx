@@ -19,7 +19,7 @@ export default function Avatar({
 	return (
 		<BaseAvatar.Root
 			className={cn(
-				"grid place-content-center shrink-0 size-12 rounded-full overflow-hidden bg-blue-100 text-blue-600 font-bold select-none",
+				"grid place-content-center shrink-0 size-12 rounded-full overflow-hidden bg-brand-100 text-brand-600 font-bold select-none",
 				className,
 			)}
 		>

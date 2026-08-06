@@ -1,7 +1,11 @@
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import type { JSX, ReactNode } from "react";
+import { useEffect } from "react";
 
+import { useMediaQuery } from "#/hooks/useMediaQuery";
 import { cn } from "#/lib/utils";
+
+const MD = "(min-width: 48rem)";
 
 const sides = {
 	left: {
@@ -37,6 +41,8 @@ export type DrawerProps = {
 	title: string;
 	hideTitle?: boolean;
 	description?: string;
+	/** Closes the drawer once the viewport reaches `md`, where the desktop layout takes over. */
+	mobileOnly?: boolean;
 	className?: string;
 	children: ReactNode;
 };
@@ -48,19 +54,28 @@ export function Drawer({
 	title,
 	hideTitle = false,
 	description,
+	mobileOnly = false,
 	className,
 	children,
 }: DrawerProps): JSX.Element {
 	const s = sides[side];
+	const isDesktop = useMediaQuery(MD);
+	const suppressed = mobileOnly && isDesktop;
+
+	useEffect(() => {
+		if (suppressed && open) {
+			onOpenChange(false);
+		}
+	}, [suppressed, open, onOpenChange]);
 
 	return (
 		<BaseDrawer.Root
-			open={open}
+			open={open && !suppressed}
 			onOpenChange={onOpenChange}
 			swipeDirection={s.swipe}
 		>
 			<BaseDrawer.Portal>
-				<BaseDrawer.Backdrop className="fixed inset-0 min-h-dvh bg-black opacity-[calc(0.4*(1-var(--drawer-swipe-progress)))] transition-opacity duration-300 ease-out data-swiping:duration-0 data-starting-style:opacity-0 data-ending-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute" />
+				<BaseDrawer.Backdrop className="fixed inset-0 min-h-dvh bg-black opacity-[calc(0.4_*_(1_-_var(--drawer-swipe-progress)))] transition-opacity duration-300 ease-out data-swiping:duration-0 data-starting-style:opacity-0 data-ending-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute" />
 				<BaseDrawer.Viewport className={cn("fixed inset-0 flex", s.viewport)}>
 					<BaseDrawer.Popup
 						className={cn(

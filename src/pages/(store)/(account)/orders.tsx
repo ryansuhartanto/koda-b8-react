@@ -38,7 +38,7 @@ const statusConfig: Record<
 	shipped: {
 		label: "Dikirim",
 		Icon: Truck,
-		className: "text-blue-600 bg-blue-50",
+		className: "text-brand-600 bg-brand-50",
 	},
 	delivered: {
 		label: "Terkirim",
@@ -109,7 +109,7 @@ function OrderCard({ id, createdAt, status, items, total }: Order) {
 			<footer className="flex justify-between items-center flex-wrap gap-3">
 				<span className="text-sm text-gray-600">
 					Total:{" "}
-					<span className="font-bold text-blue-600 tabular-nums">
+					<span className="font-bold text-brand-600 tabular-nums">
 						{rupiah(total)}
 					</span>
 				</span>
@@ -145,7 +145,7 @@ export default function Page(): JSX.Element {
 
 	return (
 		<>
-			<h1 className="text-2xl font-medium text-gray-900">Pesanan Saya</h1>
+			<h1 className="text-h1 font-medium text-gray-900">Pesanan Saya</h1>
 
 			{orders.length > 0 ? (
 				<div className="flex flex-col gap-4">
@@ -164,7 +164,7 @@ export default function Page(): JSX.Element {
 					</p>
 					<Link
 						to="/browse"
-						className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
+						className="px-6 py-2.5 bg-brand-600 text-white rounded-xl text-sm font-medium hover:bg-brand-700 transition-colors"
 					>
 						Mulai Belanja
 					</Link>

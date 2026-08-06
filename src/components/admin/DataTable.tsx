@@ -74,7 +74,7 @@ export function TableSearch({
 	return (
 		<label
 			className={cn(
-				"flex items-center gap-2 flex-1 border border-black/10 rounded-xl px-4 py-2.5 bg-gray-50 focus-within:bg-white focus-within:border-blue-600 transition-colors",
+				"flex items-center gap-2 flex-1 min-w-0 border border-black/10 rounded-xl px-4 py-2.5 bg-gray-50 focus-within:bg-white focus-within:border-brand-600 transition-colors",
 				className,
 			)}
 		>
@@ -84,7 +84,7 @@ export function TableSearch({
 				value={(table.getState().globalFilter as string | undefined) ?? ""}
 				onChange={(e) => table.setGlobalFilter(e.target.value)}
 				placeholder={placeholder}
-				className="flex-1 w-full outline-none bg-transparent text-sm text-gray-900"
+				className="flex-1 min-w-0 w-full outline-none bg-transparent text-sm text-gray-900"
 			/>
 		</label>
 	);

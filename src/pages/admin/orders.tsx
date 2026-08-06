@@ -81,7 +81,7 @@ const columns = [
 	column.accessor("total", {
 		header: "Total",
 		cell: (info) => (
-			<span className="font-medium text-blue-600 tabular-nums">
+			<span className="font-medium text-brand-600 tabular-nums">
 				{rupiah(info.getValue())}
 			</span>
 		),
@@ -156,7 +156,7 @@ export default function Page(): JSX.Element {
 	return (
 		<div className="flex flex-col gap-6">
 			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-bold text-gray-900">Manajemen Pesanan</h1>
+				<h1 className="text-h1 font-bold text-gray-900">Manajemen Pesanan</h1>
 				<Button>
 					<Download className="size-4" /> Ekspor
 				</Button>

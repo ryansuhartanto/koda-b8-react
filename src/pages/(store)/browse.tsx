@@ -247,7 +247,7 @@ export default function Page(): JSX.Element {
 					items={[{ label: "Beranda", url: "/" }, { label: pageTitle }]}
 				/>
 
-				<h1 className="text-2xl font-medium">{pageTitle}</h1>
+				<h1 className="text-h1 font-medium">{pageTitle}</h1>
 
 				<div className="flex gap-8 items-start">
 					<aside className="hidden md:flex w-56 shrink-0 flex-col gap-8">
@@ -267,13 +267,13 @@ export default function Page(): JSX.Element {
 									onClick={() => setFiltersOpen(true)}
 									className={cn(
 										"md:hidden rounded-xl",
-										hasActiveFilters && "bg-blue-50",
+										hasActiveFilters && "bg-brand-50",
 									)}
 								>
 									<SlidersHorizontal className="size-4" />
 									Filter
 									{hasActiveFilters && (
-										<span className="grid place-content-center size-4 rounded-full bg-blue-600 text-white text-[10px] font-bold">
+										<span className="grid place-content-center size-4 rounded-full bg-brand-600 text-white text-[10px] font-bold">
 											{selectedCategories.length +
 												(minRating ? 1 : 0) +
 												(inStockOnly ? 1 : 0)}
@@ -332,11 +332,12 @@ export default function Page(): JSX.Element {
 				side="bottom"
 				title="Filter"
 				hideTitle
+				mobileOnly
 				className="max-h-[85vh] shadow-2xl"
 			>
 				<div className="flex flex-col h-full">
 					<div className="flex items-center justify-between px-5 py-4 border-b border-black/10">
-						<h2 className="font-semibold text-gray-900">Filter</h2>
+						<h2 className="text-h3 font-semibold text-gray-900">Filter</h2>
 						<DrawerClose
 							aria-label="Close filters"
 							className={cn(

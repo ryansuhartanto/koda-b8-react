@@ -103,7 +103,7 @@ const columns = [
 	column.accessor("spend", {
 		header: "Total Belanja",
 		cell: (info) => (
-			<span className="font-medium text-blue-600 tabular-nums">
+			<span className="font-medium text-brand-600 tabular-nums">
 				{rupiah(info.getValue())}
 			</span>
 		),
@@ -143,7 +143,7 @@ export default function Page(): JSX.Element {
 
 	return (
 		<div className="flex flex-col gap-6">
-			<h1 className="text-2xl font-bold text-gray-900">Manajemen Pelanggan</h1>
+			<h1 className="text-h1 font-bold text-gray-900">Manajemen Pelanggan</h1>
 
 			<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
 				{customerStats.map((s) => (
@@ -158,7 +158,7 @@ export default function Page(): JSX.Element {
 			</div>
 
 			<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-6">
-				<h2 className="text-lg font-medium text-gray-900">
+				<h2 className="text-h2 font-medium text-gray-900">
 					Pertumbuhan Pelanggan Baru (2026)
 				</h2>
 				<div className="h-72">
@@ -199,7 +199,7 @@ export default function Page(): JSX.Element {
 							/>
 							<Bar
 								dataKey="value"
-								fill="var(--color-blue-600)"
+								fill="var(--color-brand-600)"
 								radius={[6, 6, 0, 0]}
 								maxBarSize={32}
 							/>

@@ -22,7 +22,7 @@ export default function Page(): JSX.Element {
 		<main className="flex flex-col gap-12 pt-6 pb-16 bg-gray-50">
 			<section
 				aria-label="Hero"
-				className="-mt-6 relative h-64 sm:h-80 md:h-100 bg-linear-to-r from-blue-600 to-purple-700"
+				className="-mt-6 relative h-64 sm:h-80 md:h-100 bg-linear-to-r from-brand-600 to-purple-700"
 			>
 				<nav
 					aria-label="Hero slides navigations"
@@ -82,7 +82,7 @@ export default function Page(): JSX.Element {
 							hingga 40%
 						</p>
 						<Link
-							className="flex gap-2 items-center w-fit bg-white text-blue-600 py-2.5 px-5 md:py-3 md:px-6 rounded-xl text-sm md:text-base"
+							className="flex gap-2 items-center w-fit bg-white text-brand-600 py-2.5 px-5 md:py-3 md:px-6 rounded-xl text-sm md:text-base"
 							to="/browse?tag=promo"
 						>
 							Lihat Promo <ArrowRight />
@@ -97,9 +97,9 @@ export default function Page(): JSX.Element {
 			>
 				<div className="wrapper flex flex-col gap-6">
 					<header className="flex justify-between items-center text-sm">
-						<h2 className="text-xl font-medium">Belanja Bedasarkan Kategori</h2>
+						<h2 className="text-h2 font-medium">Belanja Bedasarkan Kategori</h2>
 						<Link
-							className="text-blue-600 *:align-middle"
+							className="text-brand-600 *:align-middle"
 							to="/browse"
 						>
 							Lihat Semua <ArrowRight />
@@ -143,7 +143,7 @@ export default function Page(): JSX.Element {
 							</span>
 						</div>
 						<Link
-							className="text-blue-600 *:align-middle"
+							className="text-brand-600 *:align-middle"
 							to="/browse?tag=promo"
 						>
 							Lihat Semua <ArrowRight />
@@ -196,11 +196,11 @@ export default function Page(): JSX.Element {
 			<section aria-label="Produk Terbaru">
 				<div className="wrapper flex flex-col gap-6">
 					<header className="flex justify-between items-center text-sm">
-						<h2 className="text-xl font-medium *:align-middle">
-							<TrendingUp className="text-blue-600" /> Produk Terbaru
+						<h2 className="text-h2 font-medium *:align-middle">
+							<TrendingUp className="text-brand-600" /> Produk Terbaru
 						</h2>
 						<Link
-							className="text-blue-600 *:align-middle"
+							className="text-brand-600 *:align-middle"
 							to="/browse?tag=baru"
 						>
 							Lihat Semua <ArrowRight />
@@ -220,9 +220,9 @@ export default function Page(): JSX.Element {
 			<section aria-label="Produk Unggulan">
 				<div className="wrapper flex flex-col gap-6">
 					<header className="flex justify-between items-center text-sm">
-						<h2 className="text-xl font-medium">Produk Unggulan</h2>
+						<h2 className="text-h2 font-medium">Produk Unggulan</h2>
 						<Link
-							className="text-blue-600 *:align-middle"
+							className="text-brand-600 *:align-middle"
 							to="/browse?tag=unggulan"
 						>
 							Lihat Semua <ArrowRight />

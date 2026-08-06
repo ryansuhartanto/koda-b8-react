@@ -28,7 +28,7 @@ export function Stepper({ activeStep }: StepperProps): JSX.Element {
 								"size-12 rounded-full flex items-center justify-center text-lg font-medium z-10 transition-colors",
 								{
 									"bg-green-500 text-white": activeStep > step,
-									"bg-blue-600 text-white": activeStep === step,
+									"bg-brand-600 text-white": activeStep === step,
 									"bg-gray-200 text-gray-500": activeStep < step,
 								},
 							)}
@@ -37,7 +37,7 @@ export function Stepper({ activeStep }: StepperProps): JSX.Element {
 						</div>
 						<span
 							className={cn("text-sm absolute top-14 whitespace-nowrap", {
-								"text-blue-600 font-medium": activeStep === step,
+								"text-brand-600 font-medium": activeStep === step,
 								"text-gray-500": activeStep !== step,
 							})}
 						>
@@ -69,7 +69,7 @@ export function Summary({
 }: SummaryProps): JSX.Element {
 	return (
 		<aside className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-5 sticky top-36">
-			<h2 className="text-lg font-medium text-gray-900">Ringkasan Pesanan</h2>
+			<h2 className="text-h2 font-medium text-gray-900">Ringkasan Pesanan</h2>
 
 			<div className="flex flex-col gap-4">
 				{items.map((item) => (
@@ -94,7 +94,7 @@ export function Summary({
 				<hr className="border-gray-200" />
 				<div className="flex justify-between items-center">
 					<span className="font-medium text-gray-900">Total</span>
-					<span className="font-bold text-blue-600">{subtotal}</span>
+					<span className="font-bold text-brand-600">{subtotal}</span>
 				</div>
 			</div>
 
