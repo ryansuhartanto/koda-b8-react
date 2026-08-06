@@ -1,0 +1,18 @@
+[tools]
+aube = "latest"
+node = "26"
+
+[tasks.dev]
+run = "aubx vp dev"
+
+[tasks.build]
+run = "aubx vp build"
+
+[tasks.check]
+run = "aubx vp check"
+
+[tasks.test]
+run = "aubx vp test run"
+
+[tasks."test:watch"]
+run = "aubx vp test"

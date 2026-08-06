@@ -10,12 +10,7 @@
 		"#/*": "./src/*"
 	},
 	"scripts": {
-		"prepare": "vp config",
-		"fmt": "vp fmt",
-		"lint": "vp lint",
-		"test": "vp test",
-		"dev": "vp dev",
-		"build": "vp build"
+		"prepare": "vp config"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.5.7",

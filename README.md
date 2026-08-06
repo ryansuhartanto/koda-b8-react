@@ -55,18 +55,20 @@ end-to-end static typing, design tokens encoded directly in the stylesheet, and 
 
 ## Usage
 
-```bash
-# install
-bun install
+Requires [mise](https://mise.jdx.dev).
+
+```sh
+mise install
+aube install
 
 # start the dev server
-bun run dev
+mise run dev
 
 # production build
-bun run build
+mise run build
 ```
 
-Other scripts: `bun run lint`, `bun run fmt`, `bun run test`.
+Other tasks: `mise run check` (format, lint and type-check), `mise run test`.
 
 ## Structure
 
