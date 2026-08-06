@@ -4,6 +4,7 @@ import Plus from "~icons/lucide/plus";
 import Trash2 from "~icons/lucide/trash-2";
 import Wallet from "~icons/lucide/wallet";
 
+import { Button } from "#/components/ui/button";
 import type { SavedPayment } from "#/lib/db";
 import { useAppDispatch, useAppSelector } from "#/store";
 import { removeSavedPayment, selectCurrentUser } from "#/store/reducers/auth";
@@ -40,14 +41,16 @@ function MethodCard({
 					)}
 				</div>
 			</div>
-			<button
-				type="button"
+			<Button
+				variant="icon"
+				tone="danger"
+				size="none"
+				className="text-gray-400"
 				aria-label={`Hapus ${type}`}
 				onClick={onDelete}
-				className="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
 			>
 				<Trash2 className="size-5" />
-			</button>
+			</Button>
 		</article>
 	);
 }
@@ -63,12 +66,9 @@ export default function Page(): JSX.Element {
 				<h1 className="text-2xl font-medium text-gray-900">
 					Metode Pembayaran
 				</h1>
-				<button
-					type="button"
-					className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer"
-				>
+				<Button>
 					<Plus className="size-4" /> Tambah Metode
-				</button>
+				</Button>
 			</div>
 
 			{methods.length > 0 ? (

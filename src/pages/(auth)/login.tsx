@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { JSX } from "react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import * as yup from "yup";
 import Eye from "~icons/lucide/eye";
@@ -14,6 +14,8 @@ import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
+import { Button } from "#/components/ui/button";
+import { Checkbox } from "#/components/ui/checkbox";
 import { useAppDispatch } from "#/store";
 import { login } from "#/store/reducers/auth";
 
@@ -52,6 +54,7 @@ export default function Page(): JSX.Element {
 		register,
 		handleSubmit,
 		setError,
+		control,
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: yupResolver(schema) });
 
@@ -96,13 +99,13 @@ export default function Page(): JSX.Element {
 					{ Icon: SiGoogle, label: "Google" },
 					{ Icon: SiFacebook, label: "Facebook" },
 				].map(({ Icon, label }) => (
-					<button
+					<Button
+						variant="outline"
+						tone="neutral"
 						key={label}
-						type="button"
-						className="flex items-center justify-center gap-2 py-2.5 px-4 border border-black/10 rounded-xl text-sm text-gray-700 font-medium hover:bg-gray-100 transition-colors cursor-pointer bg-white"
 					>
 						<Icon className="size-4" /> {label}
-					</button>
+					</Button>
 				))}
 			</div>
 
@@ -146,36 +149,44 @@ export default function Page(): JSX.Element {
 						</Link>
 					}
 					trailing={
-						<button
-							type="button"
+						<Button
+							variant="icon"
+							tone="neutral"
+							size="none"
+							className="text-gray-400 hover:text-gray-600 shrink-0"
 							onClick={() => setShowPassword((v) => !v)}
-							className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors shrink-0"
 							aria-label={
 								showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"
 							}
 						>
 							{showPassword ? <EyeOff /> : <Eye />}
-						</button>
+						</Button>
 					}
 					{...register("password")}
 				/>
 
-				<label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-					<input
-						type="checkbox"
-						className="accent-blue-600 size-4"
-						{...register("remember")}
-					/>
-					Ingat saya selama 30 hari
-				</label>
+				<Controller
+					name="remember"
+					control={control}
+					render={({ field: { value, onChange, ref } }) => (
+						<Checkbox
+							checked={value ?? false}
+							onCheckedChange={onChange}
+							inputRef={ref}
+						>
+							Ingat saya selama 30 hari
+						</Checkbox>
+					)}
+				/>
 
-				<button
+				<Button
+					size="lg"
+					block
 					type="submit"
 					disabled={isSubmitting}
-					className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-60"
 				>
 					<LogIn /> Masuk
-				</button>
+				</Button>
 
 				<p className="text-center text-xs text-gray-400">
 					🔒 Login aman dengan enkripsi SSL 256-bit

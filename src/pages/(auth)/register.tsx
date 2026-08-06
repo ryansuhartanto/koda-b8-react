@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { JSX } from "react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import * as yup from "yup";
 import ArrowRight from "~icons/lucide/arrow-right";
@@ -16,6 +16,8 @@ import SiGoogle from "~icons/simple-icons/google";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
+import { Button } from "#/components/ui/button";
+import { Checkbox } from "#/components/ui/checkbox";
 import { useAppDispatch } from "#/store";
 import { register as registerUser } from "#/store/reducers/auth";
 
@@ -69,6 +71,7 @@ export default function Page(): JSX.Element {
 		register,
 		handleSubmit,
 		setError,
+		control,
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: yupResolver(schema) });
 
@@ -116,13 +119,13 @@ export default function Page(): JSX.Element {
 					{ Icon: SiGoogle, label: "Daftar via Google" },
 					{ Icon: SiFacebook, label: "Daftar via Facebook" },
 				].map(({ Icon, label }) => (
-					<button
+					<Button
+						variant="outline"
+						tone="neutral"
 						key={label}
-						type="button"
-						className="flex items-center justify-center gap-2 py-2.5 px-4 border border-black/10 rounded-xl text-sm text-gray-700 font-medium hover:bg-gray-100 transition-colors cursor-pointer bg-white"
 					>
 						<Icon className="size-4" /> {label}
-					</button>
+					</Button>
 				))}
 			</div>
 
@@ -166,14 +169,16 @@ export default function Page(): JSX.Element {
 					icon={Lock}
 					error={errors.password?.message}
 					trailing={
-						<button
-							type="button"
+						<Button
+							variant="icon"
+							tone="neutral"
+							size="none"
+							className="text-gray-400 hover:text-gray-600 shrink-0"
 							onClick={() => setShowPassword((v) => !v)}
-							className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors shrink-0"
 							aria-label={showPassword ? "Sembunyikan" : "Tampilkan"}
 						>
 							{showPassword ? <EyeOff /> : <Eye />}
-						</button>
+						</Button>
 					}
 					{...register("password")}
 				/>
@@ -185,43 +190,51 @@ export default function Page(): JSX.Element {
 					icon={Lock}
 					error={errors.confirm?.message}
 					trailing={
-						<button
-							type="button"
+						<Button
+							variant="icon"
+							tone="neutral"
+							size="none"
+							className="text-gray-400 hover:text-gray-600 shrink-0"
 							onClick={() => setShowConfirm((v) => !v)}
-							className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors shrink-0"
 							aria-label={showConfirm ? "Sembunyikan" : "Tampilkan"}
 						>
 							{showConfirm ? <EyeOff /> : <Eye />}
-						</button>
+						</Button>
 					}
 					{...register("confirm")}
 				/>
 
 				<div className="flex flex-col gap-1">
-					<label className="flex items-start gap-2 text-sm text-gray-600 cursor-pointer">
-						<input
-							type="checkbox"
-							className="accent-blue-600 size-4 mt-0.5 shrink-0"
-							{...register("terms")}
-						/>
-						<span>
-							Saya menyetujui{" "}
-							<Link
-								className="text-blue-600 hover:underline"
-								to="/terms"
+					<Controller
+						name="terms"
+						control={control}
+						render={({ field: { value, onChange, ref } }) => (
+							<Checkbox
+								checked={value ?? false}
+								onCheckedChange={onChange}
+								inputRef={ref}
+								className="items-start [&>button]:mt-0.5"
 							>
-								Syarat &amp; Ketentuan
-							</Link>{" "}
-							dan{" "}
-							<Link
-								className="text-blue-600 hover:underline"
-								to="/privacy"
-							>
-								Kebijakan Privasi
-							</Link>{" "}
-							BeliMudah
-						</span>
-					</label>
+								<span>
+									Saya menyetujui{" "}
+									<Link
+										className="text-blue-600 hover:underline"
+										to="/terms"
+									>
+										Syarat &amp; Ketentuan
+									</Link>{" "}
+									dan{" "}
+									<Link
+										className="text-blue-600 hover:underline"
+										to="/privacy"
+									>
+										Kebijakan Privasi
+									</Link>{" "}
+									BeliMudah
+								</span>
+							</Checkbox>
+						)}
+					/>
 					{errors.terms && (
 						<span className="text-xs text-red-500 ml-6">
 							{errors.terms.message}
@@ -229,13 +242,16 @@ export default function Page(): JSX.Element {
 					)}
 				</div>
 
-				<button
+				<Button
+					tone="accent"
+					size="lg"
+					block
+					className="shadow-none"
 					type="submit"
 					disabled={isSubmitting}
-					className="flex items-center justify-center gap-2 w-full bg-orange-500 text-white py-3 rounded-xl font-medium hover:bg-orange-600 transition-colors cursor-pointer disabled:opacity-60"
 				>
 					Daftar Sekarang <ArrowRight />
-				</button>
+				</Button>
 
 				<p className="text-center text-xs text-gray-400">
 					🔒 Data kamu aman dan terenkripsi

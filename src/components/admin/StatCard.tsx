@@ -1,22 +1,28 @@
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import type { JSX, ComponentType } from "react";
 import ArrowDownRight from "~icons/lucide/arrow-down-right";
 import ArrowUpRight from "~icons/lucide/arrow-up-right";
 
 import { cn } from "#/lib/utils";
 
-const iconColors = {
-	blue: "bg-blue-50 text-blue-600",
-	green: "bg-green-50 text-green-600",
-	orange: "bg-orange-50 text-orange-600",
-	violet: "bg-violet-50 text-violet-600",
-	amber: "bg-amber-50 text-amber-600",
-};
+export const statIconVariants = cva("", {
+	variants: {
+		color: {
+			blue: "bg-blue-50 text-blue-600",
+			green: "bg-green-50 text-green-600",
+			orange: "bg-orange-50 text-orange-600",
+			violet: "bg-violet-50 text-violet-600",
+			amber: "bg-amber-50 text-amber-600",
+		},
+	},
+	defaultVariants: { color: "blue" },
+});
 
-export type StatCardProps = {
+export type StatCardProps = VariantProps<typeof statIconVariants> & {
 	label: string;
 	value: string | number;
 	icon?: ComponentType<{ className?: string }>;
-	color?: keyof typeof iconColors;
 	delta?: string;
 	dir?: "up" | "down";
 	center?: boolean;
@@ -26,7 +32,7 @@ export default function StatCard({
 	label,
 	value,
 	icon: Icon,
-	color = "blue",
+	color,
 	delta,
 	dir = "up",
 	center = false,
@@ -50,7 +56,7 @@ export default function StatCard({
 					<div
 						className={cn(
 							"grid place-content-center size-10 shrink-0 rounded-xl",
-							iconColors[color],
+							statIconVariants({ color }),
 						)}
 					>
 						<Icon className="size-5" />

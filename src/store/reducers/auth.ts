@@ -23,7 +23,6 @@ export type RootState = {
 
 const initialState: AuthState = { users: [], session: undefined };
 
-/** The user the current session points at, as a mutable draft. */
 function currentUser(state: AuthState): User | undefined {
 	if (!state.session) {
 		return;

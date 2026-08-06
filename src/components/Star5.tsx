@@ -1,34 +1,33 @@
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import type { JSX } from "react";
 import Star from "~icons/lucide/star";
 
-import { cn } from "#/lib/utils";
+export const starVariants = cva("", {
+	variants: {
+		variant: { default: "", monochrome: "" },
+		active: { true: "[&_path]:fill-current", false: "" },
+	},
+	compoundVariants: [
+		{ variant: "default", active: true, class: "text-amber-400" },
+		{ variant: "default", active: false, class: "text-gray-300" },
+	],
+	defaultVariants: { variant: "default" },
+});
 
-export type Star5Props = {
+export type Star5Props = VariantProps<typeof starVariants> & {
 	count?: number;
-	variant?: "default" | "monochrome";
 };
 
-export default function Star5({
-	count = 5,
-	variant = "default",
-}: Star5Props): JSX.Element {
+export default function Star5({ count = 5, variant }: Star5Props): JSX.Element {
 	return (
 		<>
-			{Array.from({ length: 5 }, (_, i) => {
-				const active = i < count;
-				const variantDefault = variant === "default";
-
-				return (
-					<Star
-						key={i}
-						className={cn({
-							"[&_path]:fill-current": active,
-							"text-amber-400": active && variantDefault,
-							"text-gray-300": !active && variantDefault,
-						})}
-					/>
-				);
-			})}
+			{Array.from({ length: 5 }, (_, i) => (
+				<Star
+					key={i}
+					className={starVariants({ variant, active: i < count })}
+				/>
+			))}
 		</>
 	);
 }

@@ -6,6 +6,7 @@ import Send from "~icons/lucide/send";
 
 import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
+import { Button } from "#/components/ui/button";
 
 const tips = [
 	"Pastikan kamu memeriksa folder spam/junk email",
@@ -61,12 +62,13 @@ export default function Page(): JSX.Element {
 					icon={Mail}
 				/>
 
-				<button
+				<Button
+					size="lg"
+					block
 					type="submit"
-					className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors cursor-pointer"
 				>
 					<Send /> Kirim Tautan Reset
-				</button>
+				</Button>
 			</form>
 
 			<div className="bg-gray-100 rounded-xl p-4 flex flex-col gap-2">

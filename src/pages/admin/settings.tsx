@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 
 import FormField from "#/components/FormField";
+import { Button } from "#/components/ui/button";
 
 export default function Page(): JSX.Element {
 	return (
@@ -26,12 +27,12 @@ export default function Page(): JSX.Element {
 					name="phone"
 					defaultValue="0800-1234-5678"
 				/>
-				<button
+				<Button
+					className="self-start"
 					type="submit"
-					className="self-start px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer"
 				>
 					Simpan Perubahan
-				</button>
+				</Button>
 			</section>
 
 			<p className="text-sm text-gray-400">

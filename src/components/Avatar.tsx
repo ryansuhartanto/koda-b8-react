@@ -1,3 +1,4 @@
+import { Avatar as BaseAvatar } from "@base-ui/react/avatar";
 import type { JSX } from "react";
 
 import { cn } from "#/lib/utils";
@@ -16,21 +17,18 @@ export default function Avatar({
 	className,
 }: AvatarProps): JSX.Element {
 	return (
-		<div
+		<BaseAvatar.Root
 			className={cn(
-				"grid place-content-center shrink-0 size-12 rounded-full overflow-hidden bg-blue-100 text-blue-600 font-bold",
+				"grid place-content-center shrink-0 size-12 rounded-full overflow-hidden bg-blue-100 text-blue-600 font-bold select-none",
 				className,
 			)}
 		>
-			{src ? (
-				<img
-					src={src}
-					alt={alt}
-					className="w-full h-full object-cover"
-				/>
-			) : (
-				initial
-			)}
-		</div>
+			<BaseAvatar.Image
+				src={src}
+				alt={alt}
+				className="w-full h-full object-cover"
+			/>
+			<BaseAvatar.Fallback>{initial}</BaseAvatar.Fallback>
+		</BaseAvatar.Root>
 	);
 }

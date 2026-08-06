@@ -25,6 +25,7 @@ import {
 import StatCard from "#/components/admin/StatCard";
 import Avatar from "#/components/Avatar";
 import Badge from "#/components/Badge";
+import { Button } from "#/components/ui/button";
 import data from "#/data.json";
 import { tierColor } from "#/lib/status";
 import { rupiah } from "#/lib/utils";
@@ -118,20 +119,20 @@ const columns = [
 		header: "Aksi",
 		cell: () => (
 			<div className="flex items-center gap-2 text-gray-400">
-				<button
-					type="button"
+				<Button
+					variant="icon"
+					size="none"
 					aria-label="Lihat"
-					className="hover:text-blue-600 transition-colors cursor-pointer"
 				>
 					<Eye className="size-4.5" />
-				</button>
-				<button
-					type="button"
+				</Button>
+				<Button
+					variant="icon"
+					size="none"
 					aria-label="Kirim email"
-					className="hover:text-blue-600 transition-colors cursor-pointer"
 				>
 					<Mail className="size-4.5" />
-				</button>
+				</Button>
 			</div>
 		),
 	}),

@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import Bell from "~icons/lucide/bell";
 import ExternalLink from "~icons/lucide/external-link";
@@ -11,6 +11,9 @@ import ShoppingCart from "~icons/lucide/shopping-cart";
 import Users from "~icons/lucide/users";
 import X from "~icons/lucide/x";
 
+import Avatar from "#/components/Avatar";
+import { Button } from "#/components/ui/button";
+import { Drawer } from "#/components/ui/drawer";
 import { cn } from "#/lib/utils";
 
 const nav = [
@@ -21,13 +24,16 @@ const nav = [
 	{ to: "/admin/settings", label: "Pengaturan", Icon: Settings },
 ];
 
-function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
-	useEffect(() => {
-		document.body.style.overflow = open ? "hidden" : "";
-		return () => {
-			document.body.style.overflow = "";
-		};
-	}, [open]);
+function Sidebar({
+	open,
+	onOpenChange,
+}: {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+}) {
+	const onClose = () => {
+		onOpenChange(false);
+	};
 
 	const content = (
 		<>
@@ -38,14 +44,16 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
 					</span>
 					<span className="text-white font-semibold">BeliMudah Admin</span>
 				</div>
-				<button
-					type="button"
+				<Button
+					variant="icon"
+					tone="neutral"
+					size="square"
+					className="md:hidden bg-white/10 text-gray-400 hover:text-white"
 					aria-label="Close sidebar"
 					onClick={onClose}
-					className="md:hidden grid place-content-center size-8 rounded-full bg-white/10 text-gray-400 hover:text-white cursor-pointer"
 				>
 					<X />
-				</button>
+				</Button>
 			</div>
 
 			<nav
@@ -84,31 +92,20 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
 
 	return (
 		<>
-			{/* Desktop sidebar */}
 			<aside className="hidden md:flex flex-col w-64 shrink-0 bg-gray-900 text-gray-400">
 				{content}
 			</aside>
 
-			{/* Mobile overlay */}
-			<div
-				className={cn(
-					"fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 backdrop-blur-sm",
-					open ? "opacity-100" : "opacity-0 pointer-events-none",
-				)}
-				onClick={onClose}
-				aria-hidden="true"
-			/>
-
-			{/* Mobile drawer */}
-			<aside
-				aria-label="Admin navigation"
-				className={cn(
-					"fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 text-gray-400 flex flex-col md:hidden transition-transform duration-300 ease-out shadow-2xl",
-					open ? "translate-x-0" : "-translate-x-full",
-				)}
+			<Drawer
+				open={open}
+				onOpenChange={onOpenChange}
+				side="left"
+				title="Admin navigation"
+				hideTitle
+				className="w-64 bg-gray-900 text-gray-400 border-white/10 shadow-2xl"
 			>
-				{content}
-			</aside>
+				<div className="flex flex-col h-full">{content}</div>
+			</Drawer>
 		</>
 	);
 }
@@ -117,30 +114,35 @@ function Topbar({ onMenuOpen }: { onMenuOpen: () => void }) {
 	return (
 		<header className="flex items-center justify-between h-16 px-4 md:px-6 bg-white border-b border-black/10 shrink-0">
 			<div className="flex items-center gap-3 text-gray-500">
-				<button
-					type="button"
+				<Button
+					variant="icon"
+					tone="neutral"
+					size="none"
+					className="text-inherit"
 					aria-label="Toggle menu"
 					onClick={onMenuOpen}
-					className="hover:text-gray-900 transition-colors cursor-pointer"
 				>
 					<Menu className="size-5" />
-				</button>
+				</Button>
 				<span className="text-sm">Admin</span>
 			</div>
 
 			<div className="flex items-center gap-5">
-				<button
-					type="button"
+				<Button
+					variant="icon"
+					tone="neutral"
+					size="none"
+					className="relative text-gray-500"
 					aria-label="Notifications"
-					className="relative text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
 				>
 					<Bell className="size-5" />
 					<span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-red-500" />
-				</button>
+				</Button>
 				<div className="flex items-center gap-2">
-					<span className="grid place-content-center size-8 rounded-full bg-blue-100 text-blue-600 text-sm font-bold">
-						A
-					</span>
+					<Avatar
+						initial="A"
+						className="size-8 text-sm"
+					/>
 					<span className="hidden sm:block text-sm font-medium text-gray-900">
 						Admin
 					</span>
@@ -157,7 +159,7 @@ export default function Layout(): JSX.Element {
 		<div className="flex min-h-dvh bg-gray-50">
 			<Sidebar
 				open={sidebarOpen}
-				onClose={() => setSidebarOpen(false)}
+				onOpenChange={setSidebarOpen}
 			/>
 			<div className="flex-1 flex flex-col min-w-0">
 				<Topbar onMenuOpen={() => setSidebarOpen((o) => !o)} />

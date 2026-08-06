@@ -9,6 +9,7 @@ import MapPin from "~icons/lucide/map-pin";
 import Settings from "~icons/lucide/settings";
 
 import Avatar from "#/components/Avatar";
+import { Button } from "#/components/ui/button";
 import { cn } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
 import {
@@ -90,14 +91,16 @@ function AccountNav() {
 
 			<hr className="my-2 border-gray-100" />
 
-			<button
-				type="button"
+			<Button
+				variant="link"
+				tone="danger"
+				size="none"
+				className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 hover:text-red-600 no-underline"
 				onClick={handleLogout}
-				className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
 			>
 				<LogOut className="size-5 shrink-0" />
 				<span>Keluar</span>
-			</button>
+			</Button>
 		</nav>
 	);
 }

@@ -7,6 +7,11 @@ import X from "~icons/lucide/x";
 import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
 import Star5 from "#/components/Star5";
+import { Button, buttonVariants } from "#/components/ui/button";
+import { Checkbox } from "#/components/ui/checkbox";
+import { Drawer, DrawerClose } from "#/components/ui/drawer";
+import { Radio, RadioGroup } from "#/components/ui/radio";
+import { Select } from "#/components/ui/select";
 import data from "#/data.json";
 import { cn } from "#/lib/utils";
 
@@ -19,7 +24,6 @@ const sortOptions = [
 	{ value: "rating", label: "Rating Tertinggi" },
 ];
 
-// Derive unique categories from products (source of truth for filtering)
 const categories = [
 	...new Set(data.products.map((p) => p.category)),
 ].toSorted();
@@ -36,7 +40,6 @@ export default function Page(): JSX.Element {
 	const sort = searchParams.get("sort") ?? "popular";
 	const urlTag = searchParams.get("tag");
 
-	// Reset load-more page whenever any filter changes
 	const [page, setPage] = useState(1);
 	const filterKey = [
 		selectedCategories.join(","),
@@ -48,13 +51,6 @@ export default function Page(): JSX.Element {
 	useEffect(() => {
 		setPage(1);
 	}, [filterKey]);
-
-	useEffect(() => {
-		document.body.style.overflow = filtersOpen ? "hidden" : "";
-		return () => {
-			document.body.style.overflow = "";
-		};
-	}, [filtersOpen]);
 
 	function toggleCategory(name: string) {
 		setSearchParams((prev) => {
@@ -74,7 +70,7 @@ export default function Page(): JSX.Element {
 	function handleRating(rating: number) {
 		setSearchParams((prev) => {
 			const next = new URLSearchParams(prev);
-			if (next.get("rating") === String(rating)) {
+			if (rating === 0) {
 				next.delete("rating");
 			} else {
 				next.set("rating", String(rating));
@@ -161,20 +157,21 @@ export default function Page(): JSX.Element {
 			: (selectedCategories[0] ?? "Semua Produk");
 
 	const filterPanel = (
-		<div className="flex flex-col gap-8 text-sm [&_h3]:text-xl [&_h3]:font-medium [&_h3]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-3 [&_ul]:text-gray-600 [&_label]:flex [&_label]:gap-2 [&_label]:items-center [&_label]:cursor-pointer hover:[&_label]:text-black [&_input]:accent-blue-600 [&_input]:size-4">
+		<div className="flex flex-col gap-8 text-sm [&_h3]:text-xl [&_h3]:font-medium [&_h3]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-3">
 			<section aria-label="Category filter">
 				<h3>Kategori</h3>
 				<ul>
 					{categories.map((name) => (
 						<li key={name}>
-							<label>
-								<input
-									type="checkbox"
-									checked={selectedCategories.includes(name)}
-									onChange={() => toggleCategory(name)}
-								/>{" "}
+							<Checkbox
+								checked={selectedCategories.includes(name)}
+								onCheckedChange={() => {
+									toggleCategory(name);
+								}}
+								className="hover:text-black"
+							>
 								{name}
-							</label>
+							</Checkbox>
 						</li>
 					))}
 				</ul>
@@ -182,56 +179,63 @@ export default function Page(): JSX.Element {
 
 			<section aria-label="Rating filter">
 				<h3>Rating Minimum</h3>
-				<ul>
+				<RadioGroup
+					value={minRating ?? 0}
+					onValueChange={handleRating}
+					className="flex flex-col gap-3"
+				>
+					<Radio
+						value={0}
+						className="hover:text-black"
+					>
+						Semua rating
+					</Radio>
 					{[4, 3, 2].map((rating) => (
-						<li key={rating}>
-							<label>
-								<input
-									type="radio"
-									name="rating"
-									checked={minRating === rating}
-									onChange={() => handleRating(rating)}
+						<Radio
+							key={rating}
+							value={rating}
+							className="hover:text-black"
+						>
+							<span
+								className="flex gap-0.5"
+								aria-label={`${rating} bintang ke atas`}
+							>
+								<Star5
+									count={rating}
+									variant="monochrome"
 								/>
-								<span
-									className="flex gap-0.5"
-									aria-label={`${rating} bintang ke atas`}
-								>
-									<Star5
-										count={rating}
-										variant="monochrome"
-									/>
-								</span>{" "}
-								ke atas
-							</label>
-						</li>
+							</span>{" "}
+							ke atas
+						</Radio>
 					))}
-				</ul>
+				</RadioGroup>
 			</section>
 
 			<section>
 				<h3>Ketersediaan</h3>
 				<ul>
 					<li>
-						<label>
-							<input
-								type="checkbox"
-								checked={inStockOnly}
-								onChange={(e) => handleInStock(e.target.checked)}
-							/>{" "}
+						<Checkbox
+							checked={inStockOnly}
+							onCheckedChange={handleInStock}
+							className="hover:text-black"
+						>
 							Stok tersedia
-						</label>
+						</Checkbox>
 					</li>
 				</ul>
 			</section>
 
 			{hasActiveFilters && (
-				<button
-					type="button"
+				<Button
+					variant="link"
+					tone="danger"
+					size="none"
+					className="text-sm text-left"
 					onClick={resetFilters}
-					className="text-sm text-red-500 hover:text-red-700 text-left cursor-pointer"
 				>
 					Reset filter
-				</button>
+				</Button>
 			)}
 		</div>
 	);
@@ -246,7 +250,6 @@ export default function Page(): JSX.Element {
 				<h1 className="text-2xl font-medium">{pageTitle}</h1>
 
 				<div className="flex gap-8 items-start">
-					{/* Desktop sidebar */}
 					<aside className="hidden md:flex w-56 shrink-0 flex-col gap-8">
 						{filterPanel}
 					</aside>
@@ -257,15 +260,14 @@ export default function Page(): JSX.Element {
 					>
 						<header className="flex justify-between items-center gap-3 text-sm">
 							<div className="flex items-center gap-3">
-								{/* Mobile filter button */}
-								<button
-									type="button"
+								<Button
+									variant="outline"
+									tone={hasActiveFilters ? "primary" : "neutral"}
+									size="sm"
 									onClick={() => setFiltersOpen(true)}
 									className={cn(
-										"md:hidden flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition-colors cursor-pointer",
-										hasActiveFilters
-											? "border-blue-600 text-blue-600 bg-blue-50"
-											: "border-black/10 text-gray-600 bg-white",
+										"md:hidden rounded-xl",
+										hasActiveFilters && "bg-blue-50",
 									)}
 								>
 									<SlidersHorizontal className="size-4" />
@@ -277,34 +279,21 @@ export default function Page(): JSX.Element {
 												(inStockOnly ? 1 : 0)}
 										</span>
 									)}
-								</button>
+								</Button>
 								<span className="text-gray-500">
 									{filtered.length} produk ditemukan
 								</span>
 							</div>
-							<div className="flex items-center gap-3">
-								<label
-									htmlFor="sort"
-									className="text-gray-500 hidden sm:block"
-								>
-									Urutkan:
-								</label>
-								<select
-									id="sort"
-									value={sort}
-									onChange={(e) => handleSort(e.target.value)}
-									className="border border-black/10 rounded-lg p-2 px-3 bg-white text-black outline-none focus:border-black/50 transition-colors cursor-pointer text-sm"
-								>
-									{sortOptions.map(({ value, label }) => (
-										<option
-											key={value}
-											value={value}
-										>
-											{label}
-										</option>
-									))}
-								</select>
-							</div>
+							<Select
+								items={sortOptions}
+								value={sort}
+								onValueChange={(value) => {
+									handleSort(value ?? "popular");
+								}}
+								label={<span className="hidden sm:block">Urutkan:</span>}
+								className="flex-row! items-center gap-3"
+								triggerClassName="w-auto rounded-lg py-2 bg-white"
+							/>
 						</header>
 
 						{visible.length > 0 ? (
@@ -324,69 +313,68 @@ export default function Page(): JSX.Element {
 
 						{remaining > 0 && (
 							<div className="my-4 flex justify-center">
-								<button
-									type="button"
+								<Button
+									variant="outline"
+									className="p-3 px-8"
 									onClick={() => setPage((p) => p + 1)}
-									className="p-3 px-8 border border-blue-600 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-colors cursor-pointer bg-white"
 								>
 									Muat Lebih Banyak ({remaining} produk lagi)
-								</button>
+								</Button>
 							</div>
 						)}
 					</section>
 				</div>
 			</div>
 
-			{/* Mobile filter drawer (bottom sheet) */}
-			<div
-				className={cn(
-					"fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 backdrop-blur-sm",
-					filtersOpen ? "opacity-100" : "opacity-0 pointer-events-none",
-				)}
-				onClick={() => setFiltersOpen(false)}
-				aria-hidden="true"
-			/>
-			<aside
-				aria-label="Filters"
-				className={cn(
-					"fixed inset-x-0 bottom-0 z-50 md:hidden bg-white rounded-t-2xl flex flex-col max-h-[85vh] transition-transform duration-300 ease-out shadow-2xl",
-					filtersOpen ? "translate-y-0" : "translate-y-full",
-				)}
+			<Drawer
+				open={filtersOpen}
+				onOpenChange={setFiltersOpen}
+				side="bottom"
+				title="Filter"
+				hideTitle
+				className="max-h-[85vh] shadow-2xl"
 			>
-				<div className="flex items-center justify-between px-5 py-4 border-b border-black/10">
-					<h2 className="font-semibold text-gray-900">Filter</h2>
-					<button
-						type="button"
-						aria-label="Close filters"
-						onClick={() => setFiltersOpen(false)}
-						className="grid place-content-center size-8 rounded-full bg-gray-100 text-gray-500 cursor-pointer"
-					>
-						<X />
-					</button>
-				</div>
-				<div className="flex-1 overflow-y-auto p-5">{filterPanel}</div>
-				<div className="p-4 border-t border-black/10 flex gap-3">
-					{hasActiveFilters && (
-						<button
-							type="button"
-							onClick={() => {
-								resetFilters();
-								setFiltersOpen(false);
-							}}
-							className="flex-1 py-3 rounded-xl border border-red-200 text-red-600 text-sm font-medium hover:bg-red-50 transition-colors cursor-pointer"
+				<div className="flex flex-col h-full">
+					<div className="flex items-center justify-between px-5 py-4 border-b border-black/10">
+						<h2 className="font-semibold text-gray-900">Filter</h2>
+						<DrawerClose
+							aria-label="Close filters"
+							className={cn(
+								buttonVariants({
+									variant: "ghost",
+									tone: "neutral",
+									size: "square",
+								}),
+								"bg-gray-100 hover:bg-gray-200",
+							)}
 						>
-							Reset
-						</button>
-					)}
-					<button
-						type="button"
-						onClick={() => setFiltersOpen(false)}
-						className="flex-1 py-3 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer"
-					>
-						Lihat {filtered.length} Produk
-					</button>
+							<X />
+						</DrawerClose>
+					</div>
+					<div className="flex-1 overflow-y-auto p-5">{filterPanel}</div>
+					<div className="p-4 border-t border-black/10 flex gap-3">
+						{hasActiveFilters && (
+							<Button
+								variant="outline"
+								tone="danger"
+								size="lg"
+								className="flex-1 text-sm"
+								onClick={() => {
+									resetFilters();
+									setFiltersOpen(false);
+								}}
+							>
+								Reset
+							</Button>
+						)}
+						<DrawerClose
+							className={cn(buttonVariants({ size: "lg" }), "flex-1 text-sm")}
+						>
+							Lihat {filtered.length} Produk
+						</DrawerClose>
+					</div>
 				</div>
-			</aside>
+			</Drawer>
 		</main>
 	);
 }

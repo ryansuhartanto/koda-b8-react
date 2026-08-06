@@ -4,6 +4,7 @@ import Heart from "~icons/lucide/heart";
 import ShoppingCart from "~icons/lucide/shopping-cart";
 
 import Star5 from "#/components/Star5";
+import { Button } from "#/components/ui/button";
 import { cn, rupiah } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
 import {
@@ -79,14 +80,16 @@ export function ProductCard({
 
 				{badge}
 
-				<button
-					type="button"
+				<Button
+					variant="icon"
+					tone="danger"
+					size="square"
 					aria-label={
 						isWishlisted ? "Hapus dari wishlist" : "Tambah ke wishlist"
 					}
 					onClick={handleWishlist}
 					className={cn(
-						"absolute inset-bs-2 inset-e-2 grid place-content-center size-8 rounded-full bg-white shadow-sm cursor-pointer transition-opacity",
+						"absolute inset-bs-2 inset-e-2 bg-white shadow-sm transition-opacity",
 						isWishlisted
 							? "text-red-500 opacity-100"
 							: "text-gray-400 opacity-0 group-hover:opacity-100",
@@ -95,15 +98,16 @@ export function ProductCard({
 					<Heart
 						className={cn("size-4", isWishlisted && "[&_path]:fill-current")}
 					/>
-				</button>
+				</Button>
 
-				<button
-					type="button"
+				<Button
+					tone="accent"
+					size="none"
+					className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 py-3 text-sm shadow-none translate-y-full group-hover:translate-y-0 transition-transform duration-200"
 					onClick={handleAddToCart}
-					className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 py-3 bg-orange-500 text-white text-sm font-medium translate-y-full group-hover:translate-y-0 transition-transform duration-200 cursor-pointer"
 				>
 					<ShoppingCart className="size-4" /> Tambah ke Keranjang
-				</button>
+				</Button>
 			</div>
 
 			<div className="m-4 flex flex-col gap-1 product">

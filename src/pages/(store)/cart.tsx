@@ -7,6 +7,7 @@ import Trash2 from "~icons/lucide/trash-2";
 
 import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
+import { Button } from "#/components/ui/button";
 import data from "#/data.json";
 import { rupiah } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
@@ -79,16 +80,18 @@ export default function Page(): JSX.Element {
 													{item.brand}
 												</div>
 											</div>
-											<button
-												type="button"
+											<Button
+												variant="icon"
+												tone="danger"
+												size="none"
+												className="text-gray-400"
 												onClick={() => {
 													dispatch(removeFromCart(item.name));
 												}}
-												className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors"
 												aria-label="Hapus item"
 											>
 												<Trash2 className="size-5" />
-											</button>
+											</Button>
 										</div>
 										<div className="flex justify-between items-end">
 											<div className="flex flex-col gap-2 items-start">
@@ -100,16 +103,18 @@ export default function Page(): JSX.Element {
 														dispatch(updateCartQty(item.name, qty));
 													}}
 												/>
-												<button
-													type="button"
+												<Button
+													variant="icon"
+													tone="neutral"
+													size="none"
+													className="flex items-center gap-1 text-xs text-gray-500"
 													onClick={() => {
 														dispatch(toggleWishlist(item.name));
 														dispatch(removeFromCart(item.name));
 													}}
-													className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-900 cursor-pointer transition-colors"
 												>
 													<Heart className="size-4" /> Simpan ke Wishlist
-												</button>
+												</Button>
 											</div>
 											<span className="text-blue-600 font-medium">
 												{rupiah(item.price * item.quantity)}
@@ -135,12 +140,12 @@ export default function Page(): JSX.Element {
 										placeholder="Masukkan kode promo"
 										className="flex-1 border border-black/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white"
 									/>
-									<button
+									<Button
+										className="shrink-0"
 										type="submit"
-										className="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer shrink-0"
 									>
 										Terapkan
-									</button>
+									</Button>
 								</form>
 								<div className="text-xs text-gray-500">
 									Coba: HEMAT10, BELIMUDAH, atau NEWUSER

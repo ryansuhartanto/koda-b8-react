@@ -13,6 +13,8 @@ import Truck from "~icons/lucide/truck";
 import { Stepper, Summary } from "#/components/Checkout";
 import FormField from "#/components/FormField";
 import { OrderReviewItem } from "#/components/ProductCard";
+import { Button } from "#/components/ui/button";
+import { Radio, RadioGroup } from "#/components/ui/radio";
 import data from "#/data.json";
 import { useCheckout } from "#/hooks/useCheckout";
 import type { Order, ShippingInfo } from "#/lib/db";
@@ -163,41 +165,38 @@ function StepShipping({
 					<h3 className="text-base font-medium text-gray-900">
 						Metode Pengiriman
 					</h3>
-					<div className="flex flex-col gap-3">
-						{shippingMethods.map(({ id, label, sub, defaultChecked }) => (
-							<label
+					<RadioGroup
+						name="shipping"
+						defaultValue={shippingMethods[0]?.label}
+						className="flex flex-col gap-3"
+					>
+						{shippingMethods.map(({ id, label, sub }) => (
+							<Radio
 								key={id}
-								className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-colors ${defaultChecked ? "border-blue-600 bg-blue-50/30" : "border-black/10 hover:border-blue-600"}`}
+								value={label}
+								card
 							>
-								<div className="flex items-center gap-3">
-									<input
-										type="radio"
-										name="shipping"
-										value={label}
-										defaultChecked={defaultChecked}
-										className="size-4 accent-blue-600"
-									/>
-									<div className="flex flex-col">
-										<span className="text-sm font-medium text-gray-900">
-											{label}
-										</span>
-										<span className="text-xs text-gray-500">{sub}</span>
-									</div>
+								<div className="flex flex-col">
+									<span className="text-sm font-medium text-gray-900">
+										{label}
+									</span>
+									<span className="text-xs text-gray-500">{sub}</span>
 								</div>
-								<span className="text-sm font-medium text-green-600">
+								<span className="ml-auto text-sm font-medium text-green-600">
 									GRATIS
 								</span>
-							</label>
+							</Radio>
 						))}
-					</div>
+					</RadioGroup>
 				</div>
 
-				<button
+				<Button
+					size="lg"
+					block
 					type="submit"
-					className="w-full block text-center bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 font-medium cursor-pointer transition-colors"
 				>
 					Lanjut ke Pembayaran &gt;
-				</button>
+				</Button>
 			</form>
 		</section>
 	);
@@ -224,19 +223,18 @@ function StepPayment({
 			</h2>
 
 			<div className="flex flex-col gap-6">
-				<div className="grid grid-cols-2 gap-4">
+				<RadioGroup
+					name="payment"
+					value={selectedId}
+					onValueChange={onSelect}
+					className="grid grid-cols-2 gap-4"
+				>
 					{paymentMethods.map(({ id, label, badge, badgeClass, useIcon }) => (
-						<label
+						<Radio
 							key={id}
-							className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${selectedId === id ? "border-blue-600 bg-blue-50/30" : "border-black/10 hover:border-blue-600"}`}
+							value={id}
+							card
 						>
-							<input
-								type="radio"
-								name="payment"
-								checked={selectedId === id}
-								onChange={() => onSelect(id)}
-								className="size-4 accent-blue-600 shrink-0"
-							/>
 							{useIcon ? (
 								<CreditCard className="text-gray-400 size-6 shrink-0" />
 							) : (
@@ -247,9 +245,9 @@ function StepPayment({
 								</div>
 							)}
 							<span className="text-sm font-medium text-gray-900">{label}</span>
-						</label>
+						</Radio>
 					))}
-				</div>
+				</RadioGroup>
 
 				<div className="flex gap-3 items-center p-4 rounded-xl bg-blue-50 text-blue-700 text-xs">
 					<Lock className="size-5 shrink-0" />
@@ -258,20 +256,22 @@ function StepPayment({
 				</div>
 
 				<div className="flex gap-4">
-					<button
-						type="button"
+					<Button
+						variant="outline"
+						tone="neutral"
+						size="lg"
+						className="shrink-0 text-gray-600"
 						onClick={onBack}
-						className="px-6 py-3 border border-black/10 rounded-xl text-gray-600 font-medium hover:bg-gray-50 transition-colors cursor-pointer shrink-0"
 					>
 						Kembali
-					</button>
-					<button
-						type="button"
+					</Button>
+					<Button
+						size="lg"
+						className="flex-1"
 						onClick={onNext}
-						className="flex-1 block text-center bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 font-medium cursor-pointer transition-colors"
 					>
 						Lanjut ke Konfirmasi &gt;
-					</button>
+					</Button>
 				</div>
 			</div>
 		</section>
@@ -358,20 +358,23 @@ function StepConfirmation({
 				</div>
 
 				<div className="flex gap-4">
-					<button
-						type="button"
+					<Button
+						variant="outline"
+						tone="neutral"
+						size="lg"
+						className="shrink-0 text-gray-600"
 						onClick={onBack}
-						className="px-6 py-3 border border-black/10 rounded-xl text-gray-600 font-medium hover:bg-gray-50 transition-colors cursor-pointer shrink-0"
 					>
 						Kembali
-					</button>
-					<button
-						type="button"
+					</Button>
+					<Button
+						tone="accent"
+						size="lg"
+						className="flex-1"
 						onClick={onNext}
-						className="flex-1 flex items-center justify-center gap-2 bg-orange-500 text-white py-3 rounded-xl hover:bg-orange-600 font-medium cursor-pointer shadow-sm shadow-orange-500/20 transition-colors"
 					>
 						🔒 Bayar {rupiah(total)} Sekarang
-					</button>
+					</Button>
 				</div>
 			</div>
 		</section>

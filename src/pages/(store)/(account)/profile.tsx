@@ -1,17 +1,25 @@
 import type { JSX, SubmitEvent } from "react";
-import { useState } from "react";
 import SquarePen from "~icons/lucide/square-pen";
 
 import Avatar from "#/components/Avatar";
 import FormField from "#/components/FormField";
+import { Button } from "#/components/ui/button";
+import { Select } from "#/components/ui/select";
+import { useToast } from "#/components/ui/toast";
 import { field } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
 import { selectCurrentUser, updateProfile } from "#/store/reducers/auth";
 
+const genders = [
+	{ value: "M", label: "Laki-laki" },
+	{ value: "F", label: "Perempuan" },
+	{ value: "X", label: "Lainnya" },
+];
+
 export default function Page(): JSX.Element {
 	const user = useAppSelector(selectCurrentUser);
 	const dispatch = useAppDispatch();
-	const [saved, setSaved] = useState(false);
+	const toast = useToast();
 
 	function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -24,8 +32,10 @@ export default function Page(): JSX.Element {
 				gender: field(form, "gender") as "M" | "F" | "X" | undefined,
 			}),
 		);
-		setSaved(true);
-		setTimeout(() => setSaved(false), 2000);
+		toast.add({
+			title: "Profil tersimpan",
+			description: "Perubahan kamu sudah disimpan.",
+		});
 	}
 
 	return (
@@ -34,25 +44,27 @@ export default function Page(): JSX.Element {
 				<h1 className="text-2xl font-medium text-gray-900">
 					Pengaturan Profil
 				</h1>
-				<button
+				<Button
+					variant="outline"
+					className="py-2"
 					type="submit"
 					form="profile-form"
-					className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-colors cursor-pointer bg-white"
 				>
 					<SquarePen className="size-4" />
-					{saved ? "Tersimpan!" : "Simpan"}
-				</button>
+					Simpan
+				</Button>
 			</div>
 
 			<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col gap-6">
 				<div className="flex items-center gap-4">
 					<Avatar className="size-16 text-xl" />
-					<button
-						type="button"
-						className="text-sm font-medium text-blue-600 hover:underline cursor-pointer"
+					<Button
+						variant="link"
+						size="none"
+						className="text-sm"
 					>
 						Ganti Foto Profil
-					</button>
+					</Button>
 				</div>
 
 				<form
@@ -88,21 +100,13 @@ export default function Page(): JSX.Element {
 						defaultValue={user?.birthdate ?? ""}
 					/>
 
-					<label className="flex flex-col gap-2 text-sm text-gray-600">
-						<span>Jenis Kelamin</span>
-						<div className="flex items-center gap-2 border border-black/10 rounded-xl px-4 py-2.5 focus-within:border-blue-600 transition-colors bg-gray-50 focus-within:bg-white text-gray-900">
-							<select
-								name="gender"
-								defaultValue={user?.gender ?? ""}
-								className="flex-1 w-full outline-none bg-transparent text-sm cursor-pointer"
-							>
-								<option value="">Pilih jenis kelamin</option>
-								<option value="M">Laki-laki</option>
-								<option value="F">Perempuan</option>
-								<option value="X">Lainnya</option>
-							</select>
-						</div>
-					</label>
+					<Select
+						items={genders}
+						defaultValue={user?.gender}
+						name="gender"
+						label="Jenis Kelamin"
+						placeholder="Pilih jenis kelamin"
+					/>
 				</form>
 			</section>
 

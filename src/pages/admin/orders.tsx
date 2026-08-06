@@ -5,7 +5,6 @@ import { useState } from "react";
 import CircleCheck from "~icons/lucide/circle-check";
 import Download from "~icons/lucide/download";
 import Eye from "~icons/lucide/eye";
-import Filter from "~icons/lucide/filter";
 import Truck from "~icons/lucide/truck";
 
 import {
@@ -14,10 +13,12 @@ import {
 	useDataTable,
 } from "#/components/admin/DataTable";
 import Badge from "#/components/Badge";
+import { Button } from "#/components/ui/button";
+import { Tab, Tabs, TabsList } from "#/components/ui/tabs";
 import data from "#/data.json";
 import type { OrderStatus } from "#/lib/db";
 import { orderStatus, orderStatusTabs } from "#/lib/status";
-import { cn, rupiah } from "#/lib/utils";
+import { rupiah } from "#/lib/utils";
 
 const { orders } = data.admin;
 
@@ -44,12 +45,12 @@ const columns = [
 	column.accessor("no", {
 		header: "No. Pesanan",
 		cell: (info) => (
-			<button
-				type="button"
-				className="font-medium text-blue-600 hover:underline cursor-pointer"
+			<Button
+				variant="link"
+				size="none"
 			>
 				#{info.getValue()}
-			</button>
+			</Button>
 		),
 	}),
 	column.accessor((o) => `${o.customer.name} ${o.customer.email}`, {
@@ -106,30 +107,31 @@ const columns = [
 			const { status } = row.original;
 			return (
 				<div className="flex items-center gap-2 text-gray-400">
-					<button
-						type="button"
+					<Button
+						variant="icon"
+						size="none"
 						aria-label="Lihat"
-						className="hover:text-blue-600 transition-colors cursor-pointer"
 					>
 						<Eye className="size-4.5" />
-					</button>
+					</Button>
 					{status === "shipped" && (
-						<button
-							type="button"
+						<Button
+							variant="icon"
+							tone="success"
+							size="none"
 							aria-label="Tandai terkirim"
-							className="text-green-500 hover:text-green-600 transition-colors cursor-pointer"
 						>
 							<CircleCheck className="size-4.5" />
-						</button>
+						</Button>
 					)}
 					{status === "packed" && (
-						<button
-							type="button"
+						<Button
+							variant="icon"
+							size="none"
 							aria-label="Tandai dikirim"
-							className="hover:text-blue-600 transition-colors cursor-pointer"
 						>
 							<Truck className="size-4.5" />
-						</button>
+						</Button>
 					)}
 				</div>
 			);
@@ -138,16 +140,16 @@ const columns = [
 ];
 
 export default function Page(): JSX.Element {
-	const [tab, setTab] = useState<OrderStatus | undefined>(undefined);
+	const [tab, setTab] = useState<OrderStatus | "all">("all");
 	const table = useDataTable({ data: orders, columns });
 
-	const selectTab = (key: OrderStatus | undefined) => {
+	const selectTab = (key: OrderStatus | "all") => {
 		setTab(key);
-		table.getColumn("status")?.setFilterValue(key);
+		table.getColumn("status")?.setFilterValue(key === "all" ? undefined : key);
 	};
 
-	const countFor = (key: OrderStatus | undefined) =>
-		key === undefined
+	const countFor = (key: OrderStatus | "all") =>
+		key === "all"
 			? orders.length
 			: orders.filter((o) => o.status === key).length;
 
@@ -155,47 +157,37 @@ export default function Page(): JSX.Element {
 		<div className="flex flex-col gap-6">
 			<div className="flex justify-between items-center">
 				<h1 className="text-2xl font-bold text-gray-900">Manajemen Pesanan</h1>
-				<button
-					type="button"
-					className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer"
-				>
+				<Button>
 					<Download className="size-4" /> Ekspor
-				</button>
+				</Button>
 			</div>
 
-			<div className="flex gap-2">
-				{orderStatusTabs.map((key) => {
-					const active = tab === key;
-					const label = key === undefined ? "Semua" : orderStatus[key].label;
-					return (
-						<button
-							key={key ?? "all"}
-							type="button"
-							onClick={() => selectTab(key)}
-							className={cn(
-								"px-4 py-2 rounded-xl text-sm font-medium border transition-colors cursor-pointer",
-								active
-									? "bg-blue-600 text-white border-blue-600"
-									: "bg-white text-gray-600 border-black/10 hover:border-blue-600",
-							)}
-						>
-							{label} ({countFor(key)})
-						</button>
-					);
-				})}
-			</div>
+			<Tabs
+				value={tab}
+				onValueChange={selectTab}
+			>
+				<TabsList variant="pill">
+					{orderStatusTabs.map((key) => {
+						const tabKey = key ?? "all";
+						const label = key === undefined ? "Semua" : orderStatus[key].label;
+						return (
+							<Tab
+								key={tabKey}
+								value={tabKey}
+								variant="pill"
+							>
+								{label} ({countFor(tabKey)})
+							</Tab>
+						);
+					})}
+				</TabsList>
+			</Tabs>
 
 			<div className="flex gap-3">
 				<TableSearch
 					table={table}
 					placeholder="Cari nomor pesanan atau nama pelanggan..."
 				/>
-				<button
-					type="button"
-					className="flex items-center gap-2 px-4 py-2.5 border border-black/10 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
-				>
-					<Filter className="size-4" /> Filter
-				</button>
 			</div>
 
 			<section className="bg-white border border-black/10 rounded-2xl">

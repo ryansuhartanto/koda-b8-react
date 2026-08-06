@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import Bell from "~icons/lucide/bell";
 import ChevronDown from "~icons/lucide/chevron-down";
@@ -11,6 +11,8 @@ import ShoppingCart from "~icons/lucide/shopping-cart";
 import User from "~icons/lucide/user";
 import X from "~icons/lucide/x";
 
+import { Button, buttonVariants } from "#/components/ui/button";
+import { Drawer, DrawerClose } from "#/components/ui/drawer";
 import { cn } from "#/lib/utils";
 import { useAppSelector } from "#/store";
 import { selectCurrentUser } from "#/store/reducers/auth";
@@ -61,7 +63,6 @@ export function HeaderMain({
 					BeliMudah
 				</Link>
 
-				{/* Desktop */}
 				<form className="hidden md:flex flex-1 items-center gap-2 h-10 border border-black/10 rounded-xl bg-gray-100 overflow-hidden focus-within:border-black/50 transition-colors duration-200 *:px-4 *:h-full *:transition-colors *:duration-200">
 					<input
 						className="flex-1 min-w-0 text-sm bg-transparent focus:outline-none"
@@ -70,13 +71,14 @@ export function HeaderMain({
 						autoComplete="off"
 						placeholder="Cari produk, merek, kategori..."
 					/>
-					<button
-						className="shrink-0 text-white bg-blue-600 hover:bg-blue-700 focus:bg-blue-900 focus:outline-none"
+					<Button
+						size="none"
+						className="shrink-0"
 						type="submit"
 						aria-label="Search"
 					>
 						<Search className="text-base" />
-					</button>
+					</Button>
 				</form>
 
 				<div className="hidden md:flex items-center mx-2 gap-6 text-xl **:transition-colors **:duration-200 *:flex *:items-center *:gap-2">
@@ -119,7 +121,6 @@ export function HeaderMain({
 					</Link>
 				</div>
 
-				{/* Mobile */}
 				<div className="flex md:hidden items-center gap-4 ml-auto text-xl">
 					<Link
 						className="relative"
@@ -133,14 +134,16 @@ export function HeaderMain({
 							</span>
 						)}
 					</Link>
-					<button
-						type="button"
+					<Button
+						variant="icon"
+						tone="neutral"
+						size="none"
+						className="text-gray-700"
 						aria-label="Open menu"
 						onClick={onMenuOpen}
-						className="text-gray-700 cursor-pointer"
 					>
 						<Menu />
-					</button>
+					</Button>
 				</div>
 			</div>
 		</section>
@@ -149,58 +152,50 @@ export function HeaderMain({
 
 function MobileDrawer({
 	open,
-	onClose,
+	onOpenChange,
 	navigations,
 }: {
 	open: boolean;
-	onClose: () => void;
+	onOpenChange: (open: boolean) => void;
 	navigations: Array<{ href: string; text: string }>;
 }) {
 	const user = useAppSelector(selectCurrentUser);
 	const firstName = user?.name.split(" ")[0];
-
-	useEffect(() => {
-		document.body.style.overflow = open ? "hidden" : "";
-		return () => {
-			document.body.style.overflow = "";
-		};
-	}, [open]);
+	const close = () => {
+		onOpenChange(false);
+	};
 
 	return (
-		<>
-			<div
-				className={cn(
-					"fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 backdrop-blur-sm",
-					open ? "opacity-100" : "opacity-0 pointer-events-none",
-				)}
-				onClick={onClose}
-				aria-hidden="true"
-			/>
-
-			<aside
-				aria-label="Mobile navigation"
-				className={cn(
-					"fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] bg-white flex flex-col md:hidden shadow-2xl transition-transform duration-300 ease-out",
-					open ? "translate-x-0" : "-translate-x-full",
-				)}
-			>
-				{/* Header */}
+		<Drawer
+			open={open}
+			onOpenChange={onOpenChange}
+			side="left"
+			title="Menu navigasi"
+			hideTitle
+			className="w-80 max-w-[85vw] shadow-2xl"
+		>
+			<div className="flex flex-col h-full">
 				<div className="flex items-center justify-between px-5 py-4 border-b border-black/10">
 					<Link
 						className="brand"
 						to="/"
-						onClick={onClose}
+						onClick={close}
 					>
 						BeliMudah
 					</Link>
-					<button
-						type="button"
+					<DrawerClose
 						aria-label="Close menu"
-						onClick={onClose}
-						className="grid place-content-center size-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
+						className={cn(
+							buttonVariants({
+								variant: "ghost",
+								tone: "neutral",
+								size: "square",
+							}),
+							"bg-gray-100 hover:bg-gray-200",
+						)}
 					>
 						<X />
-					</button>
+					</DrawerClose>
 				</div>
 
 				<div className="px-4 py-3 bg-gray-50 border-b border-black/10">
@@ -212,19 +207,20 @@ function MobileDrawer({
 							autoComplete="off"
 							placeholder="Cari produk..."
 						/>
-						<button
-							className="shrink-0 px-4 text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer"
+						<Button
+							size="none"
+							className="shrink-0 px-4"
 							type="submit"
 							aria-label="Search"
 						>
 							<Search className="text-base" />
-						</button>
+						</Button>
 					</form>
 				</div>
 
 				<Link
 					to={user ? "/profile" : "/login"}
-					onClick={onClose}
+					onClick={close}
 					className="flex items-center gap-3 px-5 py-4 border-b border-black/10 hover:bg-blue-50 transition-colors group"
 				>
 					<div className="grid place-content-center size-10 rounded-full bg-blue-100 text-blue-600 font-bold text-sm shrink-0 group-hover:bg-blue-200 transition-colors">
@@ -248,13 +244,11 @@ function MobileDrawer({
 					</div>
 				</Link>
 
-				{/* Promo banner */}
 				<div className="mx-4 mt-3 px-3 py-2 rounded-xl bg-blue-600 text-white text-xs flex items-center gap-2">
 					<span>🚀</span>
 					<span>Gratis ongkir di atas Rp 100.000</span>
 				</div>
 
-				{/* Navigation */}
 				<nav className="flex-1 overflow-y-auto py-3 px-3 flex flex-col gap-0.5 text-sm">
 					<p className="px-3 pt-1 pb-2 text-xs text-gray-400 font-semibold uppercase tracking-wider">
 						Kategori
@@ -263,7 +257,7 @@ function MobileDrawer({
 						<Link
 							key={href}
 							to={href}
-							onClick={onClose}
+							onClick={close}
 							className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
 						>
 							{text}
@@ -271,18 +265,17 @@ function MobileDrawer({
 					))}
 					<Link
 						to="/browse?tag=promo"
-						onClick={onClose}
+						onClick={close}
 						className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-colors font-medium"
 					>
 						🔥 Promo
 					</Link>
 				</nav>
 
-				{/* Bottom utility tabs */}
 				<div className="flex border-t border-black/10 divide-x divide-black/10 text-xs text-gray-500 *:flex *:flex-1 *:flex-col *:items-center *:gap-1 *:py-3 *:transition-colors *:hover:bg-gray-50 *:cursor-pointer">
 					<Link
 						to="/wishlist"
-						onClick={onClose}
+						onClick={close}
 						aria-label="Wishlist"
 					>
 						<Heart className="text-lg text-gray-400" />
@@ -290,7 +283,7 @@ function MobileDrawer({
 					</Link>
 					<Link
 						to="/notifications"
-						onClick={onClose}
+						onClick={close}
 						aria-label="Notifications"
 					>
 						<Bell className="text-lg text-gray-400" />
@@ -298,15 +291,15 @@ function MobileDrawer({
 					</Link>
 					<Link
 						to="/browse"
-						onClick={onClose}
+						onClick={close}
 						aria-label="Browse all"
 					>
 						<Menu className="text-lg text-gray-400" />
 						<span>Semua</span>
 					</Link>
 				</div>
-			</aside>
-		</>
+			</div>
+		</Drawer>
 	);
 }
 
@@ -368,7 +361,7 @@ export default function Header({ navigations }: HeaderProps): JSX.Element {
 			<HeaderNav navigations={navigations} />
 			<MobileDrawer
 				open={menuOpen}
-				onClose={() => setMenuOpen(false)}
+				onOpenChange={setMenuOpen}
 				navigations={navigations}
 			/>
 		</header>

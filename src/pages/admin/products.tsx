@@ -3,12 +3,10 @@ import type { ColumnHelper } from "@tanstack/react-table";
 import type { JSX } from "react";
 import { useState } from "react";
 import Eye from "~icons/lucide/eye";
-import Filter from "~icons/lucide/filter";
 import Plus from "~icons/lucide/plus";
 import Pencil from "~icons/lucide/square-pen";
 import Star from "~icons/lucide/star";
 import Trash2 from "~icons/lucide/trash-2";
-import X from "~icons/lucide/x";
 
 import {
 	DataTable,
@@ -18,11 +16,22 @@ import {
 import StatCard from "#/components/admin/StatCard";
 import Badge from "#/components/Badge";
 import FormField from "#/components/FormField";
+import { Button, buttonVariants } from "#/components/ui/button";
+import { Checkbox } from "#/components/ui/checkbox";
+import { Dialog, DialogClose } from "#/components/ui/dialog";
+import { Select } from "#/components/ui/select";
 import data from "#/data.json";
 import { productTag } from "#/lib/status";
 import { cn, rupiah } from "#/lib/utils";
 
 const { products } = data;
+
+const ALL = "all";
+
+const categoryOptions = data.categories.map((c) => ({
+	value: c.name,
+	label: c.name,
+}));
 
 const productStats = [
 	{ label: "Total Produk", value: products.length },
@@ -144,156 +153,138 @@ const columns = [
 		header: "Aksi",
 		cell: () => (
 			<div className="flex items-center gap-2 text-gray-400">
-				<button
-					type="button"
+				<Button
+					variant="icon"
+					size="none"
 					aria-label="Lihat"
-					className="hover:text-blue-600 transition-colors cursor-pointer"
 				>
 					<Eye className="size-4.5" />
-				</button>
-				<button
-					type="button"
+				</Button>
+				<Button
+					variant="icon"
+					size="none"
 					aria-label="Ubah"
-					className="hover:text-blue-600 transition-colors cursor-pointer"
 				>
 					<Pencil className="size-4.5" />
-				</button>
-				<button
-					type="button"
+				</Button>
+				<Button
+					variant="icon"
+					tone="danger"
+					size="none"
 					aria-label="Hapus"
-					className="hover:text-red-500 transition-colors cursor-pointer"
 				>
 					<Trash2 className="size-4.5" />
-				</button>
+				</Button>
 			</div>
 		),
 	}),
 ];
 
-function AddProductModal({ onClose }: { onClose: () => void }) {
+function AddProductModal({
+	open,
+	onOpenChange,
+}: {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+}) {
 	return (
-		<div className="fixed inset-0 z-50 flex items-start justify-center p-6 overflow-y-auto bg-black/40">
-			<div className="bg-white rounded-2xl w-full max-w-2xl my-12 shadow-xl">
-				<header className="flex justify-between items-center p-6 border-b border-black/10">
-					<h2 className="text-lg font-medium text-gray-900">
-						Tambah Produk Baru
-					</h2>
-					<button
-						type="button"
-						aria-label="Tutup"
-						onClick={onClose}
-						className="text-gray-400 hover:text-gray-900 transition-colors cursor-pointer"
+		<Dialog
+			open={open}
+			onOpenChange={onOpenChange}
+			title="Tambah Produk Baru"
+			className="max-w-2xl"
+		>
+			<form className="p-6 pt-2 flex flex-col gap-5">
+				<div className="grid grid-cols-2 gap-4">
+					<FormField
+						label="Nama Produk"
+						name="name"
+					/>
+					<FormField
+						label="Merek"
+						name="brand"
+					/>
+					<FormField
+						label="Harga (IDR)"
+						type="number"
+						name="price"
+					/>
+					<FormField
+						label="Harga Asli (IDR)"
+						type="number"
+						name="originalPrice"
+					/>
+					<FormField
+						label="Stok"
+						type="number"
+						name="stock"
+					/>
+					<Select
+						items={categoryOptions}
+						defaultValue={categoryOptions[0]?.value}
+						name="category"
+						label="Kategori"
+					/>
+				</div>
+
+				<label className="flex flex-col gap-2 text-sm text-gray-600">
+					<span>Deskripsi</span>
+					<textarea
+						name="description"
+						rows={3}
+						className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900 text-sm resize-y"
+					/>
+				</label>
+
+				<div className="flex gap-6 text-sm text-gray-700">
+					<Checkbox name="unggulan">Produk Unggulan</Checkbox>
+					<Checkbox name="baru">Produk Baru</Checkbox>
+				</div>
+
+				<div className="flex gap-4">
+					<DialogClose
+						className={cn(
+							buttonVariants({
+								variant: "outline",
+								tone: "neutral",
+								size: "lg",
+							}),
+							"flex-1",
+						)}
 					>
-						<X className="size-5" />
-					</button>
-				</header>
-
-				<form className="p-6 flex flex-col gap-5">
-					<div className="grid grid-cols-2 gap-4">
-						<FormField
-							label="Nama Produk"
-							name="name"
-						/>
-						<FormField
-							label="Merek"
-							name="brand"
-						/>
-						<FormField
-							label="Harga (IDR)"
-							type="number"
-							name="price"
-						/>
-						<FormField
-							label="Harga Asli (IDR)"
-							type="number"
-							name="originalPrice"
-						/>
-						<FormField
-							label="Stok"
-							type="number"
-							name="stock"
-						/>
-						<label className="flex flex-col gap-2 text-sm text-gray-600">
-							<span>Kategori</span>
-							<div className="flex items-center border border-black/10 rounded-xl px-4 py-2.5 focus-within:border-blue-600 transition-colors bg-gray-50 focus-within:bg-white text-gray-900">
-								<select
-									name="category"
-									className="flex-1 w-full outline-none bg-transparent text-sm cursor-pointer"
-								>
-									{data.categories.map((c) => (
-										<option key={c.name}>{c.name}</option>
-									))}
-								</select>
-							</div>
-						</label>
-					</div>
-
-					<label className="flex flex-col gap-2 text-sm text-gray-600">
-						<span>Deskripsi</span>
-						<textarea
-							name="description"
-							rows={3}
-							className="border border-black/10 rounded-xl px-4 py-2.5 outline-none focus:border-blue-600 transition-colors bg-gray-50 focus:bg-white text-gray-900 text-sm resize-y"
-						/>
-					</label>
-
-					<div className="flex gap-6 text-sm text-gray-700">
-						<label className="flex items-center gap-2 cursor-pointer">
-							<input
-								type="checkbox"
-								name="unggulan"
-								className="accent-blue-600 size-4"
-							/>
-							Produk Unggulan
-						</label>
-						<label className="flex items-center gap-2 cursor-pointer">
-							<input
-								type="checkbox"
-								name="baru"
-								className="accent-blue-600 size-4"
-							/>
-							Produk Baru
-						</label>
-					</div>
-
-					<div className="flex gap-4">
-						<button
-							type="button"
-							onClick={onClose}
-							className="flex-1 py-3 border border-black/10 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors cursor-pointer"
-						>
-							Batal
-						</button>
-						<button
-							type="submit"
-							className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors cursor-pointer"
-						>
-							Tambah Produk
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
+						Batal
+					</DialogClose>
+					<Button
+						size="lg"
+						className="flex-1"
+						type="submit"
+					>
+						Tambah Produk
+					</Button>
+				</div>
+			</form>
+		</Dialog>
 	);
 }
 
 export default function Page(): JSX.Element {
 	const [modalOpen, setModalOpen] = useState(false);
 	const table = useDataTable({ data: products, columns });
-	const categoryFilter = (table.getColumn("category")?.getFilterValue() ??
-		"") as string;
+	const categoryFilter =
+		(table.getColumn("category")?.getFilterValue() as string | undefined) ??
+		ALL;
 
 	return (
 		<div className="flex flex-col gap-6">
 			<div className="flex justify-between items-center">
 				<h1 className="text-2xl font-bold text-gray-900">Manajemen Produk</h1>
-				<button
-					type="button"
+				<Button
+					tone="accent"
+					className="shadow-none"
 					onClick={() => setModalOpen(true)}
-					className="flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-xl text-sm font-medium hover:bg-orange-600 transition-colors cursor-pointer"
 				>
 					<Plus className="size-4" /> Tambah Produk
-				</button>
+				</Button>
 			</div>
 
 			<div className="flex gap-3">
@@ -301,28 +292,16 @@ export default function Page(): JSX.Element {
 					table={table}
 					placeholder="Cari produk atau merek..."
 				/>
-				<label className="flex items-center border border-black/10 rounded-xl px-4 bg-white text-sm text-gray-700">
-					<select
-						value={categoryFilter}
-						onChange={(e) =>
-							table
-								.getColumn("category")
-								?.setFilterValue(e.target.value || undefined)
-						}
-						className="outline-none bg-transparent cursor-pointer py-2.5"
-					>
-						<option value="">Semua Kategori</option>
-						{data.categories.map((c) => (
-							<option key={c.name}>{c.name}</option>
-						))}
-					</select>
-				</label>
-				<button
-					type="button"
-					className="flex items-center gap-2 px-4 py-2.5 border border-black/10 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
-				>
-					<Filter className="size-4" /> Filter
-				</button>
+				<Select
+					items={[{ value: ALL, label: "Semua Kategori" }, ...categoryOptions]}
+					value={categoryFilter}
+					onValueChange={(value) => {
+						table
+							.getColumn("category")
+							?.setFilterValue(value === ALL ? undefined : value);
+					}}
+					triggerClassName="w-auto bg-white"
+				/>
 			</div>
 
 			<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -343,7 +322,10 @@ export default function Page(): JSX.Element {
 				<DataTable table={table} />
 			</section>
 
-			{modalOpen && <AddProductModal onClose={() => setModalOpen(false)} />}
+			<AddProductModal
+				open={modalOpen}
+				onOpenChange={setModalOpen}
+			/>
 		</div>
 	);
 }

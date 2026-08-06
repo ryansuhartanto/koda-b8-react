@@ -13,6 +13,8 @@ import SiInstagram from "~icons/simple-icons/instagram";
 import SiX from "~icons/simple-icons/x";
 import SiYoutube from "~icons/simple-icons/youtube";
 
+import { Button } from "#/components/ui/button";
+
 const promotions = [
 	{
 		Icon: Truck,
@@ -210,12 +212,13 @@ export function FooterNav(): JSX.Element {
 									type="email"
 									placeholder="Email kamu"
 								/>
-								<button
-									className="px-3 py-2.5 rounded-md bg-blue-600 text-white cursor-pointer"
+								<Button
+									size="none"
+									className="px-3 py-2.5 rounded-md"
 									type="submit"
 								>
 									Langganan
-								</button>
+								</Button>
 							</div>
 						</form>
 					</div>

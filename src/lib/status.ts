@@ -1,8 +1,3 @@
-/**
- * Single source of truth for order status, product tags, and customer tiers.
- * `color` keys map to the palette in #/components/Badge.
- */
-
 import type { OrderStatus } from "#/lib/db";
 
 export type OrderColor =
@@ -28,7 +23,6 @@ export const orderStatus: Record<OrderStatus, OrderLabel> = {
 	cancelled: { label: "Dibatalkan", color: "red" },
 };
 
-/** Order of tabs shown on the order management page. `undefined` = "Semua". */
 export const orderStatusTabs: Array<OrderStatus | undefined> = [
 	undefined,
 	"pending",

@@ -8,6 +8,7 @@ import TrendingUp from "~icons/lucide/trending-up";
 import Zap from "~icons/lucide/zap";
 
 import { ProductCard } from "#/components/ProductCard";
+import { Button } from "#/components/ui/button";
 import data from "#/data.json";
 
 const flashDeals = data.products
@@ -28,36 +29,39 @@ export default function Page(): JSX.Element {
 					className="absolute z-10 inset-0 m-4 grid text-xl text-white grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] pointer-events-none [&_button]:pointer-events-auto [&_button]:cursor-pointer"
 				>
 					<div className="flex flex-col justify-center gap-2 col-1 row-[1/4] *:size-10 *:grid *:place-content-center *:rounded-full *:bg-white/20">
-						<button
+						<Button
 							aria-label="Previous"
-							type="button"
+							size="none"
+							variant="icon"
 						>
 							<ChevronLeft />
-						</button>
+						</Button>
 					</div>
 					<div className="flex flex-col justify-center gap-2 col-3 row-[1/4] *:size-10 *:grid *:place-content-center *:rounded-full *:bg-white/20">
-						<button
+						<Button
 							aria-label="Next"
-							type="button"
+							size="none"
+							variant="icon"
 						>
 							<ChevronRight />
-						</button>
+						</Button>
 					</div>
-					<div className="flex justify-center gap-2 col-2 row-3 *:size-2 *:rounded-full *:bg-white/50 *:pointer-events-auto *:transition-all *:duration-200 *:ease-out *:aria-selected:w-6 *:aria-selected:bg-white">
-						<button
-							type="button"
+					<div className="flex justify-center gap-2 col-2 row-3 *:size-2 *:rounded-full *:bg-white/50 *:pointer-events-auto *:transition-all *:duration-200 *:ease-out *:aria-current:w-6 *:aria-current:bg-white">
+						<Button
 							aria-label="Go to slide 1"
-							aria-selected="false"
+							size="none"
+							variant="icon"
 						/>
-						<button
-							type="button"
+						<Button
 							aria-label="Go to slide 2"
-							aria-selected="true"
+							size="none"
+							variant="icon"
+							aria-current="true"
 						/>
-						<button
-							type="button"
+						<Button
 							aria-label="Go to slide 3"
-							aria-selected="false"
+							size="none"
+							variant="icon"
 						/>
 					</div>
 				</nav>

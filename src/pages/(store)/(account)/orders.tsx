@@ -7,6 +7,7 @@ import Star from "~icons/lucide/star";
 import Truck from "~icons/lucide/truck";
 import XCircle from "~icons/lucide/x-circle";
 
+import { Button, buttonVariants } from "#/components/ui/button";
 import data from "#/data.json";
 import type { Order, OrderStatus } from "#/lib/db";
 import { cn, rupiah } from "#/lib/utils";
@@ -50,12 +51,6 @@ const statusConfig: Record<
 		className: "text-red-600 bg-red-50",
 	},
 };
-
-const buttonBase =
-	"px-4 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer";
-const buttonOutline = `${buttonBase} border border-black/10 text-gray-700 hover:bg-gray-50 bg-white`;
-const buttonOutlinePrimary = `${buttonBase} border border-blue-600 text-blue-600 hover:bg-blue-50 bg-white`;
-const buttonReview = `${buttonBase} flex items-center gap-1.5 bg-orange-500 text-white hover:bg-orange-600`;
 
 function OrderCard({ id, createdAt, status, items, total }: Order) {
 	const { label, Icon, className } = statusConfig[status];
@@ -121,22 +116,21 @@ function OrderCard({ id, createdAt, status, items, total }: Order) {
 				<div className="flex gap-2">
 					<Link
 						to="/track-order"
-						className={buttonOutlinePrimary}
+						className={buttonVariants({ variant: "outline" })}
 					>
 						Lacak
 					</Link>
 					{status === "delivered" && (
-						<button
-							type="button"
-							className={buttonReview}
+						<Button
+							tone="accent"
+							className="gap-1.5 shadow-none"
 						>
 							<Star className="size-4" /> Beri Ulasan
-						</button>
+						</Button>
 					)}
 					<Link
 						to="/browse"
-						type="button"
-						className={buttonOutline}
+						className={buttonVariants({ variant: "outline", tone: "neutral" })}
 					>
 						Beli Lagi
 					</Link>

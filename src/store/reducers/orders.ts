@@ -18,7 +18,6 @@ export type RootState = AuthRootState & { orders: OrdersState };
 
 const initialState: OrdersState = { byUser: {} };
 
-/** Stable identity so selectors don't churn renders for users with no orders. */
 const noOrders: ReadonlyArray<Order> = Object.freeze([]);
 
 function orderPlacedReducer(

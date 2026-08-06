@@ -12,6 +12,9 @@ import Breadcrumb from "#/components/Breadcrumb";
 import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
 import Star5 from "#/components/Star5";
+import { Button } from "#/components/ui/button";
+import { RadioGroup, RadioPill } from "#/components/ui/radio";
+import { Tab, TabPanel, Tabs, TabsList } from "#/components/ui/tabs";
 import data from "#/data.json";
 import { cn, rupiah } from "#/lib/utils";
 import { useAppDispatch, useAppSelector } from "#/store";
@@ -20,6 +23,8 @@ import {
 	selectCurrentUser,
 	toggleWishlist,
 } from "#/store/reducers/auth";
+
+const colors = ["Hitam", "Putih", "Biru"];
 
 const perks: Array<[ComponentType<{ className?: string }>, string, string]> = [
 	[Truck, "Gratis Ongkir", "Min. Rp 100.000"],
@@ -33,6 +38,7 @@ export default function Page(): JSX.Element {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [qty, setQty] = useState(1);
+	const [color, setColor] = useState(colors[0]);
 
 	const product = data.products.find((p) => p.slug === slug);
 
@@ -125,26 +131,13 @@ export default function Page(): JSX.Element {
 							/>
 						</div>
 						<div className="flex gap-4">
-							<button
-								type="button"
-								className="size-20 border-2 border-blue-600 rounded-xl overflow-hidden cursor-pointer shrink-0"
-							>
+							<div className="size-20 border-2 border-blue-600 rounded-xl overflow-hidden shrink-0">
 								<img
 									src={img}
-									alt="Thumbnail 1"
+									alt=""
 									className="w-full h-full object-cover"
 								/>
-							</button>
-							<button
-								type="button"
-								className="size-20 border border-black/10 rounded-xl overflow-hidden cursor-pointer opacity-70 hover:opacity-100 transition-opacity shrink-0"
-							>
-								<img
-									src={img}
-									alt="Thumbnail 2"
-									className="w-full h-full object-cover"
-								/>
-							</button>
+							</div>
 						</div>
 					</div>
 
@@ -187,25 +180,23 @@ export default function Page(): JSX.Element {
 
 						<div className="flex flex-col gap-2">
 							<div className="text-sm text-gray-500">
-								Warna: <span className="text-blue-600">Hitam</span>
+								Warna: <span className="text-blue-600">{color}</span>
 							</div>
-							<div className="flex gap-2">
-								{(
-									[
-										["Hitam", true],
-										["Putih", false],
-										["Biru", false],
-									] as Array<[string, boolean]>
-								).map(([color, active]) => (
-									<button
-										key={color}
-										type="button"
-										className={`p-1.5 px-3 text-sm border rounded-lg cursor-pointer font-medium ${active ? "border-blue-600 bg-blue-50 text-blue-600" : "border-gray-200 text-gray-600 hover:border-gray-300 bg-white"}`}
+							<RadioGroup
+								value={color}
+								onValueChange={setColor}
+								name="color"
+								className="flex gap-2"
+							>
+								{colors.map((option) => (
+									<RadioPill
+										key={option}
+										value={option}
 									>
-										{color}
-									</button>
+										{option}
+									</RadioPill>
 								))}
-							</div>
+							</RadioGroup>
 						</div>
 
 						<div className="flex flex-col gap-2">
@@ -221,28 +212,36 @@ export default function Page(): JSX.Element {
 						</div>
 
 						<div className="flex gap-4 mb-8 [&_button]:cursor-pointer">
-							<button
-								type="button"
+							<Button
+								variant="outline"
+								tone="accent"
+								size="lg"
+								className="flex-1"
 								onClick={handleAddToCart}
-								className="flex-1 flex items-center justify-center gap-2 border-2 border-orange-500 text-orange-500 font-medium bg-orange-50/50 py-3 rounded-xl hover:bg-orange-50 transition-colors"
 							>
 								<ShoppingCart className="size-5" /> Tambah ke Keranjang
-							</button>
-							<button
-								type="button"
+							</Button>
+							<Button
+								tone="accent"
+								size="lg"
+								className="flex-1"
 								onClick={handleBuyNow}
-								className="flex-1 bg-orange-500 text-white font-medium py-3 rounded-xl hover:bg-orange-600 transition-colors shadow-sm shadow-orange-500/20"
 							>
 								Beli Sekarang
-							</button>
-							<button
-								type="button"
+							</Button>
+							<Button
+								variant="outline"
+								tone={isWishlisted ? "danger" : "neutral"}
+								size="none"
+								aria-pressed={isWishlisted}
+								aria-label={
+									isWishlisted ? "Hapus dari wishlist" : "Tambah ke wishlist"
+								}
 								onClick={handleWishlist}
 								className={cn(
-									"w-14 flex items-center justify-center border rounded-xl transition-colors",
-									isWishlisted
-										? "border-red-400 text-red-500 bg-red-50 hover:bg-red-100"
-										: "border-gray-300 text-gray-500 bg-white hover:bg-gray-50",
+									"w-14 flex items-center justify-center rounded-xl",
+									isWishlisted &&
+										"border-red-400 text-red-500 bg-red-50 hover:bg-red-100",
 								)}
 							>
 								<Heart
@@ -251,7 +250,7 @@ export default function Page(): JSX.Element {
 										isWishlisted && "[&_path]:fill-current",
 									)}
 								/>
-							</button>
+							</Button>
 						</div>
 
 						<div className="grid grid-cols-3 gap-4 *:p-2">
@@ -275,25 +274,34 @@ export default function Page(): JSX.Element {
 					</div>
 				</section>
 
-				<section className="border border-black/10 rounded-2xl overflow-hidden mt-4">
-					<div className="flex border-b border-black/10 bg-white">
-						<button
-							type="button"
-							className="p-4 text-sm font-medium text-blue-600 border-b-2 border-blue-600 cursor-pointer"
-						>
-							Deskripsi
-						</button>
-						<button
-							type="button"
-							className="p-4 text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
-						>
-							Ulasan
-						</button>
-					</div>
-					<div className="bg-white p-6 text-sm text-gray-600 leading-relaxed">
+				<Tabs
+					defaultValue="description"
+					className="border border-black/10 rounded-2xl overflow-hidden mt-4 bg-white"
+				>
+					<TabsList className="gap-0 bg-white [&>button]:p-4">
+						<Tab value="description">Deskripsi</Tab>
+						<Tab value="reviews">Ulasan ({ratingCount})</Tab>
+					</TabsList>
+					<TabPanel
+						value="description"
+						className="p-6 text-sm text-gray-600 leading-relaxed"
+					>
 						{summary}
-					</div>
-				</section>
+					</TabPanel>
+					<TabPanel
+						value="reviews"
+						className="p-6 flex flex-col gap-3 text-sm text-gray-600"
+					>
+						<div className="flex items-center gap-2 text-amber-400">
+							<Star5 count={Math.round(rating)} />
+							<span className="text-gray-900 font-medium">{rating}</span>
+							<span className="text-gray-500">dari {ratingCount} ulasan</span>
+						</div>
+						<p className="text-gray-500">
+							Ulasan tertulis belum tersedia untuk produk ini.
+						</p>
+					</TabPanel>
+				</Tabs>
 
 				{related.length > 0 && (
 					<section className="flex flex-col gap-6">

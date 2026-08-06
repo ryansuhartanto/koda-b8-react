@@ -19,6 +19,7 @@ import ChevronUp from "~icons/lucide/chevron-up";
 import ChevronsUpDown from "~icons/lucide/chevrons-up-down";
 import Search from "~icons/lucide/search";
 
+import { Button } from "#/components/ui/button";
 import { cn } from "#/lib/utils";
 
 type UseDataTableConfig = {
@@ -26,11 +27,6 @@ type UseDataTableConfig = {
 	columns: Array<ColumnDef<any, any>>;
 } & Omit<Partial<TableOptions<any>>, "data" | "columns">;
 
-/**
- * Thin wrapper over useReactTable that owns sorting + filter state and
- * pre-wires the core/sorted/filtered row models. Pass any extra useReactTable
- * options through; they override the defaults.
- */
 export function useDataTable({
 	data,
 	columns,
@@ -66,9 +62,6 @@ function SortIcon({ state }: { state: false | "asc" | "desc" }) {
 	);
 }
 
-/**
- * Controlled search input bound to the table's global filter.
- */
 export function TableSearch({
 	table,
 	placeholder = "Cari...",
@@ -97,10 +90,6 @@ export function TableSearch({
 	);
 }
 
-/**
- * Presentational renderer for a fully-built table instance. All per-column
- * markup lives in the column `cell`/`header` definitions, so this stays generic.
- */
 export function DataTable({
 	table,
 	emptyLabel = "Tidak ada data.",
@@ -135,14 +124,16 @@ export function DataTable({
 										className="font-medium px-4 py-3 whitespace-nowrap"
 									>
 										{canSort ? (
-											<button
-												type="button"
+											<Button
+												variant="icon"
+												tone="neutral"
+												size="none"
+												className="group flex items-center gap-1 text-inherit"
 												onClick={header.column.getToggleSortingHandler()}
-												className="group flex items-center gap-1 cursor-pointer hover:text-gray-900 transition-colors"
 											>
 												{content}
 												<SortIcon state={header.column.getIsSorted()} />
-											</button>
+											</Button>
 										) : (
 											content
 										)}

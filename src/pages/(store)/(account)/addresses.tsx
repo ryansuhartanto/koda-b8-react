@@ -3,6 +3,7 @@ import Plus from "~icons/lucide/plus";
 import SquarePen from "~icons/lucide/square-pen";
 import Trash2 from "~icons/lucide/trash-2";
 
+import { Button } from "#/components/ui/button";
 import type { Address } from "#/lib/db";
 import { useAppDispatch, useAppSelector } from "#/store";
 import {
@@ -38,21 +39,22 @@ function AddressCard({
 					)}
 				</div>
 				<div className="flex items-center gap-2 text-gray-400">
-					<button
-						type="button"
+					<Button
+						variant="icon"
+						size="none"
 						aria-label={`Ubah alamat ${label}`}
-						className="hover:text-blue-600 transition-colors cursor-pointer"
 					>
 						<SquarePen className="size-5" />
-					</button>
-					<button
-						type="button"
+					</Button>
+					<Button
+						variant="icon"
+						tone="danger"
+						size="none"
 						aria-label={`Hapus alamat ${label}`}
 						onClick={onDelete}
-						className="hover:text-red-500 transition-colors cursor-pointer"
 					>
 						<Trash2 className="size-5" />
-					</button>
+					</Button>
 				</div>
 			</div>
 
@@ -67,13 +69,14 @@ function AddressCard({
 			</div>
 
 			{!isDefault && (
-				<button
-					type="button"
+				<Button
+					variant="link"
+					size="none"
+					className="text-sm w-fit"
 					onClick={onSetDefault}
-					className="text-sm font-medium text-blue-600 hover:underline w-fit cursor-pointer"
 				>
 					Jadikan Alamat Utama
-				</button>
+				</Button>
 			)}
 		</article>
 	);
@@ -88,12 +91,9 @@ export default function Page(): JSX.Element {
 		<>
 			<div className="flex justify-between items-center">
 				<h1 className="text-2xl font-medium text-gray-900">Alamat Saya</h1>
-				<button
-					type="button"
-					className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer"
-				>
+				<Button>
 					<Plus className="size-4" /> Tambah Alamat
-				</button>
+				</Button>
 			</div>
 
 			{addresses.length > 0 ? (

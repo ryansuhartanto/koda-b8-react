@@ -19,7 +19,6 @@ export function rupiah(n: number): string {
 	return `Rp ${n.toLocaleString("id-ID")}`;
 }
 
-/** A form field's value, or undefined when absent or a file upload. */
 export function field(form: FormData, name: string): string | undefined {
 	const value = form.get(name);
 	return typeof value === "string" ? value : undefined;

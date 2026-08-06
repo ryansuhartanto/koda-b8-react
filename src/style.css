@@ -5,6 +5,14 @@
 }
 
 @layer base {
+	body {
+		position: relative;
+	}
+
+	.root {
+		isolation: isolate;
+	}
+
 	svg.lucide {
 		@apply inline size-[1em];
 	}
@@ -34,7 +42,6 @@
 	.auth-banner {
 		@apply relative flex flex-col justify-between p-12 text-white/70 text-sm overflow-hidden;
 
-		/* base gradient fallback */
 		@apply bg-linear-to-br from-blue-600 to-blue-800;
 
 		&.login {
