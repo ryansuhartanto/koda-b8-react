@@ -7,7 +7,7 @@
 A full e-commerce frontend (storefront through admin dashboard), built solo from a shared Figma brief as the final project for Koda Academy (Fullstack track, Batch 8).
 
 The build prioritises faithful translation of the design system and a small set of defended engineering decisions:
-type-checked JavaScript without a compile step, design tokens encoded directly in the stylesheet, and a consolidated build toolchain.
+end-to-end static typing, design tokens encoded directly in the stylesheet, and a consolidated build toolchain.
 
 > [!NOTE]
 > The UI copy is in Indonesian (the target market for the brief). The codebase and documentation are in English.
@@ -25,7 +25,7 @@ type-checked JavaScript without a compile step, design tokens encoded directly i
 - **Tailwind CSS v4** (CSS-first `@theme` config)
 - **Vite**, via **vite-plus** (a Vite superset with lint and format built in)
 - **unplugin-icons** (Lucide, Simple Icons)
-- **JSDoc with `checkJs`** for typing (no TypeScript compile step)
+- **TypeScript 7** under the shared strict config
 - **oxlint, oxfmt** for lint and format (bundled in vite-plus)
 - **TanStack Table 8** for the admin data tables
 - **Recharts 3** for the admin dashboard charts
@@ -86,7 +86,7 @@ src/
     └── admin/               # dashboard, products, orders, customers, settings
 ```
 
-Route groups in parentheses (`(store)`, `(auth)`, `(account)`) organise the tree without adding URL segments. The `#/` prefix is a path alias to `src/`, declared once in `package.json` (`imports`) and mirrored in `jsconfig.json`.
+Route groups in parentheses (`(store)`, `(auth)`, `(account)`) organise the tree without adding URL segments. The `#/` prefix is a path alias to `src/`, declared once in `package.json` (`imports`) and mirrored in `tsconfig.json`.
 
 ## Scope
 

@@ -1,0 +1,13 @@
+{
+	"$schema": "https://www.schemastore.org/tsconfig",
+	"extends": ["@kekkon-nexus/config/ts", "@kekkon-nexus/config/ts/strict"],
+	"compilerOptions": {
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"paths": {
+			"#/*": ["./src/*"]
+		},
+		"types": ["*", "vite-plus/client", "unplugin-icons/types/react"],
+		"skipLibCheck": true
+	}
+}
