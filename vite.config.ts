@@ -29,6 +29,6 @@ export default defineConfig({
 		},
 	},
 	staged: {
-		"*": "vp check --no-error-on-unmatched-pattern",
+		"*": "vp check --no-error-on-unmatched-pattern --fix",
 	},
 });
