@@ -22,13 +22,13 @@ jobs:
       - run: aube ci
 
       - name: Lint, format and type-check
-        run: mise run check
+        run: aubx vp check
 
-      # - name: Test
-      #   run: mise run test
+      - name: Test
+        run: aubr test
 
       - name: Build
-        run: mise run build
+        run: aubr build
 
       - uses: actions/upload-artifact@v7
         if: |
