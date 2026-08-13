@@ -22,7 +22,7 @@ export const authSlice = createSlice({
 		unset: () => initialState,
 	},
 	selectors: {
-		selectIsAuthenticated: (state) => state.token !== null,
+		selectIsAuthenticated: (state) => state.token !== undefined,
 		selectToken: (state) => state.token,
 	},
 

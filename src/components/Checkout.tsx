@@ -61,11 +61,15 @@ export function Stepper({ activeStep }: StepperProps): JSX.Element {
 export type SummaryProps = {
 	items?: SummaryItemProps[];
 	subtotal?: string;
+	shipping?: string;
+	total?: string;
 };
 
 export function Summary({
 	items = [],
 	subtotal = "Rp 0",
+	shipping = "Gratis",
+	total = subtotal,
 }: SummaryProps): JSX.Element {
 	return (
 		<aside className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-5 sticky top-36">
@@ -89,12 +93,12 @@ export function Summary({
 				</div>
 				<div className="flex justify-between">
 					<span>Ongkir</span>
-					<span className="text-green-600 font-medium">Gratis</span>
+					<span className="text-green-600 font-medium">{shipping}</span>
 				</div>
 				<hr className="border-gray-200" />
 				<div className="flex justify-between items-center">
 					<span className="font-medium text-gray-900">Total</span>
-					<span className="font-bold text-brand-600">{subtotal}</span>
+					<span className="font-bold text-brand-600">{total}</span>
 				</div>
 			</div>
 

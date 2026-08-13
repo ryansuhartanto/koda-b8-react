@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import SlidersHorizontal from "~icons/lucide/sliders-horizontal";
 import X from "~icons/lucide/x";
@@ -12,32 +12,25 @@ import { Checkbox } from "#/components/ui/checkbox";
 import { Drawer, DrawerClose } from "#/components/ui/drawer";
 import { Radio, RadioGroup } from "#/components/ui/radio";
 import { Select } from "#/components/ui/select";
-import data from "#/data.json";
 import { cn } from "#/lib/utils";
+import catalogApi from "#/services/api/catalog";
+import productsApi from "#/services/api/products";
+import type { ProductSort } from "#/services/api/products";
 
 const PAGE_SIZE = 12;
 
+const DEFAULT_SORT: ProductSort = "rating";
+
 const sortOptions = [
-	{ value: "popular", label: "Paling Populer" },
-	{ value: "price-asc", label: "Harga Terendah" },
-	{ value: "price-desc", label: "Harga Tertinggi" },
 	{ value: "rating", label: "Rating Tertinggi" },
+	{ value: "newest", label: "Terbaru" },
+	{ value: "price_asc", label: "Harga Terendah" },
+	{ value: "price_desc", label: "Harga Tertinggi" },
 ];
 
-const categories = [
-	...new Set(data.products.map((p) => p.category)),
-].toSorted();
-
-function titleFor(
-	query: string,
-	tag: string | undefined,
-	category: string | undefined,
-): string {
+function titleFor(query: string, category: string | undefined): string {
 	if (query) {
 		return `Hasil pencarian "${query}"`;
-	}
-	if (tag === "promo") {
-		return "🔥 Produk Promo";
 	}
 	return category ?? "Semua Produk";
 }
@@ -46,74 +39,47 @@ export default function Page(): JSX.Element {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [filtersOpen, setFiltersOpen] = useState(false);
 
-	const selectedCategories = searchParams.getAll("category");
+	const category = searchParams.get("category") ?? undefined;
 	const minRating = searchParams.get("rating")
 		? Number(searchParams.get("rating"))
 		: undefined;
 	const inStockOnly = searchParams.get("inStock") === "1";
-	const sort = searchParams.get("sort") ?? "popular";
-	const urlTag = searchParams.get("tag");
+	const sort = (searchParams.get("sort") ?? DEFAULT_SORT) as ProductSort;
 	const query = (searchParams.get("q") ?? "").trim();
 
 	const [page, setPage] = useState(1);
-	const filterKey = [
-		selectedCategories.join(","),
-		minRating,
-		inStockOnly,
-		sort,
-		urlTag,
-		query,
-	].join("|");
+	const filterKey = [category, sort, query].join("|");
 	useEffect(() => {
 		setPage(1);
 	}, [filterKey]);
 
-	function toggleCategory(name: string) {
-		setSearchParams((prev) => {
-			const next = new URLSearchParams(prev);
-			const cats = next.getAll("category");
-			next.delete("category");
-			const newCats = cats.includes(name)
-				? cats.filter((c) => c !== name)
-				: [...cats, name];
-			for (const c of newCats) {
-				next.append("category", c);
-			}
-			return next;
-		});
-	}
+	const { data: categories = [] } = catalogApi.useCategoriesQuery();
+	// the API pages by limit and offset, so growing the limit is the "load more"
+	const { data, isFetching } = productsApi.useProductsQuery({
+		search: query || undefined,
+		category,
+		sort,
+		limit: page * PAGE_SIZE,
+	});
 
-	function handleRating(rating: number) {
-		setSearchParams((prev) => {
-			const next = new URLSearchParams(prev);
-			if (rating === 0) {
-				next.delete("rating");
-			} else {
-				next.set("rating", String(rating));
-			}
-			return next;
-		});
-	}
+	const products = data?.items ?? [];
+	const total = data?.total ?? 0;
 
-	function handleInStock(checked: boolean) {
-		setSearchParams((prev) => {
-			const next = new URLSearchParams(prev);
-			if (checked) {
-				next.set("inStock", "1");
-			} else {
-				next.delete("inStock");
-			}
-			return next;
-		});
-	}
+	// rating and stock are not query parameters, so they narrow the fetched page
+	const visible = products.filter(
+		(p) =>
+			(minRating === undefined || (p.rating ?? 0) >= minRating) &&
+			(!inStockOnly || p.stock > 0),
+	);
+	const remaining = total - products.length;
 
-	function handleSort(value: string) {
+	function setParam(name: string, value: string | undefined) {
 		setSearchParams((prev) => {
 			const next = new URLSearchParams(prev);
-			if (value === "popular") {
-				next.delete("sort");
+			if (value === undefined) {
+				next.delete(name);
 			} else {
-				next.set("sort", value);
+				next.set(name, value);
 			}
 			return next;
 		});
@@ -122,87 +88,54 @@ export default function Page(): JSX.Element {
 	function resetFilters() {
 		setSearchParams((prev) => {
 			const next = new URLSearchParams(prev);
-			next.delete("category");
-			next.delete("rating");
-			next.delete("inStock");
-			next.delete("sort");
+			for (const name of ["category", "rating", "inStock", "sort"]) {
+				next.delete(name);
+			}
 			return next;
 		});
 	}
 
 	const hasActiveFilters =
-		selectedCategories.length > 0 || minRating !== undefined || inStockOnly;
+		category !== undefined || minRating !== undefined || inStockOnly;
 
-	const filtered = useMemo(() => {
-		let result = data.products;
-
-		if (query) {
-			const needle = query.toLowerCase();
-			result = result.filter((p) =>
-				[p.name, p.brand, p.category].some((field) =>
-					field.toLowerCase().includes(needle),
-				),
-			);
-		}
-		if (urlTag) {
-			result = result.filter((p) => p.tags.includes(urlTag));
-		}
-		if (selectedCategories.length > 0) {
-			result = result.filter((p) => selectedCategories.includes(p.category));
-		}
-		if (minRating !== undefined) {
-			result = result.filter((p) => p.rating >= minRating);
-		}
-		if (inStockOnly) {
-			result = result.filter((p) => p.stock > 0);
-		}
-
-		if (sort === "popular") {
-			return [...result].toSorted((a, b) => b.ratingCount - a.ratingCount);
-		}
-		if (sort === "price-asc") {
-			return [...result].toSorted((a, b) => a.price - b.price);
-		}
-		if (sort === "price-desc") {
-			return [...result].toSorted((a, b) => b.price - a.price);
-		}
-		if (sort === "rating") {
-			return [...result].toSorted((a, b) => b.rating - a.rating);
-		}
-		return result;
-	}, [selectedCategories, minRating, inStockOnly, sort, urlTag, query]);
-
-	const visible = filtered.slice(0, page * PAGE_SIZE);
-	const remaining = filtered.length - visible.length;
-
-	const pageTitle = titleFor(query, urlTag ?? undefined, selectedCategories[0]);
+	const pageTitle = titleFor(query, category);
 
 	const filterPanel = (
 		<div className="flex flex-col gap-8 text-sm [&_h3]:text-xl [&_h3]:font-medium [&_h3]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-3">
 			<section aria-label="Category filter">
 				<h3>Kategori</h3>
-				<ul>
-					{categories.map((name) => (
-						<li key={name}>
-							<Checkbox
-								checked={selectedCategories.includes(name)}
-								onCheckedChange={() => {
-									toggleCategory(name);
-								}}
-								className="hover:text-black"
-							>
-								{name}
-							</Checkbox>
-						</li>
+				<RadioGroup
+					value={category ?? ""}
+					onValueChange={(value: string) => {
+						setParam("category", value || undefined);
+					}}
+					className="flex flex-col gap-3"
+				>
+					<Radio
+						value=""
+						className="hover:text-black"
+					>
+						Semua kategori
+					</Radio>
+					{categories.map(({ id, name }) => (
+						<Radio
+							key={id}
+							value={name}
+							className="hover:text-black"
+						>
+							{name}
+						</Radio>
 					))}
-				</ul>
+				</RadioGroup>
 			</section>
 
 			<section aria-label="Rating filter">
 				<h3>Rating Minimum</h3>
 				<RadioGroup
 					value={minRating ?? 0}
-					onValueChange={handleRating}
+					onValueChange={(value: number) => {
+						setParam("rating", value === 0 ? undefined : String(value));
+					}}
 					className="flex flex-col gap-3"
 				>
 					<Radio
@@ -238,7 +171,9 @@ export default function Page(): JSX.Element {
 					<li>
 						<Checkbox
 							checked={inStockOnly}
-							onCheckedChange={handleInStock}
+							onCheckedChange={(checked) => {
+								setParam("inStock", checked ? "1" : undefined);
+							}}
 							className="hover:text-black"
 						>
 							Stok tersedia
@@ -295,21 +230,22 @@ export default function Page(): JSX.Element {
 									Filter
 									{hasActiveFilters && (
 										<span className="grid place-content-center size-4 rounded-full bg-brand-600 text-white text-[10px] font-bold">
-											{selectedCategories.length +
+											{(category ? 1 : 0) +
 												(minRating ? 1 : 0) +
 												(inStockOnly ? 1 : 0)}
 										</span>
 									)}
 								</Button>
-								<span className="text-gray-500">
-									{filtered.length} produk ditemukan
-								</span>
+								<span className="text-gray-500">{total} produk ditemukan</span>
 							</div>
 							<Select
 								items={sortOptions}
 								value={sort}
 								onValueChange={(value) => {
-									handleSort(value ?? "popular");
+									setParam(
+										"sort",
+										!value || value === DEFAULT_SORT ? undefined : value,
+									);
 								}}
 								label={<span className="hidden sm:block">Urutkan:</span>}
 								className="flex-row! items-center gap-3"
@@ -321,16 +257,18 @@ export default function Page(): JSX.Element {
 							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
 								{visible.map((p) => (
 									<ProductCard
-										key={p.name}
-										{...p}
+										key={p.id}
+										product={p}
 									/>
 								))}
 							</div>
 						) : (
 							<div className="py-24 flex flex-col items-center gap-3 text-center text-gray-500 text-sm">
-								{query
-									? `Tidak ada produk yang cocok dengan "${query}".`
-									: "Tidak ada produk yang sesuai filter."}
+								{isFetching
+									? "Memuat produk..."
+									: query
+										? `Tidak ada produk yang cocok dengan "${query}".`
+										: "Tidak ada produk yang sesuai filter."}
 							</div>
 						)}
 
@@ -339,6 +277,7 @@ export default function Page(): JSX.Element {
 								<Button
 									variant="outline"
 									className="p-3 px-8"
+									disabled={isFetching}
 									onClick={() => setPage((p) => p + 1)}
 								>
 									Muat Lebih Banyak ({remaining} produk lagi)
@@ -394,7 +333,7 @@ export default function Page(): JSX.Element {
 						<DrawerClose
 							className={cn(buttonVariants({ size: "lg" }), "flex-1 text-sm")}
 						>
-							Lihat {filtered.length} Produk
+							Lihat {visible.length} Produk
 						</DrawerClose>
 					</div>
 				</div>

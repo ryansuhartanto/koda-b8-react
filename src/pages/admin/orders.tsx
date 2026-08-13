@@ -16,9 +16,9 @@ import Badge from "#/components/Badge";
 import { Button } from "#/components/ui/button";
 import { Tab, Tabs, TabsList } from "#/components/ui/tabs";
 import data from "#/data.json";
-import type { OrderStatus } from "#/lib/db";
 import { orderStatus, orderStatusTabs } from "#/lib/status";
 import { rupiah } from "#/lib/utils";
+import type { OrderStatus } from "#/services/api/orders";
 
 const { orders } = data.admin;
 

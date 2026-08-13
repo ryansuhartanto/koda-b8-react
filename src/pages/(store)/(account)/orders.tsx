@@ -8,14 +8,9 @@ import Truck from "~icons/lucide/truck";
 import XCircle from "~icons/lucide/x-circle";
 
 import { Button, buttonVariants } from "#/components/ui/button";
-import data from "#/data.json";
-import type { Order, OrderStatus } from "#/lib/db";
 import { cn, rupiah } from "#/lib/utils";
-import { useAppSelector } from "#/store";
-import { selectOrders } from "#/store/reducers/orders";
-
-const imgOf = (name: string) =>
-	data.products.find((p) => p.name === name)?.img ?? "";
+import ordersApi from "#/services/api/orders";
+import type { Order, OrderStatus } from "#/services/api/orders";
 
 const statusConfig: Record<
 	OrderStatus,
@@ -52,9 +47,9 @@ const statusConfig: Record<
 	},
 };
 
-function OrderCard({ id, createdAt, status, items, total }: Order) {
+function OrderCard({ id, created_at, status, items, total_idr }: Order) {
 	const { label, Icon, className } = statusConfig[status];
-	const date = new Date(createdAt).toLocaleDateString("id-ID", {
+	const date = new Date(created_at).toLocaleDateString("id-ID", {
 		day: "numeric",
 		month: "long",
 		year: "numeric",
@@ -82,22 +77,19 @@ function OrderCard({ id, createdAt, status, items, total }: Order) {
 			<div className="flex flex-col gap-3">
 				{items.map((item) => (
 					<div
-						key={item.productName}
+						key={item.id}
 						className="flex gap-4 items-center"
 					>
-						<div className="size-12 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-							<img
-								src={imgOf(item.productName)}
-								alt={item.productName}
-								className="w-full h-full object-cover"
-							/>
+						<div className="grid place-content-center size-12 shrink-0 rounded-lg bg-gray-100 text-gray-400">
+							<Package className="size-5" />
 						</div>
 						<div className="flex-1 flex flex-col">
 							<span className="text-sm font-medium text-gray-900">
-								{item.productName}
+								{item.product_name}
 							</span>
 							<span className="text-xs text-gray-500 tabular-nums">
-								&times;{item.quantity} &middot; {rupiah(item.price)}
+								{item.variant_name ? `${item.variant_name} · ` : ""}
+								&times;{item.quantity} &middot; {rupiah(item.unit_price_idr)}
 							</span>
 						</div>
 					</div>
@@ -110,7 +102,7 @@ function OrderCard({ id, createdAt, status, items, total }: Order) {
 				<span className="text-sm text-gray-600">
 					Total:{" "}
 					<span className="font-bold text-brand-600 tabular-nums">
-						{rupiah(total)}
+						{rupiah(total_idr)}
 					</span>
 				</span>
 				<div className="flex gap-2">
@@ -141,7 +133,7 @@ function OrderCard({ id, createdAt, status, items, total }: Order) {
 }
 
 export default function Page(): JSX.Element {
-	const orders = useAppSelector(selectOrders);
+	const { data: orders = [] } = ordersApi.useOrdersQuery();
 
 	return (
 		<>

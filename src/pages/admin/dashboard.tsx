@@ -20,9 +20,9 @@ import Users from "~icons/lucide/users";
 import StatCard from "#/components/admin/StatCard";
 import Badge from "#/components/Badge";
 import data from "#/data.json";
-import type { OrderStatus } from "#/lib/db";
 import { orderStatus } from "#/lib/status";
 import { rupiah } from "#/lib/utils";
+import type { OrderStatus } from "#/services/api/orders";
 
 const { stats, revenue, topProducts } = data.admin.dashboard;
 const recentOrders = data.admin.orders.slice(0, 5);

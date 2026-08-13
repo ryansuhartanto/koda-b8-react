@@ -7,15 +7,26 @@ import Zap from "~icons/lucide/zap";
 
 import Hero from "#/components/Hero";
 import { ProductCard } from "#/components/ProductCard";
-import data from "#/data.json";
-
-const flashDeals = data.products
-	.filter((p) => p.tags.includes("promo"))
-	.slice(0, 4);
-const newest = data.products.filter((p) => p.tags.includes("baru"));
-const featured = data.products.filter((p) => p.tags.includes("unggulan"));
+import catalogApi from "#/services/api/catalog";
+import productsApi from "#/services/api/products";
 
 export default function Page(): JSX.Element {
+	const { data: categories = [] } = catalogApi.useCategoriesQuery();
+	const { data: discounted } = productsApi.useProductsQuery({ limit: 24 });
+	const { data: newest } = productsApi.useProductsQuery({
+		sort: "newest",
+		limit: 4,
+	});
+	const { data: featured } = productsApi.useProductsQuery({
+		sort: "rating",
+		limit: 4,
+	});
+
+	// the API has no promo flag, so a discount is what marks a deal
+	const flashDeals = (discounted?.items ?? [])
+		.filter((p) => (p.original_price_idr ?? 0) > (p.price_idr ?? 0))
+		.slice(0, 4);
+
 	return (
 		<main className="flex flex-col gap-12 pt-6 pb-16 bg-gray-50">
 			<Hero />
@@ -35,20 +46,20 @@ export default function Page(): JSX.Element {
 						</Link>
 					</header>
 					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-						{data.categories.map(({ name, img, items }) => (
+						{categories.map(({ id, name, img, product_count }) => (
 							<Link
-								key={name}
+								key={id}
 								to={`/browse?category=${encodeURIComponent(name)}`}
 							>
 								<article className="card rounded-xl">
 									<div className="m-4 flex flex-col gap-2 items-center">
 										<img
 											className="w-14 rounded-xl"
-											src={img}
+											src={img ?? ""}
 											alt={`${name} category`}
 										/>
 										<h3>{name}</h3>
-										<p>{items} produk</p>
+										<p>{product_count} produk</p>
 									</div>
 								</article>
 							</Link>
@@ -73,7 +84,7 @@ export default function Page(): JSX.Element {
 						</div>
 						<Link
 							className="text-brand-600 *:align-middle"
-							to="/browse?tag=promo"
+							to="/browse?sort=price_asc"
 						>
 							Lihat Semua <ArrowRight />
 						</Link>
@@ -81,8 +92,8 @@ export default function Page(): JSX.Element {
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 						{flashDeals.map((p) => (
 							<ProductCard
-								key={p.name}
-								{...p}
+								key={p.id}
+								product={p}
 							/>
 						))}
 					</div>
@@ -130,16 +141,16 @@ export default function Page(): JSX.Element {
 						</h2>
 						<Link
 							className="text-brand-600 *:align-middle"
-							to="/browse?tag=baru"
+							to="/browse?sort=newest"
 						>
 							Lihat Semua <ArrowRight />
 						</Link>
 					</header>
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-						{newest.map((p) => (
+						{(newest?.items ?? []).map((p) => (
 							<ProductCard
-								key={p.name}
-								{...p}
+								key={p.id}
+								product={p}
 							/>
 						))}
 					</div>
@@ -152,16 +163,16 @@ export default function Page(): JSX.Element {
 						<h2 className="text-h2 font-medium">Produk Unggulan</h2>
 						<Link
 							className="text-brand-600 *:align-middle"
-							to="/browse?tag=unggulan"
+							to="/browse?sort=rating"
 						>
 							Lihat Semua <ArrowRight />
 						</Link>
 					</header>
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-						{featured.map((p) => (
+						{(featured?.items ?? []).map((p) => (
 							<ProductCard
-								key={p.name}
-								{...p}
+								key={p.id}
+								product={p}
 							/>
 						))}
 					</div>

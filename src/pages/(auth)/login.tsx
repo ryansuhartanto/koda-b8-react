@@ -16,8 +16,8 @@ import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
 import { Button } from "#/components/ui/button";
 import { Checkbox } from "#/components/ui/checkbox";
-import { useAppDispatch } from "#/store";
-import { login } from "#/store/reducers/auth";
+import { message, status } from "#/services/api";
+import authApi from "#/services/api/auth";
 
 const schema = yup.object({
 	email: yup.string().email("Email tidak valid").required("Email wajib diisi"),
@@ -46,9 +46,9 @@ function Stats() {
 }
 
 export default function Page(): JSX.Element {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
+	const [login] = authApi.useLoginMutation();
 
 	const {
 		register,
@@ -58,18 +58,15 @@ export default function Page(): JSX.Element {
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: yupResolver(schema) });
 
-	function onSubmit(data: yup.InferType<typeof schema>) {
+	async function onSubmit(data: yup.InferType<typeof schema>) {
 		try {
-			dispatch(login(data.email, data.password, data.remember ?? false));
+			await login({ email: data.email, password: data.password }).unwrap();
 			void navigate("/");
 		} catch (error) {
-			const code = error instanceof Error ? error.message : "";
-			if (code === "EMAIL_NOT_FOUND") {
-				setError("email", { message: "Email tidak terdaftar" });
-			} else if (code === "WRONG_PASSWORD") {
-				setError("password", { message: "Kata sandi salah" });
+			if (status(error) === 401) {
+				setError("password", { message: "Email atau kata sandi salah" });
 			} else {
-				setError("root", { message: "Login gagal" });
+				setError("root", { message: message(error) ?? "Login gagal" });
 			}
 		}
 	}

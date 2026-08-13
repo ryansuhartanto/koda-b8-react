@@ -15,16 +15,13 @@ import Star5 from "#/components/Star5";
 import { Button } from "#/components/ui/button";
 import { RadioGroup, RadioPill } from "#/components/ui/radio";
 import { Tab, TabPanel, Tabs, TabsList } from "#/components/ui/tabs";
-import data from "#/data.json";
+import { selectIsAuthenticated } from "#/features/auth";
+import { selectWishlist, toggle } from "#/features/wishlist";
 import { cn, rupiah } from "#/lib/utils";
+import cartApi from "#/services/api/cart";
+import productsApi from "#/services/api/products";
+import type { ProductVariant } from "#/services/api/products";
 import { useAppDispatch, useAppSelector } from "#/store";
-import {
-	addToCart,
-	selectCurrentUser,
-	toggleWishlist,
-} from "#/store/reducers/auth";
-
-const colors = ["Hitam", "Putih", "Biru"];
 
 const perks: Array<[ComponentType<{ className?: string }>, string, string]> = [
 	[Truck, "Gratis Ongkir", "Min. Rp 100.000"],
@@ -32,76 +29,82 @@ const perks: Array<[ComponentType<{ className?: string }>, string, string]> = [
 	[RefreshCcw, "Retur 30 Hari", "Gratis retur"],
 ];
 
+function variantLabel(variant: ProductVariant): string {
+	return variant.options.map((o) => o.value).join(" / ") || variant.id;
+}
+
 export default function Page(): JSX.Element {
-	const { slug } = useParams();
-	const user = useAppSelector(selectCurrentUser);
+	const { id = "" } = useParams();
+	const isAuthenticated = useAppSelector(selectIsAuthenticated);
+	const isWishlisted = useAppSelector(selectWishlist).includes(id);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [qty, setQty] = useState(1);
-	const [color, setColor] = useState(colors[0]);
+	const [variantId, setVariantId] = useState<string>();
 
-	const product = data.products.find((p) => p.slug === slug);
+	const { data: product, isLoading } = productsApi.useProductQuery(id);
+	const [setCartItem] = cartApi.useSetCartItemMutation();
+	const { data: related } = productsApi.useProductsQuery(
+		{ category: product?.category, limit: 5 },
+		{ skip: product?.category === undefined },
+	);
 
 	if (!product) {
 		return (
 			<main className="pt-6 pb-16 bg-gray-50">
 				<div className="wrapper flex flex-col gap-4 items-center text-center py-24">
 					<h1 className="text-h1 font-medium text-gray-900">
-						Produk Tidak Ditemukan
+						{isLoading ? "Memuat produk..." : "Produk Tidak Ditemukan"}
 					</h1>
 					<p className="text-sm text-gray-500">
-						Produk yang kamu cari mungkin sudah tidak tersedia.
+						{isLoading
+							? "Sebentar ya."
+							: "Produk yang kamu cari mungkin sudah tidak tersedia."}
 					</p>
 				</div>
 			</main>
 		);
 	}
 
-	const {
-		name,
-		brand,
-		category,
-		img,
-		price,
-		originalPrice,
-		stock,
-		rating,
-		ratingCount,
-		summary,
-	} = product;
-	const isWishlisted = user?.wishlist.includes(name) ?? false;
-	const discount = originalPrice
-		? Math.round((1 - price / originalPrice) * 100)
-		: undefined;
+	const { name, brand, category, urls, description } = product;
+	const rating = product.rating ?? 0;
+	const ratingCount = product.rating_count;
 
-	const related = data.products
-		.filter((p) => p.category === category && p.name !== name)
+	const variants = product.variants ?? [];
+	const variant = variants.find((v) => v.id === variantId) ?? variants[0];
+	const price = variant?.price_idr ?? product.price_idr ?? 0;
+	const originalPrice =
+		variant?.original_price_idr ?? product.original_price_idr;
+	const stock = variant?.stock ?? product.stock;
+	const img = urls?.[0] ?? "";
+
+	const discount =
+		originalPrice && originalPrice > price
+			? Math.round((1 - price / originalPrice) * 100)
+			: undefined;
+
+	const suggestions = (related?.items ?? [])
+		.filter((p) => p.id !== product.id)
 		.slice(0, 4);
 
-	function handleAddToCart() {
-		if (!user) {
+	async function addToCart(then: string) {
+		if (!isAuthenticated) {
 			void navigate("/login");
 			return;
 		}
-		dispatch(addToCart(name, qty));
-		void navigate("/cart");
-	}
-
-	function handleBuyNow() {
-		if (!user) {
-			void navigate("/login");
+		if (!variant) {
 			return;
 		}
-		dispatch(addToCart(name, qty));
-		void navigate("/checkout");
+		await setCartItem({ id_variant: variant.id, quantity: qty }).unwrap();
+		void navigate(then);
 	}
 
 	function handleWishlist() {
-		if (!user) {
+		if (!isAuthenticated) {
 			void navigate("/login");
 			return;
 		}
-		dispatch(toggleWishlist(name));
+		dispatch(toggle(id));
 	}
 
 	return (
@@ -111,7 +114,9 @@ export default function Page(): JSX.Element {
 					items={[
 						{ label: "Beranda", url: "/" },
 						{ label: "Toko", url: "/browse" },
-						{ label: category, url: `/browse?category=${category}` },
+						...(category
+							? [{ label: category, url: `/browse?category=${category}` }]
+							: []),
 						{ label: name },
 					]}
 				/>
@@ -131,13 +136,18 @@ export default function Page(): JSX.Element {
 							/>
 						</div>
 						<div className="flex gap-4">
-							<div className="size-20 border-2 border-brand-600 rounded-xl overflow-hidden shrink-0">
-								<img
-									src={img}
-									alt=""
-									className="w-full h-full object-cover"
-								/>
-							</div>
+							{(urls ?? []).map((url) => (
+								<div
+									key={url}
+									className="size-20 border-2 border-brand-600 rounded-xl overflow-hidden shrink-0"
+								>
+									<img
+										src={url}
+										alt=""
+										className="w-full h-full object-cover"
+									/>
+								</div>
+							))}
 						</div>
 					</div>
 
@@ -178,26 +188,32 @@ export default function Page(): JSX.Element {
 							)}
 						</div>
 
-						<div className="flex flex-col gap-2">
-							<div className="text-sm text-gray-500">
-								Warna: <span className="text-brand-600">{color}</span>
+						{variants.length > 0 && (
+							<div className="flex flex-col gap-2">
+								<div className="text-sm text-gray-500">
+									Varian:{" "}
+									<span className="text-brand-600">
+										{variant ? variantLabel(variant) : "-"}
+									</span>
+								</div>
+								<RadioGroup
+									value={variant?.id}
+									onValueChange={setVariantId}
+									name="variant"
+									className="flex gap-2 flex-wrap"
+								>
+									{variants.map((v) => (
+										<RadioPill
+											key={v.id}
+											value={v.id}
+											disabled={v.stock === 0}
+										>
+											{variantLabel(v)}
+										</RadioPill>
+									))}
+								</RadioGroup>
 							</div>
-							<RadioGroup
-								value={color}
-								onValueChange={setColor}
-								name="color"
-								className="flex gap-2"
-							>
-								{colors.map((option) => (
-									<RadioPill
-										key={option}
-										value={option}
-									>
-										{option}
-									</RadioPill>
-								))}
-							</RadioGroup>
-						</div>
+						)}
 
 						<div className="flex flex-col gap-2">
 							<span className="text-sm text-gray-900">Jumlah</span>
@@ -217,7 +233,8 @@ export default function Page(): JSX.Element {
 								tone="accent"
 								size="lg"
 								className="flex-1"
-								onClick={handleAddToCart}
+								disabled={!variant}
+								onClick={() => void addToCart("/cart")}
 							>
 								<ShoppingCart className="size-5" /> Tambah ke Keranjang
 							</Button>
@@ -225,7 +242,8 @@ export default function Page(): JSX.Element {
 								tone="accent"
 								size="lg"
 								className="flex-1"
-								onClick={handleBuyNow}
+								disabled={!variant}
+								onClick={() => void addToCart("/checkout")}
 							>
 								Beli Sekarang
 							</Button>
@@ -286,7 +304,7 @@ export default function Page(): JSX.Element {
 						value="description"
 						className="p-6 text-sm text-gray-600 leading-relaxed"
 					>
-						{summary}
+						{description}
 					</TabPanel>
 					<TabPanel
 						value="reviews"
@@ -303,14 +321,14 @@ export default function Page(): JSX.Element {
 					</TabPanel>
 				</Tabs>
 
-				{related.length > 0 && (
+				{suggestions.length > 0 && (
 					<section className="flex flex-col gap-6">
 						<h2 className="text-h2 font-medium">Produk Serupa</h2>
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-							{related.map((p) => (
+							{suggestions.map((p) => (
 								<ProductCard
-									key={p.name}
-									{...p}
+									key={p.id}
+									product={p}
 								/>
 							))}
 						</div>

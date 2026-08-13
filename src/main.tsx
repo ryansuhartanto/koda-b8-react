@@ -27,7 +27,7 @@ const router = createBrowserRouter([
 						Component: React.lazy(async () => import("#/pages/(store)/browse")),
 					},
 					{
-						path: "details/:slug",
+						path: "details/:id",
 						Component: React.lazy(
 							async () => import("#/pages/(store)/details"),
 						),

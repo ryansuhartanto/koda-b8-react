@@ -3,28 +3,32 @@ import { Link } from "react-router";
 import Heart from "~icons/lucide/heart";
 
 import { ProductCard } from "#/components/ProductCard";
-import data from "#/data.json";
+import { selectWishlist } from "#/features/wishlist";
+import productsApi from "#/services/api/products";
 import { useAppSelector } from "#/store";
-import { selectCurrentUser } from "#/store/reducers/auth";
+
+// no bulk-by-id endpoint exists, so each saved product is fetched on its own
+function WishlistCard({ id }: { id: string }) {
+	const { data: product } = productsApi.useProductQuery(id);
+
+	return product ? <ProductCard product={product} /> : undefined;
+}
 
 export default function Page(): JSX.Element {
-	const user = useAppSelector(selectCurrentUser);
-	const items = (user?.wishlist ?? [])
-		.map((name) => data.products.find((p) => p.name === name))
-		.filter((name) => name !== undefined);
+	const ids = useAppSelector(selectWishlist);
 
 	return (
 		<>
 			<h1 className="text-h1 font-medium text-gray-900">
-				Wishlist (<span className="tabular-nums">{items.length}</span>)
+				Wishlist (<span className="tabular-nums">{ids.length}</span>)
 			</h1>
 
-			{items.length > 0 ? (
+			{ids.length > 0 ? (
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-					{items.map((p) => (
-						<ProductCard
-							key={p.name}
-							{...p}
+					{ids.map((id) => (
+						<WishlistCard
+							key={id}
+							id={id}
 						/>
 					))}
 				</div>

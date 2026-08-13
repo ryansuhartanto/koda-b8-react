@@ -1,13 +1,9 @@
 import type { JSX, ComponentType } from "react";
 import CreditCard from "~icons/lucide/credit-card";
-import Plus from "~icons/lucide/plus";
-import Trash2 from "~icons/lucide/trash-2";
 import Wallet from "~icons/lucide/wallet";
 
-import { Button } from "#/components/ui/button";
-import type { SavedPayment } from "#/lib/db";
-import { useAppDispatch, useAppSelector } from "#/store";
-import { removeSavedPayment, selectCurrentUser } from "#/store/reducers/auth";
+import meApi from "#/services/api/me";
+import type { UserPayment } from "#/services/api/me";
 
 const iconMap: Record<string, ComponentType<{ className?: string }>> = {
 	"Kartu Kredit": CreditCard,
@@ -20,12 +16,12 @@ const iconMap: Record<string, ComponentType<{ className?: string }>> = {
 	"DANA": Wallet,
 };
 
-function MethodCard({
-	type,
-	isDefault,
-	onDelete,
-}: SavedPayment & { onDelete: () => void }) {
+function MethodCard({ type, is_default, data }: UserPayment) {
 	const Icon = iconMap[type] ?? CreditCard;
+	const detail = Object.values(data)
+		.filter((v) => typeof v === "string")
+		.join(" · ");
+
 	return (
 		<article className="bg-white border border-black/10 rounded-2xl p-5 flex items-center gap-4">
 			<div className="grid place-content-center size-12 shrink-0 rounded-xl bg-brand-50 text-brand-600">
@@ -34,40 +30,24 @@ function MethodCard({
 			<div className="flex-1 flex flex-col">
 				<div className="flex items-center gap-2">
 					<h2 className="text-h3 font-medium text-gray-900">{type}</h2>
-					{isDefault && (
+					{is_default && (
 						<span className="px-2 py-0.5 rounded-full text-xs font-medium bg-brand-600 text-white">
 							Utama
 						</span>
 					)}
 				</div>
+				{detail && <span className="text-sm text-gray-500">{detail}</span>}
 			</div>
-			<Button
-				variant="icon"
-				tone="danger"
-				size="none"
-				className="text-gray-400"
-				aria-label={`Hapus ${type}`}
-				onClick={onDelete}
-			>
-				<Trash2 className="size-5" />
-			</Button>
 		</article>
 	);
 }
 
 export default function Page(): JSX.Element {
-	const user = useAppSelector(selectCurrentUser);
-	const dispatch = useAppDispatch();
-	const methods = user?.savedPayments ?? [];
+	const { data: methods = [] } = meApi.usePaymentsQuery();
 
 	return (
 		<>
-			<div className="flex justify-between items-center">
-				<h1 className="text-h1 font-medium text-gray-900">Metode Pembayaran</h1>
-				<Button>
-					<Plus className="size-4" /> Tambah Metode
-				</Button>
-			</div>
+			<h1 className="text-h1 font-medium text-gray-900">Metode Pembayaran</h1>
 
 			{methods.length > 0 ? (
 				<div className="flex flex-col gap-4">
@@ -75,9 +55,6 @@ export default function Page(): JSX.Element {
 						<MethodCard
 							key={method.id}
 							{...method}
-							onDelete={() => {
-								dispatch(removeSavedPayment(method.id));
-							}}
 						/>
 					))}
 				</div>

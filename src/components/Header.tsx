@@ -13,9 +13,25 @@ import X from "~icons/lucide/x";
 
 import { Button, buttonVariants } from "#/components/ui/button";
 import { Drawer, DrawerClose } from "#/components/ui/drawer";
+import { selectIsAuthenticated } from "#/features/auth";
 import { cn } from "#/lib/utils";
+import cartApi from "#/services/api/cart";
+import meApi from "#/services/api/me";
 import { useAppSelector } from "#/store";
-import { selectCurrentUser } from "#/store/reducers/auth";
+
+function useAccount() {
+	const isAuthenticated = useAppSelector(selectIsAuthenticated);
+	const { data: me } = meApi.useMeQuery(undefined, { skip: !isAuthenticated });
+	const { data: cart } = cartApi.useCartQuery(undefined, {
+		skip: !isAuthenticated,
+	});
+
+	return {
+		me,
+		firstName: me?.name?.split(" ")[0],
+		cartCount: cart?.items.reduce((sum, i) => sum + i.quantity, 0) ?? 0,
+	};
+}
 
 export function HeaderUtility(): JSX.Element {
 	return (
@@ -46,9 +62,7 @@ export function HeaderMain({
 }: {
 	onMenuOpen: () => void;
 }): JSX.Element {
-	const user = useAppSelector(selectCurrentUser);
-	const cartCount = user?.cart.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
-	const firstName = user?.name.split(" ")[0];
+	const { me, firstName, cartCount } = useAccount();
 	const [searchParams] = useSearchParams();
 	const query = searchParams.get("q") ?? "";
 
@@ -102,7 +116,7 @@ export function HeaderMain({
 					<Link
 						className="group"
 						aria-label="User"
-						to={user ? "/profile" : "/login"}
+						to={me ? "/profile" : "/login"}
 					>
 						<User className="text-gray-500 group-hover:text-black" />
 						<span className="text-sm">{firstName ?? "Masuk"}</span>
@@ -168,8 +182,7 @@ function MobileDrawer({
 	onOpenChange: (open: boolean) => void;
 	navigations: Array<{ href: string; text: string }>;
 }) {
-	const user = useAppSelector(selectCurrentUser);
-	const firstName = user?.name.split(" ")[0];
+	const { me, firstName } = useAccount();
 	const [searchParams] = useSearchParams();
 	const query = searchParams.get("q") ?? "";
 	const close = () => {
@@ -239,7 +252,7 @@ function MobileDrawer({
 				</div>
 
 				<Link
-					to={user ? "/profile" : "/login"}
+					to={me ? "/profile" : "/login"}
 					onClick={close}
 					className="flex items-center gap-3 px-5 py-4 border-b border-black/10 hover:bg-brand-50 transition-colors group"
 				>
@@ -252,12 +265,10 @@ function MobileDrawer({
 					</div>
 					<div className="flex flex-col min-w-0">
 						<span className="font-semibold text-gray-900 text-sm truncate">
-							{user?.name ?? "Masuk / Daftar"}
+							{me?.name ?? "Masuk / Daftar"}
 						</span>
-						{user ? (
-							<span className="text-xs text-gray-500 truncate">
-								{user.email}
-							</span>
+						{me ? (
+							<span className="text-xs text-gray-500 truncate">{me.email}</span>
 						) : (
 							<span className="text-xs text-brand-600">Tap untuk masuk →</span>
 						)}
@@ -284,7 +295,7 @@ function MobileDrawer({
 						</Link>
 					))}
 					<Link
-						to="/browse?tag=promo"
+						to="/browse?sort=price_asc"
 						onClick={close}
 						className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-colors font-medium"
 					>
@@ -357,7 +368,7 @@ export function HeaderNav({ navigations = [] }: HeaderNavProps): JSX.Element {
 					</Link>
 				))}
 				<Link
-					to="/browse?tag=promo"
+					to="/browse?sort=price_asc"
 					className="text-red-600 hover:text-red-900"
 				>
 					🔥 Promo

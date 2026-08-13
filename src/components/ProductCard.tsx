@@ -5,80 +5,66 @@ import ShoppingCart from "~icons/lucide/shopping-cart";
 
 import Star5 from "#/components/Star5";
 import { Button } from "#/components/ui/button";
+import { selectIsAuthenticated } from "#/features/auth";
+import { selectWishlist, toggle } from "#/features/wishlist";
 import { cn, rupiah } from "#/lib/utils";
+import cartApi from "#/services/api/cart";
+import type { Product } from "#/services/api/products";
 import { useAppDispatch, useAppSelector } from "#/store";
-import {
-	addToCart,
-	selectCurrentUser,
-	toggleWishlist,
-} from "#/store/reducers/auth";
 
 export type ProductCardProps = {
-	slug: string;
-	name: string;
-	brand: string;
-	img: string;
-	price: number;
-	originalPrice?: number;
-	rating: number;
-	ratingCount: number;
-	tags?: string[];
+	product: Product;
 };
 
-export function ProductCard({
-	slug,
-	name,
-	brand,
-	img,
-	price,
-	originalPrice,
-	rating,
-	ratingCount,
-	tags,
-}: ProductCardProps): JSX.Element {
-	const user = useAppSelector(selectCurrentUser);
+export function ProductCard({ product }: ProductCardProps): JSX.Element {
+	const { id, name, brand, urls, variants } = product;
+	const isAuthenticated = useAppSelector(selectIsAuthenticated);
+	const isWishlisted = useAppSelector(selectWishlist).includes(id);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const isWishlisted = user?.wishlist.includes(name) ?? false;
+	const [setCartItem] = cartApi.useSetCartItemMutation();
 
-	const discount = originalPrice
-		? Math.round((1 - price / originalPrice) * 100)
-		: undefined;
-
-	let badge;
-	if (discount) {
-		badge = <span className="badge discount">-{discount}%</span>;
-	} else if (tags?.includes("baru")) {
-		badge = <span className="badge new">Baru</span>;
-	}
+	const price = product.price_idr ?? 0;
+	const originalPrice = product.original_price_idr;
+	const rating = product.rating ?? 0;
+	const discount =
+		originalPrice && originalPrice > price
+			? Math.round((1 - price / originalPrice) * 100)
+			: undefined;
 
 	function handleWishlist() {
-		if (!user) {
+		if (!isAuthenticated) {
 			void navigate("/login");
 			return;
 		}
-		dispatch(toggleWishlist(name));
+		dispatch(toggle(id));
 	}
 
 	function handleAddToCart() {
-		if (!user) {
+		if (!isAuthenticated) {
 			void navigate("/login");
 			return;
 		}
-		dispatch(addToCart(name));
+		// a cart line is a variant, so a listing without one has to be opened first
+		const variant = variants?.[0];
+		if (!variant) {
+			void navigate(`/details/${id}`);
+			return;
+		}
+		void setCartItem({ id_variant: variant.id, quantity: 1 });
 	}
 
 	return (
 		<article className="card group">
 			<div className="relative overflow-hidden">
-				<Link to={`/details/${slug}`}>
+				<Link to={`/details/${id}`}>
 					<img
-						src={img}
+						src={urls?.[0] ?? ""}
 						alt={name}
 					/>
 				</Link>
 
-				{badge}
+				{discount && <span className="badge discount">-{discount}%</span>}
 
 				<Button
 					variant="icon"
@@ -124,7 +110,7 @@ export function ProductCard({
 					</output>
 					<span>
 						<span itemProp="ratingValue">{rating}</span> (
-						<span itemProp="reviewCount">{ratingCount}</span>)
+						<span itemProp="reviewCount">{product.rating_count}</span>)
 					</span>
 				</div>
 				<p className="tabular-nums flex flex-col lg:flex-row gap-2 items-start lg:items-center pt-1 price">

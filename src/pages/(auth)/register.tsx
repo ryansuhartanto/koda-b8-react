@@ -18,15 +18,15 @@ import AuthLayout from "#/components/AuthLayout";
 import FormField from "#/components/FormField";
 import { Button } from "#/components/ui/button";
 import { Checkbox } from "#/components/ui/checkbox";
-import { useAppDispatch } from "#/store";
-import { register as registerUser } from "#/store/reducers/auth";
+import { message, status } from "#/services/api";
+import authApi from "#/services/api/auth";
 
 const schema = yup.object({
 	name: yup.string().trim().required("Nama wajib diisi"),
 	email: yup.string().email("Email tidak valid").required("Email wajib diisi"),
 	password: yup
 		.string()
-		.min(6, "Minimal 6 karakter")
+		.min(8, "Minimal 8 karakter")
 		.required("Kata sandi wajib diisi"),
 	confirm: yup
 		.string()
@@ -62,10 +62,10 @@ function Perks() {
 }
 
 export default function Page(): JSX.Element {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
+	const [registerUser] = authApi.useRegisterMutation();
 
 	const {
 		register,
@@ -75,22 +75,19 @@ export default function Page(): JSX.Element {
 		formState: { errors, isSubmitting },
 	} = useForm({ resolver: yupResolver(schema) });
 
-	function onSubmit(data: yup.InferType<typeof schema>) {
+	async function onSubmit(data: yup.InferType<typeof schema>) {
 		try {
-			dispatch(
-				registerUser({
-					name: data.name,
-					email: data.email,
-					password: data.password,
-				}),
-			);
+			await registerUser({
+				name: data.name,
+				email: data.email,
+				password: data.password,
+			}).unwrap();
 			void navigate("/");
 		} catch (error) {
-			const code = error instanceof Error ? error.message : "";
-			if (code === "EMAIL_TAKEN") {
+			if (status(error) === 409) {
 				setError("email", { message: "Email sudah terdaftar, coba masuk" });
 			} else {
-				setError("root", { message: "Pendaftaran gagal" });
+				setError("root", { message: message(error) ?? "Pendaftaran gagal" });
 			}
 		}
 	}

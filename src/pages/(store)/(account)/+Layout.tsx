@@ -10,14 +10,13 @@ import Settings from "~icons/lucide/settings";
 
 import Avatar from "#/components/Avatar";
 import { Button } from "#/components/ui/button";
+import { selectIsAuthenticated, unset } from "#/features/auth";
+import { selectWishlist } from "#/features/wishlist";
 import { cn } from "#/lib/utils";
+import api from "#/services/api";
+import meApi from "#/services/api/me";
+import ordersApi from "#/services/api/orders";
 import { useAppDispatch, useAppSelector } from "#/store";
-import {
-	logout,
-	selectCurrentUser,
-	selectIsLoggedIn,
-} from "#/store/reducers/auth";
-import { selectOrders } from "#/store/reducers/orders";
 
 const menu = [
 	{ to: "/orders", label: "Pesanan Saya", Icon: ClipboardList },
@@ -28,8 +27,9 @@ const menu = [
 ];
 
 function ProfileCard() {
-	const user = useAppSelector(selectCurrentUser);
-	const orders = useAppSelector(selectOrders);
+	const { data: user } = meApi.useMeQuery();
+	const { data: orders = [] } = ordersApi.useOrdersQuery();
+	const wishlist = useAppSelector(selectWishlist);
 	return (
 		<section className="bg-white border border-black/10 rounded-2xl p-6 flex flex-col items-center gap-3 text-center">
 			<Avatar className="size-16 text-xl" />
@@ -47,7 +47,7 @@ function ProfileCard() {
 				</div>
 				<div className="flex flex-col">
 					<dd className="font-bold text-gray-900 tabular-nums">
-						{user?.wishlist.length ?? 0}
+						{wishlist.length}
 					</dd>
 					<dt className="text-xs text-gray-500">Wishlist</dt>
 				</div>
@@ -61,7 +61,9 @@ function AccountNav() {
 	const navigate = useNavigate();
 
 	function handleLogout() {
-		dispatch(logout());
+		dispatch(unset());
+		// the cache is scoped to the token that fetched it
+		dispatch(api.util.resetApiState());
 		void navigate("/login");
 	}
 
@@ -106,9 +108,9 @@ function AccountNav() {
 }
 
 export default function Layout(): JSX.Element {
-	const isLoggedIn = useAppSelector(selectIsLoggedIn);
+	const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
-	if (!isLoggedIn) {
+	if (!isAuthenticated) {
 		return (
 			<Navigate
 				to="/login"

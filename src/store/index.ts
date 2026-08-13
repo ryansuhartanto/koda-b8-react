@@ -13,6 +13,7 @@ import persistCombineReducers from "redux-persist/es/persistCombineReducers";
 import storage from "redux-persist/es/storage";
 
 import authReducer from "#/features/auth";
+import wishlistReducer from "#/features/wishlist";
 import api from "#/services/api";
 
 const reducer = persistCombineReducers(
@@ -27,6 +28,7 @@ const reducer = persistCombineReducers(
 		[api.reducerPath]: api.reducer,
 
 		auth: authReducer,
+		wishlist: wishlistReducer,
 	},
 );
 

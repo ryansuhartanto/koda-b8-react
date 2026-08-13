@@ -1,4 +1,4 @@
-import type { JSX, SubmitEvent } from "react";
+import type { JSX } from "react";
 import { useState } from "react";
 import { Link } from "react-router";
 import Check from "~icons/lucide/check";
@@ -15,86 +15,30 @@ import FormField from "#/components/FormField";
 import { OrderReviewItem } from "#/components/ProductCard";
 import { Button } from "#/components/ui/button";
 import { Radio, RadioGroup } from "#/components/ui/radio";
-import data from "#/data.json";
 import { useCheckout } from "#/hooks/useCheckout";
-import type { Order, ShippingInfo } from "#/lib/db";
-import { field, rupiah } from "#/lib/utils";
-import { useAppDispatch, useAppSelector } from "#/store";
-import { selectCurrentUser } from "#/store/reducers/auth";
-import { placeOrder } from "#/store/reducers/orders";
-
-const shippingMethods = [
-	{
-		id: "jne-reg",
-		label: "JNE Reguler",
-		sub: "3-5 hari kerja",
-		defaultChecked: true,
-	},
-	{ id: "jne-exp", label: "JNE Express", sub: "1-2 hari kerja" },
-	{
-		id: "same-day",
-		label: "Same Day Delivery",
-		sub: "Hari ini (sebelum 16:00)",
-	},
-];
-
-const paymentMethods = [
-	{
-		id: "bca",
-		label: "Virtual Account BCA",
-		badge: "BCA",
-		badgeClass: "bg-gray-200 text-gray-800",
-		defaultChecked: true,
-	},
-	{
-		id: "bni",
-		label: "Virtual Account BNI",
-		badge: "BNI",
-		badgeClass: "bg-gray-200 text-gray-800",
-	},
-	{ id: "card", label: "Kartu Kredit / Debit", useIcon: true },
-	{
-		id: "gopay",
-		label: "GoPay",
-		badge: "GP",
-		badgeClass: "bg-gray-800 text-white",
-	},
-	{
-		id: "ovo",
-		label: "OVO",
-		badge: "OVO",
-		badgeClass: "bg-purple-600 text-white",
-	},
-	{
-		id: "dana",
-		label: "DANA",
-		badge: "DN",
-		badgeClass: "bg-brand-500 text-white",
-	},
-];
+import { rupiah } from "#/lib/utils";
+import { message } from "#/services/api";
+import addressesApi from "#/services/api/addresses";
+import type { Address } from "#/services/api/addresses";
+import cartApi from "#/services/api/cart";
+import catalogApi from "#/services/api/catalog";
+import type { PaymentMethod, ShippingMethod } from "#/services/api/catalog";
+import ordersApi from "#/services/api/orders";
+import type { Order } from "#/services/api/orders";
 
 function StepShipping({
+	addresses,
+	methods,
+	draft,
+	onChange,
 	onNext,
 }: {
-	onNext: (shipping: ShippingInfo) => void;
+	addresses: Address[];
+	methods: ShippingMethod[];
+	draft: Draft;
+	onChange: (patch: Partial<Draft>) => void;
+	onNext: () => void;
 }) {
-	function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
-		e.preventDefault();
-		const form = new FormData(e.currentTarget);
-		onNext({
-			name: field(form, "name") ?? "",
-			phone: field(form, "phone") ?? "",
-			email: field(form, "email") ?? "",
-			address: field(form, "address") ?? "",
-			city: field(form, "city") ?? "",
-			province: field(form, "province") ?? "",
-			postalCode: field(form, "postalCode") ?? "",
-			note: field(form, "note") ?? "",
-			method: field(form, "shipping") ?? shippingMethods[0]?.label ?? "",
-			cost: 0,
-		});
-	}
-
 	return (
 		<section
 			aria-label="Shipping details"
@@ -104,112 +48,107 @@ function StepShipping({
 				<Truck className="text-brand-600" /> Alamat Pengiriman
 			</h2>
 
-			<form
-				className="flex flex-col gap-6"
-				onSubmit={handleSubmit}
-			>
-				<div className="flex flex-col gap-4">
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<FormField
-							label="Nama Penerima"
-							name="name"
-							required
-						/>
-						<FormField
-							label="Nomor Telepon"
-							type="tel"
-							name="phone"
-							required
-						/>
-					</div>
-					<FormField
-						label="Email"
-						type="email"
-						name="email"
-						required
-					/>
-					<FormField
-						label="Alamat Lengkap"
-						name="address"
-						required
-					/>
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<FormField
-							label="Kota"
-							name="city"
-							required
-						/>
-						<FormField
-							label="Provinsi"
-							name="province"
-							required
-						/>
-					</div>
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<FormField
-							label="Kode Pos"
-							name="postalCode"
-							required
-						/>
-						<FormField
-							label="Catatan (opsional)"
-							name="note"
-							placeholder="Warna pagar, dll."
-						/>
-					</div>
-				</div>
-
-				<hr className="border-gray-100" />
-
-				<div className="flex flex-col gap-4">
-					<h3 className="text-h3 font-medium text-gray-900">
-						Metode Pengiriman
-					</h3>
-					<RadioGroup
-						name="shipping"
-						defaultValue={shippingMethods[0]?.label}
-						className="flex flex-col gap-3"
-					>
-						{shippingMethods.map(({ id, label, sub }) => (
-							<Radio
-								key={id}
-								value={label}
-								card
-							>
-								<div className="flex flex-col">
-									<span className="text-sm font-medium text-gray-900">
-										{label}
-									</span>
-									<span className="text-xs text-gray-500">{sub}</span>
-								</div>
-								<span className="ml-auto text-sm font-medium text-green-600">
-									GRATIS
-								</span>
-							</Radio>
-						))}
-					</RadioGroup>
-				</div>
-
-				<Button
-					size="lg"
-					block
-					type="submit"
+			{addresses.length > 0 ? (
+				<RadioGroup
+					value={draft.id_address ?? ""}
+					onValueChange={(id_address: string) => {
+						onChange({ id_address });
+					}}
+					className="flex flex-col gap-3"
 				>
-					Lanjut ke Pembayaran &gt;
-				</Button>
-			</form>
+					{addresses.map((a) => (
+						<Radio
+							key={a.id}
+							value={a.id}
+							card
+						>
+							<div className="flex flex-col gap-1">
+								<span className="text-sm font-medium text-gray-900">
+									{a.label}
+									{a.is_default ? " (Utama)" : ""}
+								</span>
+								<span className="text-xs text-gray-500">
+									{a.name} &middot; {a.phone}
+								</span>
+								<span className="text-xs text-gray-500">
+									{a.address}, {a.city}, {a.province} {a.postal_code}
+								</span>
+							</div>
+						</Radio>
+					))}
+				</RadioGroup>
+			) : (
+				<div className="flex flex-col items-start gap-3 p-4 rounded-xl bg-gray-50 text-sm text-gray-600">
+					Belum ada alamat tersimpan.
+					<Link
+						to="/addresses"
+						className="text-brand-600 font-medium hover:underline"
+					>
+						Tambah alamat dulu &rarr;
+					</Link>
+				</div>
+			)}
+
+			<hr className="border-gray-100" />
+
+			<div className="flex flex-col gap-4">
+				<h3 className="text-h3 font-medium text-gray-900">Metode Pengiriman</h3>
+				<RadioGroup
+					value={draft.ship_method ?? ""}
+					onValueChange={(ship_method: string) => {
+						onChange({ ship_method });
+					}}
+					className="flex flex-col gap-3"
+				>
+					{methods.map((m) => (
+						<Radio
+							key={m.id}
+							value={m.id}
+							card
+						>
+							<span className="text-sm font-medium text-gray-900">
+								{m.name}
+							</span>
+							<span className="ml-auto text-sm font-medium text-gray-900">
+								{m.cost_idr === 0 ? "GRATIS" : rupiah(m.cost_idr)}
+							</span>
+						</Radio>
+					))}
+				</RadioGroup>
+			</div>
+
+			<FormField
+				label="Catatan (opsional)"
+				name="note"
+				placeholder="Warna pagar, dll."
+				value={draft.ship_note ?? ""}
+				onChange={(e) => {
+					onChange({ ship_note: e.currentTarget.value });
+				}}
+			/>
+
+			<Button
+				size="lg"
+				block
+				disabled={!draft.id_address || !draft.ship_method}
+				onClick={onNext}
+			>
+				Lanjut ke Pembayaran &gt;
+			</Button>
 		</section>
 	);
 }
 
 function StepPayment({
-	selectedId,
-	onSelect,
+	methods,
+	draft,
+	onChange,
 	onNext,
 	onBack,
 }: {
-	selectedId: string;
-	onSelect: (id: string) => void;
+	methods: PaymentMethod[];
+	draft: Draft;
+	onChange: (patch: Partial<Draft>) => void;
 	onNext: () => void;
 	onBack: () => void;
 }) {
@@ -224,27 +163,22 @@ function StepPayment({
 
 			<div className="flex flex-col gap-6">
 				<RadioGroup
-					name="payment"
-					value={selectedId}
-					onValueChange={onSelect}
+					value={draft.id_payment ?? ""}
+					onValueChange={(id_payment: string) => {
+						onChange({ id_payment });
+					}}
 					className="grid grid-cols-1 sm:grid-cols-2 gap-4"
 				>
-					{paymentMethods.map(({ id, label, badge, badgeClass, useIcon }) => (
+					{methods.map((m) => (
 						<Radio
-							key={id}
-							value={id}
+							key={m.id}
+							value={m.id}
 							card
 						>
-							{useIcon ? (
-								<CreditCard className="text-gray-400 size-6 shrink-0" />
-							) : (
-								<div
-									className={`w-8 h-5 rounded flex items-center justify-center text-[8px] font-bold shrink-0 ${badgeClass}`}
-								>
-									{badge}
-								</div>
-							)}
-							<span className="text-sm font-medium text-gray-900">{label}</span>
+							<CreditCard className="text-gray-400 size-6 shrink-0" />
+							<span className="text-sm font-medium text-gray-900">
+								{m.name}
+							</span>
 						</Radio>
 					))}
 				</RadioGroup>
@@ -268,6 +202,7 @@ function StepPayment({
 					<Button
 						size="lg"
 						className="flex-1"
+						disabled={!draft.id_payment}
 						onClick={onNext}
 					>
 						Lanjut ke Konfirmasi &gt;
@@ -279,28 +214,30 @@ function StepPayment({
 }
 
 function StepConfirmation({
+	address,
 	shipping,
-	paymentId,
-	cartItems,
+	payment,
+	items,
 	total,
+	draft,
+	onChange,
+	error,
+	pending,
 	onNext,
 	onBack,
 }: {
-	shipping: ShippingInfo;
-	paymentId: string;
-	cartItems: Array<{
-		name: string;
-		img: string;
-		price: number;
-		quantity: number;
-	}>;
+	address?: Address;
+	shipping?: ShippingMethod;
+	payment?: PaymentMethod;
+	items: Array<{ name: string; img: string; price: number; quantity: number }>;
 	total: number;
+	draft: Draft;
+	onChange: (patch: Partial<Draft>) => void;
+	error?: string;
+	pending: boolean;
 	onNext: () => void;
 	onBack: () => void;
 }) {
-	const paymentLabel =
-		paymentMethods.find((m) => m.id === paymentId)?.label ?? paymentId;
-
 	return (
 		<section
 			aria-label="Order confirmation"
@@ -309,31 +246,37 @@ function StepConfirmation({
 			<h2 className="text-h2 font-medium text-gray-900">Konfirmasi Pesanan</h2>
 
 			<div className="flex flex-col gap-6">
+				{error && (
+					<p className="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded-xl">
+						{error}
+					</p>
+				)}
+
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-col gap-1 p-4 bg-gray-50 rounded-xl">
 						<h3 className="text-body font-medium text-gray-900">
 							Alamat Pengiriman
 						</h3>
 						<p className="text-sm text-gray-600">
-							{shipping.name} &bull; {shipping.phone}
+							{address?.name} &bull; {address?.phone}
 						</p>
 						<p className="text-sm text-gray-600">
-							{shipping.address}, {shipping.city}, {shipping.province}{" "}
-							{shipping.postalCode}
+							{address?.address}, {address?.city}, {address?.province}{" "}
+							{address?.postal_code}
 						</p>
 					</div>
 					<div className="flex flex-col gap-1 p-4 bg-gray-50 rounded-xl">
 						<h3 className="text-body font-medium text-gray-900">
 							Metode Pengiriman
 						</h3>
-						<p className="text-sm text-gray-600">{shipping.method}</p>
+						<p className="text-sm text-gray-600">{shipping?.name}</p>
 					</div>
 					<div className="flex flex-col gap-4 p-4 bg-gray-50 rounded-xl">
 						<h3 className="text-body font-medium text-gray-900">
 							Produk yang Dipesan
 						</h3>
 						<div className="flex flex-col gap-3">
-							{cartItems.map((item) => (
+							{items.map((item) => (
 								<OrderReviewItem
 									key={item.name}
 									{...item}
@@ -345,9 +288,19 @@ function StepConfirmation({
 						<h3 className="text-body font-medium text-gray-900">
 							Metode Pembayaran
 						</h3>
-						<p className="text-sm text-gray-600">{paymentLabel}</p>
+						<p className="text-sm text-gray-600">{payment?.name}</p>
 					</div>
 				</div>
+
+				<FormField
+					label="Kode Promo (opsional)"
+					name="promo"
+					placeholder="HEMAT10"
+					value={draft.promo_code ?? ""}
+					onChange={(e) => {
+						onChange({ promo_code: e.currentTarget.value });
+					}}
+				/>
 
 				<div className="flex gap-3 items-center p-4 rounded-xl bg-brand-50 text-brand-700 text-xs">
 					<ShieldCheck className="size-5 shrink-0" />
@@ -371,6 +324,7 @@ function StepConfirmation({
 						tone="accent"
 						size="lg"
 						className="flex-1"
+						disabled={pending}
 						onClick={onNext}
 					>
 						🔒 Bayar {rupiah(total)} Sekarang
@@ -385,8 +339,8 @@ function StepSuccess({ order }: { order: Order }) {
 	const timeline = [
 		{ Icon: Check, label: "Pesanan Diterima", sub: "Baru saja", done: true },
 		{ Icon: Package, label: "Sedang Dikemas", sub: "Estimasi 1-2 jam" },
-		{ Icon: Truck, label: "Dalam Pengiriman", sub: order.shipping.method },
-		{ Icon: MapPin, label: "Terkirim", sub: order.shipping.city },
+		{ Icon: Truck, label: "Dalam Pengiriman", sub: order.ship_method },
+		{ Icon: MapPin, label: "Terkirim", sub: order.ship_address },
 	];
 
 	return (
@@ -417,7 +371,7 @@ function StepSuccess({ order }: { order: Order }) {
 							<div className="flex flex-col gap-1 text-right">
 								<span className="text-xs text-gray-500">Total Pembayaran</span>
 								<span className="text-sm font-bold text-gray-900">
-									{rupiah(order.total)}
+									{rupiah(order.total_idr)}
 								</span>
 							</div>
 						</div>
@@ -427,7 +381,7 @@ function StepSuccess({ order }: { order: Order }) {
 								<Truck className="text-gray-400 size-5 shrink-0" />
 								<div className="flex flex-col gap-1">
 									<span className="text-sm font-medium text-gray-900">
-										{order.shipping.method}
+										{order.ship_method}
 									</span>
 								</div>
 							</div>
@@ -438,8 +392,7 @@ function StepSuccess({ order }: { order: Order }) {
 										Alamat Pengiriman
 									</span>
 									<span className="text-xs text-gray-500 leading-relaxed">
-										{order.shipping.address}, {order.shipping.city},{" "}
-										{order.shipping.province} {order.shipping.postalCode}
+										{order.ship_address}
 									</span>
 								</div>
 							</div>
@@ -497,64 +450,61 @@ function StepSuccess({ order }: { order: Order }) {
 	);
 }
 
+type Draft = {
+	id_address?: string;
+	ship_method?: string;
+	ship_note?: string;
+	id_payment?: string;
+	promo_code?: string;
+};
+
 export default function Page(): JSX.Element {
-	const user = useAppSelector(selectCurrentUser);
-	const dispatch = useAppDispatch();
 	const { step, nextStep, prevStep } = useCheckout();
+	const [draft, setDraft] = useState<Draft>({});
+	const [placedOrder, setPlacedOrder] = useState<Order>();
 
-	const [shipping, setShipping] = useState(
-		undefined as ShippingInfo | undefined,
-	);
-	const [paymentId, setPaymentId] = useState("bca");
-	const [placedOrder, setPlacedOrder] = useState(
-		undefined as Order | undefined,
-	);
+	const { data: cart } = cartApi.useCartQuery();
+	const { data: addresses = [] } = addressesApi.useAddressesQuery();
+	const { data: shippingMethods = [] } = catalogApi.useShippingMethodsQuery();
+	const { data: paymentMethods = [] } = catalogApi.usePaymentMethodsQuery();
+	const [createOrder, { error, isLoading }] =
+		ordersApi.useCreateOrderMutation();
 
-	const cartItems = (user?.cart ?? [])
-		.map((item) => {
-			const product = data.products.find((p) => p.name === item.productName);
-			if (!product) {
-				return;
-			}
-			return {
-				name: product.name,
-				img: product.img,
-				price: product.price,
-				quantity: item.quantity,
-			};
-		})
-		.filter((x) => x !== undefined);
+	const cartItems = (cart?.items ?? []).map((item) => ({
+		name: item.name,
+		img: item.urls?.[0] ?? "",
+		price: item.price_idr,
+		quantity: item.quantity,
+	}));
 
-	const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+	const address = addresses.find((a) => a.id === draft.id_address);
+	const shipping = shippingMethods.find((m) => m.id === draft.ship_method);
+	const payment = paymentMethods.find((m) => m.id === draft.id_payment);
 
-	function handleShippingNext(info: ShippingInfo) {
-		setShipping(info);
-		nextStep();
+	const subtotal = cart?.subtotal_idr ?? 0;
+	const total = subtotal + (shipping?.cost_idr ?? 0);
+
+	function change(patch: Partial<Draft>) {
+		setDraft((prev) => ({ ...prev, ...patch }));
 	}
 
-	function handleConfirm() {
-		if (!shipping) {
+	async function handleConfirm() {
+		const { id_address, ship_method, ship_note, id_payment, promo_code } =
+			draft;
+		if (!id_address || !ship_method || !id_payment) {
 			return;
 		}
-		const order = dispatch(
-			placeOrder({
-				items: cartItems.map((i) => ({
-					productName: i.name,
-					quantity: i.quantity,
-					price: i.price,
-				})),
-				shipping,
-				paymentMethod:
-					paymentMethods.find((m) => m.id === paymentId)?.label ?? paymentId,
-				discount: 0,
-				subtotal,
-				total: subtotal,
-			}),
-		);
-		if (order) {
-			setPlacedOrder(order);
-			nextStep();
-		}
+
+		const order = await createOrder({
+			id_address,
+			id_payment,
+			ship_method,
+			ship_note: ship_note === "" ? undefined : ship_note,
+			promo_code: promo_code === "" ? undefined : promo_code,
+		}).unwrap();
+
+		setPlacedOrder(order);
+		nextStep();
 	}
 
 	if (step === 4 && placedOrder) {
@@ -567,22 +517,36 @@ export default function Page(): JSX.Element {
 				<Stepper activeStep={step} />
 
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
-					{step === 1 && <StepShipping onNext={handleShippingNext} />}
+					{step === 1 && (
+						<StepShipping
+							addresses={addresses}
+							methods={shippingMethods}
+							draft={draft}
+							onChange={change}
+							onNext={nextStep}
+						/>
+					)}
 					{step === 2 && (
 						<StepPayment
-							selectedId={paymentId}
-							onSelect={setPaymentId}
+							methods={paymentMethods}
+							draft={draft}
+							onChange={change}
 							onNext={nextStep}
 							onBack={prevStep}
 						/>
 					)}
-					{step === 3 && shipping && (
+					{step === 3 && (
 						<StepConfirmation
+							address={address}
 							shipping={shipping}
-							paymentId={paymentId}
-							cartItems={cartItems}
-							total={subtotal}
-							onNext={handleConfirm}
+							payment={payment}
+							items={cartItems}
+							total={total}
+							draft={draft}
+							onChange={change}
+							error={message(error)}
+							pending={isLoading}
+							onNext={() => void handleConfirm()}
 							onBack={prevStep}
 						/>
 					)}
@@ -590,6 +554,8 @@ export default function Page(): JSX.Element {
 					<Summary
 						items={cartItems}
 						subtotal={rupiah(subtotal)}
+						shipping={shipping ? rupiah(shipping.cost_idr) : "Belum dipilih"}
+						total={rupiah(total)}
 					/>
 				</div>
 			</div>

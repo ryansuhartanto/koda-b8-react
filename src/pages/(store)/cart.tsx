@@ -2,54 +2,36 @@ import type { JSX } from "react";
 import { Link } from "react-router";
 import Heart from "~icons/lucide/heart";
 import ShieldCheck from "~icons/lucide/shield-check";
-import Tag from "~icons/lucide/tag";
 import Trash2 from "~icons/lucide/trash-2";
 
 import { ProductCard } from "#/components/ProductCard";
 import QuantityStepper from "#/components/QuantityStepper";
 import { Button } from "#/components/ui/button";
-import data from "#/data.json";
+import { toggle } from "#/features/wishlist";
 import { rupiah } from "#/lib/utils";
-import { useAppDispatch, useAppSelector } from "#/store";
-import {
-	removeFromCart,
-	selectCurrentUser,
-	toggleWishlist,
-	updateCartQty,
-} from "#/store/reducers/auth";
-
-const suggestionNames = [
-	"Headphone Wireless Premium",
-	"Smartphone 5G Ultra",
-	"Smartwatch Series 5",
-	"Sneakers Sport Runfast",
-];
-const suggestions = suggestionNames
-	.map((name) => data.products.find((p) => p.name === name))
-	.filter((name) => name !== undefined);
+import cartApi from "#/services/api/cart";
+import productsApi from "#/services/api/products";
+import { useAppDispatch } from "#/store";
 
 export default function Page(): JSX.Element {
-	const user = useAppSelector(selectCurrentUser);
 	const dispatch = useAppDispatch();
+	const { data: cart } = cartApi.useCartQuery();
+	const [setCartItem] = cartApi.useSetCartItemMutation();
+	const [removeCartItem] = cartApi.useRemoveCartItemMutation();
+	const { data: suggestions } = productsApi.useProductsQuery({
+		sort: "rating",
+		limit: 4,
+	});
 
-	const cartItems = (user?.cart ?? [])
-		.map((item) => {
-			const product = data.products.find((p) => p.name === item.productName);
-			if (!product) {
-				return;
-			}
-			return Object.assign(product, { quantity: item.quantity });
-		})
-		.filter((product) => product !== undefined);
-
-	const subtotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+	const items = cart?.items ?? [];
+	const subtotal = cart?.subtotal_idr ?? 0;
 
 	return (
 		<main className="pt-6 pb-16 bg-gray-50">
 			<div className="wrapper flex flex-col gap-8">
 				<h1 className="text-h1 font-medium text-gray-900">
 					Keranjang Belanja (
-					<span className="tabular-nums">{cartItems.length}</span> item)
+					<span className="tabular-nums">{items.length}</span> item)
 				</h1>
 
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
@@ -57,15 +39,15 @@ export default function Page(): JSX.Element {
 						aria-label="Cart items"
 						className="lg:col-span-2 flex flex-col gap-4"
 					>
-						{cartItems.length > 0 ? (
-							cartItems.map((item) => (
+						{items.length > 0 ? (
+							items.map((item) => (
 								<article
-									key={item.name}
+									key={item.id_variant}
 									className="bg-white border border-black/10 rounded-2xl p-5 flex gap-6"
 								>
 									<div className="size-24 shrink-0 rounded-xl overflow-hidden bg-gray-100">
 										<img
-											src={item.img}
+											src={item.urls?.[0] ?? ""}
 											alt={item.name}
 											className="w-full h-full object-cover"
 										/>
@@ -73,11 +55,16 @@ export default function Page(): JSX.Element {
 									<div className="flex-1 flex flex-col justify-between gap-2">
 										<div className="flex justify-between items-start">
 											<div className="flex flex-col gap-1">
-												<h3 className="font-medium text-gray-900 text-body">
+												<Link
+													to={`/details/${item.id_product}`}
+													className="font-medium text-gray-900 text-body"
+												>
 													{item.name}
-												</h3>
+												</Link>
 												<div className="text-xs text-gray-500">
-													{item.brand}
+													{(item.variant_options ?? [])
+														.map((o) => `${o.option}: ${o.value}`)
+														.join(" · ")}
 												</div>
 											</div>
 											<Button
@@ -85,9 +72,7 @@ export default function Page(): JSX.Element {
 												tone="danger"
 												size="none"
 												className="text-gray-400"
-												onClick={() => {
-													dispatch(removeFromCart(item.name));
-												}}
+												onClick={() => void removeCartItem(item.id_variant)}
 												aria-label="Hapus item"
 											>
 												<Trash2 className="size-5" />
@@ -98,9 +83,12 @@ export default function Page(): JSX.Element {
 												<QuantityStepper
 													size="sm"
 													value={item.quantity}
-													max={item.stock}
-													onChange={(qty) => {
-														dispatch(updateCartQty(item.name, qty));
+													max={item.inventory}
+													onChange={(quantity) => {
+														void setCartItem({
+															id_variant: item.id_variant,
+															quantity,
+														});
 													}}
 												/>
 												<Button
@@ -109,15 +97,15 @@ export default function Page(): JSX.Element {
 													size="none"
 													className="flex items-center gap-1 text-xs text-gray-500"
 													onClick={() => {
-														dispatch(toggleWishlist(item.name));
-														dispatch(removeFromCart(item.name));
+														dispatch(toggle(item.id_product));
+														void removeCartItem(item.id_variant);
 													}}
 												>
 													<Heart className="size-4" /> Simpan ke Wishlist
 												</Button>
 											</div>
 											<span className="text-brand-600 font-medium">
-												{rupiah(item.price * item.quantity)}
+												{rupiah(item.price_idr * item.quantity)}
 											</span>
 										</div>
 									</div>
@@ -128,30 +116,6 @@ export default function Page(): JSX.Element {
 								Keranjang kamu masih kosong.
 							</div>
 						)}
-
-						<div className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-6">
-							<h2 className="text-h3 flex items-center gap-2 font-medium text-gray-900">
-								<Tag className="text-brand-600" /> Kode Promo
-							</h2>
-							<div className="flex flex-col gap-3">
-								<form className="flex gap-2">
-									<input
-										type="text"
-										placeholder="Masukkan kode promo"
-										className="flex-1 min-w-0 border border-black/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-brand-600 transition-colors bg-gray-50 focus:bg-white"
-									/>
-									<Button
-										className="shrink-0"
-										type="submit"
-									>
-										Terapkan
-									</Button>
-								</form>
-								<div className="text-xs text-gray-500">
-									Coba: HEMAT10, BELIMUDAH, atau NEWUSER
-								</div>
-							</div>
-						</div>
 					</section>
 
 					<aside className="flex flex-col gap-4 bg-white border border-black/10 rounded-2xl p-5 lg:sticky lg:top-36">
@@ -160,12 +124,12 @@ export default function Page(): JSX.Element {
 						</h2>
 						<div className="flex flex-col gap-2 text-sm text-gray-600">
 							<div className="flex justify-between">
-								<span>Subtotal ({cartItems.length} item)</span>
+								<span>Subtotal ({items.length} item)</span>
 								<span>{rupiah(subtotal)}</span>
 							</div>
 							<div className="flex justify-between">
 								<span>Ongkos Kirim</span>
-								<span className="text-green-600 font-medium">GRATIS</span>
+								<span className="text-gray-500">Dihitung saat checkout</span>
 							</div>
 							<hr className="border-gray-200" />
 							<div className="flex justify-between items-center">
@@ -196,10 +160,10 @@ export default function Page(): JSX.Element {
 				<section className="flex flex-col gap-6">
 					<h2 className="text-h2 font-medium">Mungkin Kamu Suka Ini</h2>
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-						{suggestions.map((p) => (
+						{(suggestions?.items ?? []).map((p) => (
 							<ProductCard
-								key={p.name}
-								{...p}
+								key={p.id}
+								product={p}
 							/>
 						))}
 					</div>

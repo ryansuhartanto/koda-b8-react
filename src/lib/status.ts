@@ -1,4 +1,4 @@
-import type { OrderStatus } from "#/lib/db";
+import type { OrderStatus } from "#/services/api/orders";
 
 export type OrderColor =
 	| "blue"
