@@ -100,6 +100,13 @@ export default function Page(): JSX.Element {
 
 	const pageTitle = titleFor(query, category);
 
+	let emptyMessage = "Tidak ada produk yang sesuai filter.";
+	if (isFetching) {
+		emptyMessage = "Memuat produk...";
+	} else if (query) {
+		emptyMessage = `Tidak ada produk yang cocok dengan "${query}".`;
+	}
+
 	const filterPanel = (
 		<div className="flex flex-col gap-8 text-sm [&_h3]:text-xl [&_h3]:font-medium [&_h3]:mb-4 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-3">
 			<section aria-label="Category filter">
@@ -264,11 +271,7 @@ export default function Page(): JSX.Element {
 							</div>
 						) : (
 							<div className="py-24 flex flex-col items-center gap-3 text-center text-gray-500 text-sm">
-								{isFetching
-									? "Memuat produk..."
-									: query
-										? `Tidak ada produk yang cocok dengan "${query}".`
-										: "Tidak ada produk yang sesuai filter."}
+								{emptyMessage}
 							</div>
 						)}
 

@@ -1,5 +1,4 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { ColumnHelper } from "@tanstack/react-table";
 import type { JSX } from "react";
 import { useState } from "react";
 import Eye from "~icons/lucide/eye";
@@ -59,7 +58,7 @@ export type Product = {
 	tags: string[];
 };
 
-const column = createColumnHelper() as ColumnHelper<Product>;
+const column = createColumnHelper<Product>();
 
 const columns = [
 	column.accessor((p) => `${p.name} ${p.brand}`, {

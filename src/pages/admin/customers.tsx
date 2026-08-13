@@ -1,5 +1,4 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { ColumnHelper } from "@tanstack/react-table";
 import type { JSX } from "react";
 import {
 	Bar,
@@ -62,7 +61,7 @@ export type Customer = {
 	tier: string;
 };
 
-const column = createColumnHelper() as ColumnHelper<Customer>;
+const column = createColumnHelper<Customer>();
 
 const columns = [
 	column.accessor((c) => `${c.name} ${c.email}`, {

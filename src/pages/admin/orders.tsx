@@ -1,5 +1,4 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { ColumnHelper } from "@tanstack/react-table";
 import type { JSX } from "react";
 import { useState } from "react";
 import CircleCheck from "~icons/lucide/circle-check";
@@ -39,7 +38,7 @@ export type Order = {
 	status: string;
 };
 
-const column = createColumnHelper() as ColumnHelper<Order>;
+const column = createColumnHelper<Order>();
 
 const columns = [
 	column.accessor("no", {
