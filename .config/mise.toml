@@ -4,18 +4,3 @@ node = "26"
 
 [env]
 _.file = { path = ".env", redact = false }
-
-[tasks.dev]
-run = "aubx vp dev"
-
-[tasks.build]
-run = "aubx vp build"
-
-[tasks.check]
-run = "aubx vp check"
-
-[tasks.test]
-run = "aubx vp test run"
-
-[tasks."test:watch"]
-run = "aubx vp test"
