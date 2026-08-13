@@ -21,7 +21,7 @@ const PAGE_SIZE = 12;
 
 const DEFAULT_SORT: ProductSort = "rating";
 
-const sortOptions = [
+const sortOptions: Array<{ value: ProductSort; label: string }> = [
 	{ value: "rating", label: "Rating Tertinggi" },
 	{ value: "newest", label: "Terbaru" },
 	{ value: "price_asc", label: "Harga Terendah" },
@@ -44,7 +44,10 @@ export default function Page(): JSX.Element {
 		? Number(searchParams.get("rating"))
 		: undefined;
 	const inStockOnly = searchParams.get("inStock") === "1";
-	const sort = (searchParams.get("sort") ?? DEFAULT_SORT) as ProductSort;
+	// an unknown sort in the URL would earn a 400, so only known ones survive
+	const sort =
+		sortOptions.find((o) => o.value === searchParams.get("sort"))?.value ??
+		DEFAULT_SORT;
 	const query = (searchParams.get("q") ?? "").trim();
 
 	const [page, setPage] = useState(1);

@@ -495,16 +495,19 @@ export default function Page(): JSX.Element {
 			return;
 		}
 
-		const order = await createOrder({
+		// a rejected order keeps the step, and the banner reads the mutation's error
+		const result = await createOrder({
 			id_address,
 			id_payment,
 			ship_method,
 			ship_note: ship_note === "" ? undefined : ship_note,
 			promo_code: promo_code === "" ? undefined : promo_code,
-		}).unwrap();
+		});
 
-		setPlacedOrder(order);
-		nextStep();
+		if ("data" in result) {
+			setPlacedOrder(result.data);
+			nextStep();
+		}
 	}
 
 	if (step === 4 && placedOrder) {

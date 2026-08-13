@@ -15,9 +15,11 @@ import Star5 from "#/components/Star5";
 import { Button } from "#/components/ui/button";
 import { RadioGroup, RadioPill } from "#/components/ui/radio";
 import { Tab, TabPanel, Tabs, TabsList } from "#/components/ui/tabs";
+import { useToast } from "#/components/ui/toast";
 import { selectIsAuthenticated } from "#/features/auth";
 import { selectWishlist, toggle } from "#/features/wishlist";
 import { cn, rupiah } from "#/lib/utils";
+import { message } from "#/services/api";
 import cartApi from "#/services/api/cart";
 import productsApi from "#/services/api/products";
 import type { ProductVariant } from "#/services/api/products";
@@ -39,6 +41,7 @@ export default function Page(): JSX.Element {
 	const isWishlisted = useAppSelector(selectWishlist).includes(id);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const toast = useToast();
 	const [qty, setQty] = useState(1);
 	const [variantId, setVariantId] = useState<string>();
 
@@ -95,7 +98,20 @@ export default function Page(): JSX.Element {
 		if (!variant) {
 			return;
 		}
-		await setCartItem({ id_variant: variant.id, quantity: qty }).unwrap();
+
+		const result = await setCartItem({
+			id_variant: variant.id,
+			quantity: qty,
+		});
+
+		if ("error" in result) {
+			toast.add({
+				title: "Gagal menambah ke keranjang",
+				description: message(result.error),
+			});
+			return;
+		}
+
 		void navigate(then);
 	}
 
