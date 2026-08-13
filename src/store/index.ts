@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import {
+	createMigrate,
 	FLUSH,
 	PAUSE,
 	PERSIST,
@@ -22,7 +23,9 @@ const reducer = persistCombineReducers(
 		storage,
 		blacklist: ["api"],
 
-		version: 1,
+		// v2 persisted the local-database shape; nothing in it fits these reducers
+		version: 3,
+		migrate: createMigrate({ 3: () => undefined }),
 	},
 	{
 		[api.reducerPath]: api.reducer,
