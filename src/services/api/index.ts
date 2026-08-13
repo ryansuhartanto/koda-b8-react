@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import type { ProblemDetails } from "#/lib/api";
 import type { RootState } from "#/store";
 
 const api = createApi({
@@ -16,7 +17,33 @@ const api = createApi({
 		},
 	}),
 	endpoints: () => ({}),
-	tagTypes: ["auth"],
+	tagTypes: [
+		"auth",
+		"products",
+		"cart",
+		"orders",
+		"me",
+		"payments",
+		"addresses",
+	],
 });
 
 export default api;
+
+// an errored query hands back the RFC 9457 problem document as an opaque `data`
+export function message(error: unknown): string | undefined {
+	if (typeof error !== "object" || error === null) {
+		return undefined;
+	}
+
+	if ("data" in error) {
+		const problem = error.data as ProblemDetails | undefined;
+		return problem?.detail ?? problem?.title;
+	}
+
+	if ("error" in error) {
+		return String(error.error);
+	}
+
+	return undefined;
+}
