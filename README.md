@@ -62,13 +62,17 @@ mise install
 aube install
 
 # start the dev server
-mise run dev
+aube run dev
 
 # production build
-mise run build
+aube run build
 ```
 
-Other tasks: `mise run check` (format, lint and type-check), `mise run test`.
+Other tasks:
+
+- `aube run fmt`
+- `aube run lint`
+- `aube run test`
 
 ## Structure
 
