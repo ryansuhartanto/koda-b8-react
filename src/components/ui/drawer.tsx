@@ -1,6 +1,7 @@
-import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import type { JSX, ReactNode } from "react";
 import { useEffect } from "react";
+
+import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 
 import { useMediaQuery } from "#/hooks/useMediaQuery";
 import { cn } from "#/lib/utils";

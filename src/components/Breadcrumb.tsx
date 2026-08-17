@@ -1,6 +1,7 @@
 import type { JSX } from "react";
-import React from "react";
+import { Fragment } from "react";
 import { Link } from "react-router";
+
 import ChevronRight from "~icons/lucide/chevron-right";
 
 export type BreadcrumbItem = {
@@ -20,11 +21,10 @@ export default function Breadcrumb({ items }: BreadcrumbProps): JSX.Element {
 		>
 			{items.map((item, i) =>
 				i < items.length - 1 ? (
-					<React.Fragment key={`${item.url ?? item.label}-l`}>
+					<Fragment key={`${item.url ?? item.label}-l`}>
 						<Link to={item.url ?? ""}>{item.label}</Link>
-
 						<ChevronRight className="size-4" />
-					</React.Fragment>
+					</Fragment>
 				) : (
 					<span
 						key={`${item.url ?? item.label}-c`}

@@ -1,5 +1,6 @@
-import { createColumnHelper } from "@tanstack/react-table";
 import type { JSX } from "react";
+
+import { createColumnHelper } from "@tanstack/react-table";
 import {
 	Bar,
 	BarChart,
@@ -9,6 +10,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+
 import Eye from "~icons/lucide/eye";
 import Mail from "~icons/lucide/mail";
 import ShoppingBag from "~icons/lucide/shopping-bag";

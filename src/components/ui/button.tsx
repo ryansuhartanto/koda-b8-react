@@ -1,7 +1,8 @@
+import type { ComponentProps, JSX } from "react";
+
 import { Button as BaseButton } from "@base-ui/react/button";
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
-import type { ComponentProps, JSX } from "react";
 
 import { cn } from "#/lib/utils";
 

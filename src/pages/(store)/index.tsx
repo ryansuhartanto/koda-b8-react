@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Link } from "react-router";
+
 import ArrowRight from "~icons/lucide/arrow-right";
 import Clock from "~icons/lucide/clock";
 import TrendingUp from "~icons/lucide/trending-up";

@@ -1,5 +1,6 @@
 import type { JSX, ReactNode } from "react";
 import { Link } from "react-router";
+
 import {
 	Area,
 	AreaChart,
@@ -11,6 +12,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+
 import ArrowUpRight from "~icons/lucide/arrow-up-right";
 import Package from "~icons/lucide/package";
 import ShoppingCart from "~icons/lucide/shopping-cart";

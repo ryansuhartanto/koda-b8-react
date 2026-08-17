@@ -1,9 +1,11 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import type { JSX } from "react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
 import Eye from "~icons/lucide/eye";
 import EyeOff from "~icons/lucide/eye-off";
 import Lock from "~icons/lucide/lock";

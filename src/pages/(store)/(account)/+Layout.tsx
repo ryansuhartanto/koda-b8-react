@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Navigate, NavLink, Outlet, useNavigate } from "react-router";
+
 import ChevronRight from "~icons/lucide/chevron-right";
 import ClipboardList from "~icons/lucide/clipboard-list";
 import CreditCard from "~icons/lucide/credit-card";

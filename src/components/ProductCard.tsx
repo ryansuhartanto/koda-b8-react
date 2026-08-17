@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Link, useNavigate } from "react-router";
+
 import Heart from "~icons/lucide/heart";
 import ShoppingCart from "~icons/lucide/shopping-cart";
 

@@ -1,7 +1,8 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
+import { lazy, StrictMode } from "react";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router";
+
+import { createRoot } from "react-dom/client";
 import { PersistGate } from "redux-persist/integration/react";
 
 import LayoutRoot from "#/+Layout";
@@ -20,60 +21,56 @@ const router = createBrowserRouter([
 				children: [
 					{
 						index: true,
-						Component: React.lazy(async () => import("#/pages/(store)/index")),
+						Component: lazy(async () => import("#/pages/(store)/index")),
 					},
 					{
 						path: "browse",
-						Component: React.lazy(async () => import("#/pages/(store)/browse")),
+						Component: lazy(async () => import("#/pages/(store)/browse")),
 					},
 					{
 						path: "details/:id",
-						Component: React.lazy(
-							async () => import("#/pages/(store)/details"),
-						),
+						Component: lazy(async () => import("#/pages/(store)/details")),
 					},
 					{
 						path: "cart",
-						Component: React.lazy(async () => import("#/pages/(store)/cart")),
+						Component: lazy(async () => import("#/pages/(store)/cart")),
 					},
 					{
 						path: "checkout",
-						Component: React.lazy(
-							async () => import("#/pages/(store)/checkout"),
-						),
+						Component: lazy(async () => import("#/pages/(store)/checkout")),
 					},
 					{
-						Component: React.lazy(
+						Component: lazy(
 							async () => import("#/pages/(store)/(account)/+Layout"),
 						),
 						children: [
 							{
 								path: "profile",
-								Component: React.lazy(
+								Component: lazy(
 									async () => import("#/pages/(store)/(account)/profile"),
 								),
 							},
 							{
 								path: "orders",
-								Component: React.lazy(
+								Component: lazy(
 									async () => import("#/pages/(store)/(account)/orders"),
 								),
 							},
 							{
 								path: "wishlist",
-								Component: React.lazy(
+								Component: lazy(
 									async () => import("#/pages/(store)/(account)/wishlist"),
 								),
 							},
 							{
 								path: "addresses",
-								Component: React.lazy(
+								Component: lazy(
 									async () => import("#/pages/(store)/(account)/addresses"),
 								),
 							},
 							{
 								path: "payment-methods",
-								Component: React.lazy(
+								Component: lazy(
 									async () =>
 										import("#/pages/(store)/(account)/payment-methods"),
 								),
@@ -84,47 +81,41 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "admin",
-				Component: React.lazy(async () => import("#/pages/admin/+Layout")),
+				Component: lazy(async () => import("#/pages/admin/+Layout")),
 				children: [
 					{
 						index: true,
-						Component: React.lazy(
-							async () => import("#/pages/admin/dashboard"),
-						),
+						Component: lazy(async () => import("#/pages/admin/dashboard")),
 					},
 					{
 						path: "products",
-						Component: React.lazy(async () => import("#/pages/admin/products")),
+						Component: lazy(async () => import("#/pages/admin/products")),
 					},
 					{
 						path: "orders",
-						Component: React.lazy(async () => import("#/pages/admin/orders")),
+						Component: lazy(async () => import("#/pages/admin/orders")),
 					},
 					{
 						path: "customers",
-						Component: React.lazy(
-							async () => import("#/pages/admin/customers"),
-						),
+						Component: lazy(async () => import("#/pages/admin/customers")),
 					},
 					{
 						path: "settings",
-						Component: React.lazy(async () => import("#/pages/admin/settings")),
+						Component: lazy(async () => import("#/pages/admin/settings")),
 					},
 				],
 			},
 			{
 				path: "login",
-				Component: React.lazy(async () => import("#/pages/(auth)/login")),
+				Component: lazy(async () => import("#/pages/(auth)/login")),
 			},
 			{
 				path: "register",
-				Component: React.lazy(async () => import("#/pages/(auth)/register")),
+				Component: lazy(async () => import("#/pages/(auth)/register")),
 			},
 			{
 				path: "forgot-password",
-				Component: React.lazy(
-					async () => import("#/pages/(auth)/forgot-password"),
-				),
+				Component: lazy(async () => import("#/pages/(auth)/forgot-password")),
 			},
 		],
 	},
@@ -132,11 +123,11 @@ const router = createBrowserRouter([
 
 const root = createRoot(document.body);
 root.render(
-	<React.StrictMode>
+	<StrictMode>
 		<Provider store={store}>
 			<PersistGate persistor={persistor}>
 				<RouterProvider router={router} />
 			</PersistGate>
 		</Provider>
-	</React.StrictMode>,
+	</StrictMode>,
 );

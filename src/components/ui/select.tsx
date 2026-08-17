@@ -1,5 +1,7 @@
-import { Select as BaseSelect } from "@base-ui/react/select";
 import type { JSX, ReactNode, Ref } from "react";
+
+import { Select as BaseSelect } from "@base-ui/react/select";
+
 import IconCheck from "~icons/lucide/check";
 import IconChevronDown from "~icons/lucide/chevron-down";
 

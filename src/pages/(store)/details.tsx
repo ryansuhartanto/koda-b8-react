@@ -1,6 +1,7 @@
 import type { JSX, ComponentType } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
+
 import Check from "~icons/lucide/check";
 import Heart from "~icons/lucide/heart";
 import RefreshCcw from "~icons/lucide/refresh-ccw";

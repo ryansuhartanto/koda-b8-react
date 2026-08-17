@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Link } from "react-router";
+
 import Headset from "~icons/lucide/headset";
 import Mail from "~icons/lucide/mail";
 import MapPin from "~icons/lucide/map-pin";

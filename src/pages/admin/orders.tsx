@@ -1,6 +1,8 @@
-import { createColumnHelper } from "@tanstack/react-table";
 import type { JSX } from "react";
 import { useState } from "react";
+
+import { createColumnHelper } from "@tanstack/react-table";
+
 import CircleCheck from "~icons/lucide/circle-check";
 import Download from "~icons/lucide/download";
 import Eye from "~icons/lucide/eye";

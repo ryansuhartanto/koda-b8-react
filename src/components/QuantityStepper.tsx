@@ -1,5 +1,6 @@
-import { NumberField } from "@base-ui/react/number-field";
 import type { JSX } from "react";
+
+import { NumberField } from "@base-ui/react/number-field";
 
 import { cn } from "#/lib/utils";
 

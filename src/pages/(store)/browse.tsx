@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+
 import SlidersHorizontal from "~icons/lucide/sliders-horizontal";
 import X from "~icons/lucide/x";
 

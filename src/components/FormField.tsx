@@ -1,4 +1,3 @@
-import { Field } from "@base-ui/react/field";
 import type {
 	JSX,
 	ComponentType,
@@ -6,6 +5,8 @@ import type {
 	ReactNode,
 	Ref,
 } from "react";
+
+import { Field } from "@base-ui/react/field";
 
 import { cn } from "#/lib/utils";
 

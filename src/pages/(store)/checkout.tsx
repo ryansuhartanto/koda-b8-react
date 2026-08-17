@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { useState } from "react";
 import { Link } from "react-router";
+
 import Check from "~icons/lucide/check";
 import CheckCircle2 from "~icons/lucide/check-circle-2";
 import CreditCard from "~icons/lucide/credit-card";

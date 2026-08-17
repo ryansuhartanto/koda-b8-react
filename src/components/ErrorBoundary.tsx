@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { isRouteErrorResponse, Link, useRouteError } from "react-router";
+
 import TriangleAlert from "~icons/lucide/triangle-alert";
 
 import { Button, buttonVariants } from "#/components/ui/button";

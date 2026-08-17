@@ -1,6 +1,8 @@
+import type { JSX, ComponentType } from "react";
+
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
-import type { JSX, ComponentType } from "react";
+
 import ArrowDownRight from "~icons/lucide/arrow-down-right";
 import ArrowUpRight from "~icons/lucide/arrow-up-right";
 

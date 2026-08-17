@@ -1,6 +1,8 @@
+import type { JSX, ReactNode, Ref } from "react";
+
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import { Field } from "@base-ui/react/field";
-import type { JSX, ReactNode, Ref } from "react";
+
 import IconCheck from "~icons/lucide/check";
 
 import { cn } from "#/lib/utils";

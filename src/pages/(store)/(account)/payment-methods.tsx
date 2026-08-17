@@ -1,4 +1,5 @@
 import type { JSX, ComponentType } from "react";
+
 import CreditCard from "~icons/lucide/credit-card";
 import Wallet from "~icons/lucide/wallet";
 

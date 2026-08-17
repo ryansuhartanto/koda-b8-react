@@ -1,5 +1,6 @@
-import { Avatar as BaseAvatar } from "@base-ui/react/avatar";
 import type { JSX } from "react";
+
+import { Avatar as BaseAvatar } from "@base-ui/react/avatar";
 
 import { cn } from "#/lib/utils";
 

@@ -1,5 +1,7 @@
-import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import type { JSX, ReactNode } from "react";
+
+import { Dialog as BaseDialog } from "@base-ui/react/dialog";
+
 import IconX from "~icons/lucide/x";
 
 import { buttonVariants } from "#/components/ui/button";

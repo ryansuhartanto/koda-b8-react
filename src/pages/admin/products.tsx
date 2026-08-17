@@ -1,6 +1,8 @@
-import { createColumnHelper } from "@tanstack/react-table";
 import type { JSX } from "react";
 import { useState } from "react";
+
+import { createColumnHelper } from "@tanstack/react-table";
+
 import Eye from "~icons/lucide/eye";
 import Plus from "~icons/lucide/plus";
 import Pencil from "~icons/lucide/square-pen";

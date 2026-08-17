@@ -1,5 +1,6 @@
 import type { JSX, ComponentType } from "react";
 import { Link } from "react-router";
+
 import CircleCheck from "~icons/lucide/circle-check";
 import Clock from "~icons/lucide/clock";
 import Package from "~icons/lucide/package";

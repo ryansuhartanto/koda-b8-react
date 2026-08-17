@@ -1,5 +1,7 @@
-import { Toast as BaseToast } from "@base-ui/react/toast";
 import type { JSX, ReactNode } from "react";
+
+import { Toast as BaseToast } from "@base-ui/react/toast";
+
 import IconX from "~icons/lucide/x";
 
 import { buttonVariants } from "#/components/ui/button";

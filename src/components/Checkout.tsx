@@ -1,5 +1,6 @@
 import type { JSX } from "react";
-import React from "react";
+import { Fragment } from "react";
+
 import Check from "~icons/lucide/check";
 
 import { SummaryItem } from "#/components/ProductCard";
@@ -21,7 +22,7 @@ export function Stepper({ activeStep }: StepperProps): JSX.Element {
 				{ step: 2, label: "Pembayaran" },
 				{ step: 3, label: "Konfirmasi" },
 			].map(({ step, label }, i, arr) => [
-				<React.Fragment key={label}>
+				<Fragment key={label}>
 					<div className="flex flex-col items-center gap-2 relative">
 						<div
 							className={cn(
@@ -52,7 +53,7 @@ export function Stepper({ activeStep }: StepperProps): JSX.Element {
 							})}
 						/>
 					)}
-				</React.Fragment>,
+				</Fragment>,
 			])}
 		</nav>
 	);

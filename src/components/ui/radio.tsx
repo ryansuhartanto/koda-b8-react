@@ -1,9 +1,10 @@
+import type { JSX, ReactNode } from "react";
+
 import { Field } from "@base-ui/react/field";
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
-import type { JSX, ReactNode } from "react";
 
 import { cn } from "#/lib/utils";
 

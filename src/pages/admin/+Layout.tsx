@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
+
 import Bell from "~icons/lucide/bell";
 import ExternalLink from "~icons/lucide/external-link";
 import LayoutGrid from "~icons/lucide/layout-grid";

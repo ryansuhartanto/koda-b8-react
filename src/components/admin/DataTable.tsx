@@ -1,3 +1,6 @@
+import type { JSX } from "react";
+import { useState } from "react";
+
 import {
 	flexRender,
 	getCoreRowModel,
@@ -12,8 +15,7 @@ import type {
 	SortingState,
 	Table,
 } from "@tanstack/react-table";
-import type { JSX } from "react";
-import { useState } from "react";
+
 import ChevronDown from "~icons/lucide/chevron-down";
 import ChevronUp from "~icons/lucide/chevron-up";
 import ChevronsUpDown from "~icons/lucide/chevrons-up-down";

@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Link } from "react-router";
+
 import Heart from "~icons/lucide/heart";
 
 import { ProductCard } from "#/components/ProductCard";

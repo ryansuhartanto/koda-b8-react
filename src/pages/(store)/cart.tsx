@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Link } from "react-router";
+
 import Heart from "~icons/lucide/heart";
 import ShieldCheck from "~icons/lucide/shield-check";
 import Trash2 from "~icons/lucide/trash-2";

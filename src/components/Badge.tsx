@@ -1,6 +1,7 @@
+import type { JSX, ReactNode } from "react";
+
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
-import type { JSX, ReactNode } from "react";
 
 import { cn } from "#/lib/utils";
 

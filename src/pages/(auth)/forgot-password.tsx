@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Link } from "react-router";
+
 import ArrowLeft from "~icons/lucide/arrow-left";
 import Mail from "~icons/lucide/mail";
 import Send from "~icons/lucide/send";
