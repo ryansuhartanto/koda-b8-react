@@ -261,7 +261,8 @@ export function parseLinks(header?: string): Pagination["links"] {
 }
 
 // pagination rides in the `Link` and `X-Total-Count` headers, not the body
-export async function fetchPage<T>(
+// oxlint-disable-next-line typescript/no-unnecessary-type-parameters
+export async function fetchPage<T = unknown>(
 	path: string,
 	options: RequestOptions = {},
 ): Promise<Pagination & { items: T[] }> {

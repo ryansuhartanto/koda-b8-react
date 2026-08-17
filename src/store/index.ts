@@ -38,6 +38,7 @@ const reducer = persistCombineReducers(
 export const store = configureStore({
 	reducer,
 	middleware: (gDM) =>
+		// oxlint-disable-next-line unicorn/prefer-spread
 		gDM({
 			serializableCheck: {
 				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
