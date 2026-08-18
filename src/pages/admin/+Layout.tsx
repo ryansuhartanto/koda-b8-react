@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { useState } from "react";
-import { Link, NavLink, Outlet } from "react-router";
+import { Link, Navigate, NavLink, Outlet } from "react-router";
 
 import Bell from "~icons/lucide/bell";
 import ExternalLink from "~icons/lucide/external-link";
@@ -15,7 +15,10 @@ import X from "~icons/lucide/x";
 import Avatar from "#/components/Avatar";
 import { Button } from "#/components/ui/button";
 import { Drawer } from "#/components/ui/drawer";
+import { selectIsAuthenticated } from "#/features/auth";
 import { cn } from "#/lib/utils";
+import meApi from "#/services/api/me";
+import { useAppSelector } from "#/store";
 
 const nav = [
 	{ to: "/admin", label: "Dashboard", Icon: LayoutGrid, end: true },
@@ -156,6 +159,33 @@ function Topbar({ onMenuOpen }: { onMenuOpen: () => void }) {
 
 export default function Layout(): JSX.Element {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const isAuthenticated = useAppSelector(selectIsAuthenticated);
+	const { data: user, isLoading } = meApi.useMeQuery(undefined, {
+		skip: !isAuthenticated,
+	});
+
+	if (!isAuthenticated) {
+		return (
+			<Navigate
+				to="/login"
+				replace
+			/>
+		);
+	}
+
+	// the roles only arrive with /me, so redirecting early would bounce a real admin
+	if (isLoading) {
+		return <div className="min-h-dvh bg-gray-50" />;
+	}
+
+	if (user?.roles.includes("admin") !== true) {
+		return (
+			<Navigate
+				to="/"
+				replace
+			/>
+		);
+	}
 
 	return (
 		<div className="flex min-h-dvh bg-gray-50">
