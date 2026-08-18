@@ -49,6 +49,18 @@ export type ResponseProducts = Pagination & {
 	items: Product[];
 };
 
+export type RequestCreateProduct = {
+	name: string;
+	description?: string;
+	id_category?: string;
+	id_brand?: string;
+	sku?: string;
+	stock?: number;
+	original_price_idr: number;
+	discount_price_idr?: number;
+	urls?: string[];
+};
+
 const productsApi = api.injectEndpoints({
 	endpoints: (build) => ({
 		products: build.query<ResponseProducts, RequestProducts>({
@@ -66,6 +78,10 @@ const productsApi = api.injectEndpoints({
 		product: build.query<Product, string>({
 			query: (id) => `/products/${id}`,
 			providesTags: ["products"],
+		}),
+		createProduct: build.mutation<Product, RequestCreateProduct>({
+			query: (body) => ({ url: "/products", method: "POST", body }),
+			invalidatesTags: ["products"],
 		}),
 	}),
 	overrideExisting: "throw",
