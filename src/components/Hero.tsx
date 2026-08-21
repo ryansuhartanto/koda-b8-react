@@ -13,7 +13,7 @@ import { cn } from "#/lib/utils";
 
 const { banners } = data;
 
-// Literal class strings so Tailwind can see them; JSON values would be purged.
+// literal class strings so Tailwind can see them; JSON values get purged
 const gradients: Record<string, string> = {
 	electronic: "from-brand-600 to-purple-700",
 	fashion: "from-accent-600 to-brand-700",
@@ -24,8 +24,7 @@ const AUTOPLAY_MS = 6000;
 
 export default function Hero(): JSX.Element {
 	const trackRef = useRef<HTMLDivElement>(null);
-	// Where we're heading. Kept off render state so the dots can trail the real
-	// scroll position instead of snapping ahead of it mid-animation.
+	// off render state so the dots trail the real scroll instead of snapping ahead
 	const targetRef = useRef(0);
 	const [index, setIndex] = useState(0);
 	const [paused, setPaused] = useState(false);
@@ -47,9 +46,8 @@ export default function Hero(): JSX.Element {
 		[reduceMotion],
 	);
 
-	// Re-base the target once scrolling settles, so a swipe changes where "next"
-	// counts from. Doing this on every scroll event would clobber the target
-	// mid-animation and swallow rapid clicks.
+	// re-base once scrolling settles; per scroll event would clobber the target
+	// mid-animation and swallow rapid clicks
 	useEffect(() => {
 		const track = trackRef.current;
 		if (!track) {
@@ -64,7 +62,7 @@ export default function Hero(): JSX.Element {
 		};
 	}, []);
 
-	// Autoplay pauses on hover/focus, and is disabled outright for reduced motion.
+	// autoplay pauses on hover/focus, off entirely for reduced motion
 	useEffect(() => {
 		if (paused || reduceMotion || banners.length < 2) {
 			return;

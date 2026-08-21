@@ -21,7 +21,7 @@
 	--color-accent-600: oklch(64.6% 0.222 41.116);
 	--color-accent-700: oklch(55.3% 0.195 38.402);
 
-	/* Price is its own role so it can diverge from link blue without a sweep. */
+	/* its own role so price can diverge from link blue without a sweep */
 	--color-price: var(--color-brand-600);
 
 	--color-canvas: var(--color-gray-50);
@@ -51,7 +51,7 @@
 	--text-meta: 0.75rem;
 	--text-meta--line-height: calc(1 / 0.75);
 
-	/* One knob for every `transition-*` utility that omits an explicit duration. */
+	/* one knob for every `transition-*` utility with no explicit duration */
 	--default-transition-duration: 180ms;
 	--default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

@@ -4,13 +4,12 @@
 [![Ghcr](https://ghcr-badge.egpl.dev/ryansuhartanto/koda-b8-react/latest_tag?label=ghcr&ignore=latest,sha-*)](https://ghcr.io/ryansuhartanto/koda-b8-react)
 [![Netlify](https://api.netlify.com/api/v1/badges/005e81c9-a22a-4168-b34b-5a18786e5f6d/deploy-status)](https://app.netlify.com/projects/ryan-belimudah/deploys)
 
-A full e-commerce frontend (storefront through admin dashboard), built solo from a shared Figma brief as the final project for Koda Academy (Fullstack track, Batch 8).
+An e-commerce frontend, storefront through admin dashboard, built from a shared Figma brief as the final project for Koda Academy (Fullstack track, Batch 8).
 
-The build prioritises faithful translation of the design system and a small set of defended engineering decisions:
-end-to-end static typing, design tokens encoded directly in the stylesheet, and a consolidated build toolchain.
+End-to-end static typing, design tokens in the stylesheet, one build toolchain.
 
 > [!NOTE]
-> The UI copy is in Indonesian (the target market for the brief). The codebase and documentation are in English.
+> The UI copy is in Indonesian, the target market for the brief. The codebase and documentation are in English.
 
 ## Screenshot
 
@@ -45,7 +44,7 @@ end-to-end static typing, design tokens encoded directly in the stylesheet, and 
 ### Admin
 
 > [!WARNING]
-> This section is not finished and currently only show static preview.
+> Not finished; static preview only.
 
 - Dashboard: KPI cards, revenue area chart, category donut, recent orders, top products
 - Product management: searchable / filterable table, summary stats, add-product modal
@@ -77,8 +76,8 @@ Other tasks:
 
 ```tree
 src/
-├── +Layout.jsx              # root layout
-├── main.jsx                 # router definition + entry
+├── +Layout.tsx              # root layout
+├── main.tsx                 # router definition + entry
 ├── style.css                # design tokens (@theme) + component layer
 ├── data.json                # mock data (products, categories, admin)
 ├── components/              # shared UI (cards, badges, form fields, ...)
@@ -91,12 +90,11 @@ src/
     └── admin/               # dashboard, products, orders, customers, settings
 ```
 
-Route groups in parentheses (`(store)`, `(auth)`, `(account)`) organise the tree without adding URL segments. The `#/` prefix is a path alias to `src/`, declared once in `package.json` (`imports`) and mirrored in `tsconfig.json`.
+Route groups in parentheses (`(store)`, `(auth)`, `(account)`) organise the tree without adding URL segments. The `#/` prefix is a path alias to `src/`, declared in `package.json` (`imports`) and mirrored in `tsconfig.json`.
 
 ## Scope
 
-This is a frontend project. All data is static (`src/data.json`); there is no backend, and the auth and form flows are presentational.
-The focus is on UI fidelity to the brief, component architecture, and the styling system.
+The storefront and account areas run against the API at `VITE_BACKEND_URL`. The hero banners and the admin dashboard and customer pages are still static (`src/data.json`).
 
 ## License
 

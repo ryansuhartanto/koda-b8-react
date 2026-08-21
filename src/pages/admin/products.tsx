@@ -33,7 +33,7 @@ const LOW_STOCK = 10;
 const NEW_DAYS = 30;
 const PAGE = 100;
 
-// the API carries no tags, so they are read back off the columns that imply them
+// the API carries no tags, so they are inferred from the columns that imply them
 function tagsOf(product: Product): string[] {
 	const tags: string[] = [];
 

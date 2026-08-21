@@ -7,7 +7,7 @@ export type WishlistState = {
 
 const initialState: WishlistState = { ids: [] };
 
-// the API has no wishlist resource, so this one stays on the device
+// the API has no wishlist resource, so this stays on the device
 export const wishlistSlice = createSlice({
 	name: "wishlist",
 

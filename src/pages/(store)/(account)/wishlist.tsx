@@ -8,7 +8,7 @@ import { selectWishlist } from "#/features/wishlist";
 import productsApi from "#/services/api/products";
 import { useAppSelector } from "#/store";
 
-// no bulk-by-id endpoint exists, so each saved product is fetched on its own
+// no bulk-by-id endpoint, so each saved product is fetched on its own
 function WishlistCard({ id }: { id: string }) {
 	const { data: product } = productsApi.useProductQuery(id);
 

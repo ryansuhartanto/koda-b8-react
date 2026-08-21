@@ -23,7 +23,7 @@ export default function Page(): JSX.Element {
 		limit: 4,
 	});
 
-	// the API has no promo flag, so a discount is what marks a deal
+	// the API has no promo flag, so a discount marks a deal
 	const flashDeals = (discounted?.items ?? [])
 		.filter((p) => (p.original_price_idr ?? 0) > (p.price_idr ?? 0))
 		.slice(0, 4);

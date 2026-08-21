@@ -53,7 +53,7 @@ function AddressForm({ onDone }: { onDone: () => void }) {
 		e.preventDefault();
 		const form = new FormData(e.currentTarget);
 
-		// a rejected save keeps the form open, and the banner reads the error below
+		// a rejected save keeps the form open; the banner reads the error below
 		const result = await createAddress({
 			label: field(form, "label") ?? "",
 			name: field(form, "name") ?? "",

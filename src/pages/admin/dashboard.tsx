@@ -44,7 +44,7 @@ const categoryColors = {
 	"Lainnya": "var(--color-gray-400)",
 };
 
-// Recharts reads `fill` off each datum; Cell is deprecated as of Recharts 3.
+// Recharts reads `fill` off each datum; Cell is deprecated in Recharts 3
 const categorySales = data.admin.dashboard.categorySales.map((c) => ({
 	...c,
 	fill: categoryColors[c.name as keyof typeof categoryColors],

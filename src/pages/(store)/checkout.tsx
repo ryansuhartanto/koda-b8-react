@@ -496,7 +496,7 @@ export default function Page(): JSX.Element {
 			return;
 		}
 
-		// a rejected order keeps the step, and the banner reads the mutation's error
+		// a rejected order keeps the step; the banner reads the mutation's error
 		const result = await createOrder({
 			id_address,
 			id_payment,

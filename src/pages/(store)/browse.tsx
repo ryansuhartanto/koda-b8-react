@@ -45,7 +45,7 @@ export default function Page(): JSX.Element {
 		? Number(searchParams.get("rating"))
 		: undefined;
 	const inStockOnly = searchParams.get("inStock") === "1";
-	// an unknown sort in the URL would earn a 400, so only known ones survive
+	// an unknown sort in the URL earns a 400, so only known ones survive
 	const sort =
 		sortOptions.find((o) => o.value === searchParams.get("sort"))?.value ??
 		DEFAULT_SORT;
@@ -58,7 +58,7 @@ export default function Page(): JSX.Element {
 	}, [filterKey]);
 
 	const { data: categories = [] } = catalogApi.useCategoriesQuery();
-	// the API pages by limit and offset, so growing the limit is the "load more"
+	// the API pages by limit and offset, so "load more" grows the limit
 	const { data, isFetching } = productsApi.useProductsQuery({
 		search: query || undefined,
 		category,

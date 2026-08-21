@@ -42,7 +42,7 @@ export type DrawerProps = {
 	title: string;
 	hideTitle?: boolean;
 	description?: string;
-	/** Closes the drawer once the viewport reaches `md`, where the desktop layout takes over. */
+	/** Closes once the viewport reaches `md`. */
 	mobileOnly?: boolean;
 	className?: string;
 	children: ReactNode;

@@ -46,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps): JSX.Element {
 			void navigate("/login");
 			return;
 		}
-		// a cart line is a variant, so a listing without one has to be opened first
+		// a cart line is a variant, so a listing without one must be opened first
 		const variant = variants?.[0];
 		if (!variant) {
 			void navigate(`/details/${id}`);
