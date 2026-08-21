@@ -55,24 +55,23 @@ end-to-end static typing, design tokens encoded directly in the stylesheet, and 
 
 ## Usage
 
-Requires [mise](https://mise.jdx.dev).
+Requires [bun](https://bun.com).
 
 ```sh
-mise install
-aube install
+bun install
 
 # start the dev server
-aube run dev
+bun run dev
 
 # production build
-aube run build
+bun run build
 ```
 
 Other tasks:
 
-- `aube run fmt`
-- `aube run lint`
-- `aube run test`
+- `bun run fmt`
+- `bun run lint`
+- `bun run test`
 
 ## Structure
 

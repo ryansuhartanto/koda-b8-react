@@ -19,7 +19,7 @@ export default defineConfig({
 
 	fmt: {
 		...oxfmt,
-		ignorePatterns: ["aube-lock.yaml"],
+		ignorePatterns: ["bun.lock"],
 
 		sortImports: sortImports({
 			customGroups: [
